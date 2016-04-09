@@ -66,6 +66,7 @@
     "unidecode": "0.1.8",
     "validator": "4.5.0",
     "xml": "1.0.1",
+    "pg": "3.0.3",
     "cfenv": "~1.0.3"
   },
   "optionalDependencies": {
