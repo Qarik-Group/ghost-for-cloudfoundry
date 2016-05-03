@@ -7,10 +7,18 @@ var production = env == 'production';
 var appEnv = {};
 var sqlCredentials = {};
 var mailCredentials = {};
+var appUrl = null;
 if (production) {
   var cfEnv = require("cfenv");
   var pkg   = require("./package.json");
   var appEnv = cfEnv.getAppEnv();
+  appUrl = appEnv.url;
+  // appUrl must end with / - but it doesn't if deployed to a /blog path on Cloud Foundry
+  if (!appUrl.match(/\/$/)) {
+    console.log("Appending / to " + appUrl)
+    appUrl = appUrl + "/"
+  }
+  console.log("App URL: " + appUrl);
   console.log(appEnv);
   console.log(appEnv.getServices());
   var sqlCredentials = appEnv.getService(/ghost-pg/).credentials;
@@ -39,7 +47,7 @@ config = {
     },
     // Cloud Foundry
     production: {
-      url: appEnv.url,
+      url: appUrl,
       mail: {
         transport: 'SMTP',
         options: {
