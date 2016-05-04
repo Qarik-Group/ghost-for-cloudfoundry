@@ -16,10 +16,10 @@ if (production) {
   // because expressjs thinks that the X-Forward-Proto header is "http" instead of "https"
   appUrl = appUrl.replace("https://", "http://")
   console.log("App URL: " + appUrl);
-  console.log(appEnv);
-  console.log(appEnv.getServices());
-  var sqlCredentials = appEnv.getService(/ghost-pg/).credentials;
-  var mailCredentials = appEnv.getService(/email/).credentials;
+  // console.log(appEnv);
+  // console.log(appEnv.getServices());
+  var sqlCredentials = appEnv.getService(/pg/).credentials;
+  var mailCredentials = appEnv.getService(/mail/).credentials;
 }
 console.log(sqlCredentials);
 console.log(mailCredentials);
