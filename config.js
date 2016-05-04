@@ -13,11 +13,8 @@ if (production) {
   var pkg   = require("./package.json");
   var appEnv = cfEnv.getAppEnv();
   appUrl = appEnv.url;
-  // appUrl must end with / - but it doesn't if deployed to a /blog path on Cloud Foundry
-  if (!appUrl.match(/\/$/)) {
-    console.log("Appending / to " + appUrl)
-    appUrl = appUrl + "/"
-  }
+  // because expressjs thinks that the X-Forward-Proto header is "http" instead of "https"
+  appUrl = appUrl.replace("https://", "http://")
   console.log("App URL: " + appUrl);
   console.log(appEnv);
   console.log(appEnv.getServices());
