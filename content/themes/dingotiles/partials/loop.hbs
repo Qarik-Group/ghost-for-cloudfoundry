@@ -7,10 +7,18 @@
 {{#foreach posts}}
 <article class="{{post_class}}">
     <header class="post-header">
-        <h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
+      <div class="main-container">
+        <div class="main">
+          <h2 class="title-details post-title" style="text-align: center; padding-top: 1.5em; padding-bottom: 0.5em; font-size: 2em;">
+            <a href="{{url}}">{{{title}}}</a>
+          </h2>
+        </div>
+      </div>
     </header>
     <section class="post-excerpt">
-        <p>{{excerpt words="26"}} <a class="read-more" href="{{url}}">&raquo;</a></p>
+      <div class="main">
+        <p>{{excerpt words="52"}} <a class="read-more" href="{{url}}">&raquo;</a></p>
+      </div>
     </section>
     <footer class="post-meta">
         {{#if author.image}}<img class="author-thumb" src="{{author.image}}" alt="{{author.name}}" nopin="nopin" />{{/if}}

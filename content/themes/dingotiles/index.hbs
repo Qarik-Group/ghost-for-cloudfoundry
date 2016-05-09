@@ -1,27 +1,135 @@
-{{!< default}}
-{{! The tag above means - insert everything in this file into the {body} of the default.hbs template }}
 
-{{! The big featured header }}
-<header class="main-header {{#if @blog.cover}}" style="background-image: url({{@blog.cover}}){{else}}no-cover{{/if}}">
-    <nav class="main-nav overlay clearfix">
-        {{#if @blog.logo}}<a class="blog-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="{{@blog.title}}" /></a>{{/if}}
-        {{#if @blog.navigation}}
-            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
-        {{/if}}
-    </nav>
-    <div class="vertical">
-        <div class="main-header-content inner">
-            <h1 class="page-title">{{@blog.title}}</h1>
-            <h2 class="page-description">{{@blog.description}}</h2>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- Always force latest IE rendering engine or request Chrome Frame -->
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+  <!-- Use title if it's in the page YAML frontmatter -->
+  <title>
+    Dingo Tiles™
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://www.dingotiles.com/stylesheets/master.css" rel="stylesheet" media="screen, print" />
+  <link href="https://www.dingotiles.com/stylesheets/print.css" rel="stylesheet" media="print" />
+  <link href="https://www.dingotiles.com/stylesheets/book-styles.css" rel="stylesheet" media="screen, print" />
+  <link rel="apple-touch-icon" sizes="57x57" href="https://www.dingotiles.com/images/favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="https://www.dingotiles.com/images/favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="https://www.dingotiles.com/images/favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://www.dingotiles.com/images/favicons/apple-icon-76x76.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.dingotiles.com/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.dingotiles.com/images/favicons/favicon-16x16.png">
+  <meta property="og:url"           content="https://www.dingotiles.com/blog" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Dingo Tiles™ blog" />
+  <meta property="og:description"   content="Amplify and extend Pivotal Cloud Foundry&reg; to make all your developers and admins crazy happy" />
+  <meta property="og:image"         content="https://www.dingotiles.com/dingo-postgresql/images/dingo-postgresql-tile.png" />
+  <script src="/javascripts/all.js"></script>
+
+  <script type="text/javascript">
+    if (window.location.host === 'www.dingotiles.com') {
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'configyml.ga_account_id']);
+      _gaq.push(['_setDomainName', 'www.dingotiles.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    }
+  </script>
+</head>
+
+<body class="index ">
+
+<div class="viewport">
+  <div class='wrap'>
+    <script src="//use.typekit.net/clb0qji.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      try {
+        Typekit.load();
+      } catch (e) {
+      }
+    </script>
+    <script type="text/javascript">
+      document.domain = "www.dingotiles.com";
+    </script>
+
+    <script type="text/javascript">
+      WebFontConfig = {
+        google: {families: ['Source+Sans+Pro:300italic,400italic,300,400,600:latin']}
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
+
+    <header class="header-home">
+      <div class="home-links js-bar-links">
+        <div class="btn-menu" data-behavior="MenuMobile"></div>
+
+        <div class="header-item">
+          <a href="https://www.dingotiles.com/">Home</a>
         </div>
-    </div>
-    <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span class="hidden">Scroll Down</span></a>
-</header>
+        <div class="header-item">
+          <a href="https://www.dingotiles.com/blog/">Blog</a>
+        </div>
+        <div class="header-item">
+          <a href="https://slack.dingotiles.com" target="_blank">Ask any question anytime on Slack</a>
+        </div>
+        <!--%= partial 'layouts/book-search' %-->
+      </div>
+      <h1 class="title-flashy">
+        <img src="https://www.dingotiles.com/images/icon-dingo.png">
+        Dingo Tiles™
+      </h1>
+      <h2 class="title-intro">
+        Amplify and extend Pivotal Cloud Foundry&reg; to make all your developers and admins crazy happy
+      </h2>
+    </header>
 
-{{! The main content area on the homepage }}
-<main id="content" class="content" role="main">
+    <div class="container">
+      <main class="content content-layout" id="js-content" role="main">
+        <a id="top"></a>
+        <div class="to-top" id="js-to-top">
+          <a href="#top" title="back to top"></a>
+        </div>
 
-    {{! The tag below includes the post loop - partials/loop.hbs }}
-    {{> "loop"}}
+        {{! The tag below includes the post loop - partials/loop.hbs }}
+        {{> "loop"}}
 
-</main>
+      </main><!--end of content-->
+    </div><!-- end of container -->
+  </div><!--end of wrap-->
+</div><!--end of viewport-->
+
+<div id="scrim"></div>
+
+<div class="container">
+  <footer class="site-footer-links">
+    <div class="copyright">
+  <a href='/'>Dingo Tiles™</a>
+  &copy; 2016 WorldProtect Investments Limited. All Rights Reserved.
+  Dingo Tiles™, Dingo PostgreSQL™ and Dingo S3™ are trademarks of WorldProtect Investments Limited.
+  Pivotal Cloud Foundry&reg; is a registered trademark of Pivotal Inc.
+  Consulting for Dingo Tiles™ available from <a href="https://starkandwayne.com">Stark &amp; Wayne LLC</a>.
+</div>
+<div class="support">
+  <a href="https://slack.dingotiles.com" target="_blank">Ask any question anytime on Slack</a>
+</div>
+
+  </footer>
+</div><!--end of container-->
+
+</body>
+</html>
