@@ -18,11 +18,13 @@ if (production) {
   console.log("App URL: " + appUrl);
   // console.log(appEnv);
   // console.log(appEnv.getServices());
-  var sqlCredentials = appEnv.getService(/pg/).credentials;
-  var mailCredentials = appEnv.getService(/mail/).credentials;
+  var sqlCredentials = appEnv.getServiceCreds(/pg/);
+  var mailCredentials = appEnv.getServiceCreds(/mail/);
+  var s3Credentials = appEnv.getServiceCreds(/s3/);
 }
 console.log(sqlCredentials);
 console.log(mailCredentials);
+console.log(s3Credentials);
 
 config = {
     development: {
@@ -72,4 +74,16 @@ config = {
     },
 
 };
+if (s3Credentials !== null) {
+  config['production']['storage'] = {
+      active: 'ghost-s3',
+      'ghost-s3': {
+          accessKeyId: s3Credentials['access_key_id'],
+          secretAccessKey: s3Credentials['secret_access_key'],
+          bucket: s3Credentials['bucket'] || s3Credentials['aws_bucket'],
+          region: s3Credentials['region'] || s3Credentials['aws_region'] || 'us-east-1',
+          // assetHost: s3Credentials[''],
+      }
+  }
+}
 module.exports = config;
