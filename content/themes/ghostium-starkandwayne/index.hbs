@@ -1,0 +1,30 @@
+{{!< default}}
+
+<aside role="banner" class="cover">
+  <div data-load-image="{{asset 'images/blue-banner.svg'}}" class="cover-image"></div>
+  <div class="cover-container">
+    {{#if @blog.logo}}
+      <a href="{{@blog.url}}" class="cover-logo" data-pjax>
+        <img src="{{@blog.logo}}" alt="Blog Logo">
+      </a>
+    {{/if}}
+  </div>
+</aside>
+
+<section class="wrapper" tabindex="0">
+  <div class="wrapper-container">
+    {{> custom/featured this}}
+
+    <section class="post-list">
+      {{#foreach posts}}
+        {{> post/list this}}
+      {{/foreach}}
+    </section>
+
+    {{#if pagination}}
+      {{pagination}}
+    {{/if}}
+
+    {{> footer this}}
+  </div>
+</section>
