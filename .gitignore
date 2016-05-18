@@ -1,3 +1,4 @@
 npm-debug.log
 node_modules
 content/data/ghost-dev.db
+.DS_Store
