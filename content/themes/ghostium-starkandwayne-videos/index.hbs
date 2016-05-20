@@ -1,0 +1,28 @@
+{{!< default}}
+
+<aside role="banner" class="cover">
+  <div data-load-image="{{asset 'images/SW_blog_bkgd_1280x900.jpg'}}" class="cover-image"></div>
+  <div class="cover-container">
+    <a href="{{@blog.url}}" class="cover-logo" data-pjax>
+      <img src="{{asset 'images/SW_blog_avatar_800x800.jpg'}}" alt="Blog Logo">
+    </a>
+  </div>
+</aside>
+
+<section class="wrapper" tabindex="0">
+  <div class="wrapper-container">
+    {{> custom/featured this}}
+
+    <section class="post-list">
+      {{#foreach posts}}
+        {{> post/list this}}
+      {{/foreach}}
+    </section>
+
+    {{#if pagination}}
+      {{pagination}}
+    {{/if}}
+
+    {{> footer this}}
+  </div>
+</section>
