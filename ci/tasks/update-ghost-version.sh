@@ -26,8 +26,10 @@ cat package.json | jq ".dependencies[\"ghost-s3-storage\"] = \"0.2.2\"" > packag
 
 cat package.json
 
-npm install --production --save
+npm install --production
 npm shrinkwrap
+
+cat npm-shrinkwrap.json
 
 if [[ -z "$(git config --global user.name)" ]]
 then
