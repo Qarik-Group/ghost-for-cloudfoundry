@@ -1,10 +1,25 @@
 ---
 groups:
+- name: pipeline
+  jobs:
+  - upgrade
 - name: ci
   jobs:
   - build-task-image
 
 jobs:
+- name: upgrade
+  public: true
+  plan:
+  - aggregate:
+    - get: ghost-for-cf
+    - get: ghost
+      trigger: true
+      params:
+        include_source_tarball: true
+  - task: update-ghost-version
+    file: ghost-for-cf/ci/tasks/update-ghost-version.yml
+
 - name: build-task-image
   public: true
   serial: true
@@ -16,6 +31,20 @@ jobs:
       build: ghost-for-cf-docker-image/ci/ci_image
 
 resources:
+- name: ghost
+  type: github-release
+  source:
+    access_token: {{github-release-access-token}}
+    user: TryGhost
+    repository: ghost
+
+- name: ghost-for-cf
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: {{pipeline-branch}}
+    private_key: {{github-key}}
+
 - name: ghost-for-cf-docker-image
   type: git
   source:

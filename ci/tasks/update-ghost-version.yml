@@ -1,0 +1,13 @@
+---
+platform: linux
+image: docker:///dingotiles/ghost-for-cloudfoundry-pipeline
+
+inputs:
+- name: ghost-for-cf
+- name: ghost
+
+outputs:
+- name: ghost-updated
+
+run:
+  path: ghost-for-cf/ci/tasks/update-ghost-version.sh
