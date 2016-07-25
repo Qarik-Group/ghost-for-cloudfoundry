@@ -48,16 +48,6 @@ if (production) {
 
   config['production'] = {
     url: appUrl,
-    mail: {
-      transport: 'SMTP',
-      options: {
-        service: 'Sendgrid',
-        auth: {
-          user: mailCredentials.username,
-          pass: mailCredentials.password,
-        }
-      }
-    },
     database: {
       client: 'pg',
       connection: sqlCredentials.uri,
@@ -84,6 +74,18 @@ if (production) {
             region: s3Credentials['region'] || s3Credentials['aws_region'] || 'us-east-1',
             // assetHost: s3Credentials[''],
         }
+    }
+  }
+  if (mailCredentials !== null) {
+    config['production']['mail'] = {
+      transport: 'SMTP',
+      options: {
+        service: 'Sendgrid',
+        auth: {
+          user: mailCredentials.username,
+          pass: mailCredentials.password,
+        }
+      }
     }
   }
 }
