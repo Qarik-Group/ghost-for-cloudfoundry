@@ -10,6 +10,7 @@ groups:
 jobs:
 - name: upgrade
   public: true
+  serial: true
   plan:
   - aggregate:
     - get: ghost-for-cf
