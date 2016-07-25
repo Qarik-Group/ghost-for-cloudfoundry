@@ -20,5 +20,5 @@ cat package.json | jq ".dependencies[\"pg\"] = \"4.1.1\"" > package-edited.json 
 cat package.json | jq ".dependencies[\"cfenv\"] = \"~1.0.3\"" > package-edited.json && mv package-edited.json package.json
 cat package.json | jq ".dependencies[\"ghost-s3-storage\"] = \"0.2.2\"" > package-edited.json && mv package-edited.json package.json
 
-npm install --save
+npm install --production --save
 npm shrinkwrap
