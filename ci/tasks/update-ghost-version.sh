@@ -15,5 +15,7 @@ cp -r TryGhost-Ghost-*/package.json ghost-updated/
 
 cd ghost-updated
 
+cat package.json |  jq -r "del(.dependencies.sqlite3)" 2>&1 > package-edited.json && mv package-edited.json package.json
+
 npm install --save
 npm shrinkwrap
