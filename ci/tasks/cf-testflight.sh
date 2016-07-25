@@ -19,7 +19,7 @@ cf cs ${cf_pg_service} ${cf_pg_service_plan} ${pg_name}
 cf cs ${cf_s3_service} ${cf_s3_service_plan} ${s3_name}
 
 # cf push ${app_name} --random-route --no-start
-cf push ${app_name} --no-route --no-start -c "sleep 1d"
+cf push ${app_name} --no-route --no-start -c "sleep 1d" --health-check-type none
 
 cf bs ${app_name} ${pg_name}
 cf bs ${app_name} ${s3_name}
