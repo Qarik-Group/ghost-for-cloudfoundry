@@ -9,11 +9,14 @@ tar xfz ghost/source.tar.gz
 git clone ghost-for-cf ghost-updated
 
 ls -al ghost-updated/
-rm -rf ghost-updated/core ghost-updated/node_modules ghost-updated/index.js ghost-updated/package.json ghost-updated/npm-shrinkwrap.json
+rm -rf ghost-updated/core ghost-updated/node_modules ghost-updated/index.js \
+  ghost-updated/package.json ghost-updated/npm-shrinkwrap.json \
+  ghost-updated/content/themes/casper
 
 cp -r TryGhost-Ghost-*/core ghost-updated/
 cp -r TryGhost-Ghost-*/index.js ghost-updated/
 cp -r TryGhost-Ghost-*/package.json ghost-updated/
+cp -r TryGhost-Ghost-*/content/themes/casper ghost-updated/content/themes/
 
 cd ghost-updated
 
