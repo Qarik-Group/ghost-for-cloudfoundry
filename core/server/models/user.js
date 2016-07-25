@@ -10,6 +10,7 @@ var _              = require('lodash'),
     validation     = require('../data/validation'),
     events         = require('../events'),
     i18n           = require('../i18n'),
+    toString       = require('lodash.tostring'),
 
     bcryptGenSalt  = Promise.promisify(bcrypt.genSalt),
     bcryptHash     = Promise.promisify(bcrypt.hash),
@@ -169,9 +170,15 @@ User = ghostBookshelf.Model.extend({
             return role.get('name') === roleName;
         });
     },
+
     enforcedFilters: function enforcedFilters() {
+        if (this.isInternalContext()) {
+            return null;
+        }
+
         return this.isPublicContext() ? 'status:[' + activeStates.join(',') + ']' : null;
     },
+
     defaultFilters: function defaultFilters() {
         return this.isPublicContext() ? null : 'status:[' + activeStates.join(',') + ']';
     }
@@ -234,7 +241,8 @@ User = ghostBookshelf.Model.extend({
                 findOne: ['withRelated', 'status'],
                 setup: ['id'],
                 edit: ['withRelated', 'id'],
-                findPage: ['page', 'limit', 'columns', 'filter', 'order', 'status']
+                findPage: ['page', 'limit', 'columns', 'filter', 'order', 'status'],
+                findAll: ['filter']
             };
 
         if (validOptions[methodName]) {
@@ -360,6 +368,8 @@ User = ghostBookshelf.Model.extend({
         var self = this,
             userData = this.filterData(data),
             roles;
+
+        userData.password = toString(userData.password);
 
         options = this.filterOptions(options, 'add');
         options.withRelated = _.union(options.withRelated, options.include);
@@ -594,28 +604,32 @@ User = ghostBookshelf.Model.extend({
         var self = this,
             newPassword = object.newPassword,
             ne2Password = object.ne2Password,
-            userId = object.user_id,
+            userId = parseInt(object.user_id),
             oldPassword = object.oldPassword,
             user;
 
+        // If the two passwords do not match
         if (newPassword !== ne2Password) {
             return Promise.reject(new errors.ValidationError(i18n.t('errors.models.user.newPasswordsDoNotMatch')));
         }
 
+        // If the old password is empty when changing current user's password
         if (userId === options.context.user && _.isEmpty(oldPassword)) {
             return Promise.reject(new errors.ValidationError(i18n.t('errors.models.user.passwordRequiredForOperation')));
         }
 
+        // If password is not complex enough
         if (!validatePasswordLength(newPassword)) {
             return Promise.reject(new errors.ValidationError(i18n.t('errors.models.user.passwordDoesNotComplyLength')));
         }
 
         return self.forge({id: userId}).fetch({require: true}).then(function then(_user) {
             user = _user;
+            // If the user is the current user, check old password
             if (userId === options.context.user) {
                 return bcryptCompare(oldPassword, user.get('password'));
             }
-            // if user is admin, password isn't compared
+            // If user is admin and changing another user's password, old password isn't compared to the old one
             return true;
         }).then(function then(matched) {
             if (!matched) {

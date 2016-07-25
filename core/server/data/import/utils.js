@@ -77,6 +77,9 @@ utils = {
                 // if we don't have user data and the id is 1, we assume this means the owner
                 existingUsers[owner.email].importId = userToMap;
                 userMap[userToMap] = existingUsers[owner.email].realId;
+            } else if (userToMap === 0) {
+                // CASE: external context
+                userMap[userToMap] = '0';
             } else {
                 throw new errors.DataImportError(
                     i18n.t('errors.data.import.utils.dataLinkedToUnknownUser', {userToMap: userToMap}), 'user.id', userToMap
@@ -204,10 +207,10 @@ utils = {
                 }
 
                 return _tag;
-            }));
+            }).reflect());
         });
 
-        return Promise.settle(ops);
+        return Promise.all(ops);
     },
 
     importPosts: function importPosts(tableData, transaction) {
@@ -232,11 +235,11 @@ utils = {
             ops.push(models.Post.add(post, _.extend({}, internal, {transacting: transaction, importing: true}))
                     .catch(function (error) {
                         return Promise.reject({raw: error, model: 'post', data: post});
-                    })
+                    }).reflect()
             );
         });
 
-        return Promise.settle(ops);
+        return Promise.all(ops);
     },
 
     importUsers: function importUsers(tableData, existingUsers, transaction) {
@@ -292,9 +295,9 @@ utils = {
             if (!(error instanceof errors.NotFoundError)) {
                 return Promise.reject({raw: error, model: 'setting', data: tableData});
             }
-        }));
+        }).reflect());
 
-        return Promise.settle(ops);
+        return Promise.all(ops);
     },
 
     /** For later **/
@@ -317,10 +320,10 @@ utils = {
                 }
 
                 return _app;
-            }));
+            }).reflect());
         });
 
-        return Promise.settle(ops);
+        return Promise.all(ops);
     }
 };
 

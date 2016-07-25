@@ -9,21 +9,27 @@ apiRoutes = function apiRoutes(middleware) {
         authenticatePublic = [
             middleware.api.authenticateClient,
             middleware.api.authenticateUser,
-            middleware.api.requiresAuthorizedUserPublicAPI
+            middleware.api.requiresAuthorizedUserPublicAPI,
+            middleware.api.cors
         ],
         // Require user for private endpoints
         authenticatePrivate = [
             middleware.api.authenticateClient,
             middleware.api.authenticateUser,
-            middleware.api.requiresAuthorizedUser
+            middleware.api.requiresAuthorizedUser,
+            middleware.api.cors
         ];
 
     // alias delete with del
     router.del = router.delete;
 
+    // ## CORS pre-flight check
+    router.options('*', middleware.api.cors);
+
     // ## Configuration
-    router.get('/configuration', authenticatePrivate, api.http(api.configuration.browse));
+    router.get('/configuration', authenticatePrivate, api.http(api.configuration.read));
     router.get('/configuration/:key', authenticatePrivate, api.http(api.configuration.read));
+    router.get('/configuration/timezones', authenticatePrivate, api.http(api.configuration.read));
 
     // ## Posts
     router.get('/posts', authenticatePublic, api.http(api.posts.browse));
@@ -59,6 +65,20 @@ apiRoutes = function apiRoutes(middleware) {
     router.put('/tags/:id', authenticatePrivate, api.http(api.tags.edit));
     router.del('/tags/:id', authenticatePrivate, api.http(api.tags.destroy));
 
+    // ## Subscribers
+    router.get('/subscribers', middleware.api.labs.subscribers, authenticatePrivate, api.http(api.subscribers.browse));
+    router.get('/subscribers/csv', middleware.api.labs.subscribers, authenticatePrivate, api.http(api.subscribers.exportCSV));
+    router.post('/subscribers/csv',
+        middleware.api.labs.subscribers,
+        authenticatePrivate,
+        middleware.upload.single('subscribersfile'),
+        api.http(api.subscribers.importCSV)
+    );
+    router.get('/subscribers/:id', middleware.api.labs.subscribers, authenticatePrivate, api.http(api.subscribers.read));
+    router.post('/subscribers', middleware.api.labs.subscribers, authenticatePublic, api.http(api.subscribers.add));
+    router.put('/subscribers/:id', middleware.api.labs.subscribers, authenticatePrivate, api.http(api.subscribers.edit));
+    router.del('/subscribers/:id',  middleware.api.labs.subscribers, authenticatePrivate, api.http(api.subscribers.destroy));
+
     // ## Roles
     router.get('/roles/', authenticatePrivate, api.http(api.roles.browse));
 
@@ -79,12 +99,15 @@ apiRoutes = function apiRoutes(middleware) {
 
     // ## DB
     router.get('/db', authenticatePrivate, api.http(api.db.exportContent));
-    router.post('/db', authenticatePrivate, middleware.busboy, api.http(api.db.importContent));
+    router.post('/db', authenticatePrivate, middleware.upload.single('importfile'), api.http(api.db.importContent));
     router.del('/db', authenticatePrivate, api.http(api.db.deleteAllContent));
 
     // ## Mail
     router.post('/mail', authenticatePrivate, api.http(api.mail.send));
     router.post('/mail/test', authenticatePrivate, api.http(api.mail.sendTest));
+
+    // ## Slack
+    router.post('/slack/test', authenticatePrivate, api.http(api.slack.sendTest));
 
     // ## Authentication
     router.post('/authentication/passwordreset',
@@ -105,7 +128,7 @@ apiRoutes = function apiRoutes(middleware) {
     router.post('/authentication/revoke', authenticatePrivate, api.http(api.authentication.revoke));
 
     // ## Uploads
-    router.post('/uploads', authenticatePrivate, middleware.busboy, api.http(api.uploads.add));
+    router.post('/uploads', authenticatePrivate, middleware.upload.single('uploadimage'), api.http(api.uploads.add));
 
     // API Router middleware
     router.use(middleware.api.errorHandler);

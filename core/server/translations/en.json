@@ -63,19 +63,12 @@
         },
         "middleware": {
             "auth": {
-                "clientAuthenticaionFailed": "Client Authentication Failed",
+                "clientAuthenticationFailed": "Client Authentication Failed",
                 "clientCredentialsNotProvided": "Client credentials were not provided",
                 "clientCredentialsNotValid": "Client credentials were not valid",
                 "forInformationRead": "For information on how to fix this, please read {url}.",
                 "accessDenied": "Access denied.",
-                "accessDeniedFromUrl": "Access Denied from url: {origin}. Please use the url configured in config.js",
-                "pleaseSignIn": "Please Sign In",
-                "attemptedToAccessAdmin": "You have attempted to access your Ghost admin panel from a url that does not appear in config.js."
-            },
-            "ghostbusboy": {
-                "fileUploadingError": "Something went wrong uploading the file",
-                "somethingWentWrong": "Something went wrong parsing the form",
-                "couldNotParseUpload": "Could not parse upload completely."
+                "pleaseSignIn": "Please Sign In"
             },
             "oauth": {
                 "invalidClient": "Invalid client.",
@@ -152,6 +145,11 @@
                 "description": "Your site url in config.js cannot contain a subdirectory called ghost.",
                 "help": "Please rename the subdirectory before restarting"
             },
+            "urlCannotContainPrivateSubdir": {
+                "error": "private subdirectory not allowed",
+                "description": "Your site url in config.js cannot contain a subdirectory called private.",
+                "help": "Please rename the subdirectory before restarting"
+            },
             "dbConfigInvalid": {
                 "error": "invalid database configuration",
                 "description": "Your database configuration in config.js is invalid.",
@@ -199,8 +197,13 @@
             }
         },
         "models": {
+            "subscriber": {
+                "notEnoughPermission": "You do not have permission to perform this action"
+            },
             "post": {
                 "untitled": "(Untitled)",
+                "valueCannotBeBlank": "Value in {key} cannot be blank.",
+                "expectedPublishedAtInFuture": "Expected published_at to be in the future.",
                 "noUserFound": "No user found",
                 "notEnoughPermission": "You do not have permission to perform this action",
                 "tagUpdates": {
@@ -278,6 +281,7 @@
         },
         "api": {
             "authentication": {
+                "setupUnableToRun": "Database missing fixture data. Please reset database and try again.",
                 "setupMustBeCompleted": "Setup must be completed before making this request.",
                 "noEmailProvided": "No email provided.",
                 "invalidEmailReceived": "The server did not receive a valid email",
@@ -287,7 +291,8 @@
                 "notLoggedIn": "You are not logged in.",
                 "notTheBlogOwner": "You are not the blog owner.",
                 "invalidTokenTypeHint": "Invalid token_type_hint given.",
-                "invalidTokenProvided": "Invalid token provided"
+                "invalidTokenProvided": "Invalid token provided",
+                "tokenRevocationFailed": "Token revocation failed"
             },
             "clients": {
                 "clientNotFound": "Client not found."
@@ -328,6 +333,10 @@
                 "couldNotGenerateSlug": "Could not generate slug.",
                 "unknownSlugType": "Unknown slug type '{type}'."
             },
+            "subscribers": {
+                "subscriberNotFound": "Subscriber not found.",
+                "subscriberAlreadyExists": "Email address is already subscribed."
+            },
             "tags": {
                 "tagNotFound": "Tag not found."
             },
@@ -367,11 +376,6 @@
             "export": {
                 "errorExportingData": "Error exporting data"
             },
-            "fixtures": {
-                "populatingPermissions": "Populating permissions",
-                "upgradingPermissions": "Upgrading permissions",
-                "removingOldPermissions": "Removing old permissions"
-            },
             "import": {
                 "dataImporter": {
                     "unableToFindOwner": "Unable to find an owner"
@@ -407,7 +411,11 @@
             "versioning": {
                 "index": {
                     "dbVersionNotRecognized": "Database version is not recognized",
-                    "settingsTableDoesNotExist": "Settings table does not exist"
+                    "settingsTableDoesNotExist": "Settings table does not exist",
+                    "cannotMigrate": {
+                        "error": "Unable to upgrade from version 0.4.2 or earlier",
+                        "context": "Please upgrade to 0.7.1 first"
+                    }
                 }
             },
             "xml": {
@@ -446,6 +454,9 @@
             "unableToSendEmail": "Ghost is currently unable to send email."
         },
         "helpers": {
+            "helperNotAvailable": "The \\{\\{{helperName}\\}\\} helper is not available.",
+            "apiMustBeEnabled": "The {flagName} labs flag must be enabled if you wish to use the \\{\\{{helperName}\\}\\} helper.",
+            "seeLink": "See {url}",
             "foreach": {
                 "iteratorNeeded": "Need to pass an iterator to #foreach"
             },
@@ -519,56 +530,9 @@
         },
         "data": {
             "fixtures": {
-                "migrations": "Migrations",
-                "convertingAdmToOwner": "Converting admin to owner",
-                "creatingOwner": "Creating owner",
-                "populatingFixtures": "Populating fixtures",
-                "upgradingFixturesTo": "Upgrading fixtures to {version}",
-                "addingClientFixture": "Adding ghost-admin client fixture",
-                "addingOwnerRoleFixture": "Adding owner role fixture",
-                "updatingFixtures": "Updating fixtures",
                 "canSafelyDelete": "<!-- You can safely delete this line if your theme does not require jQuery -->\n",
                 "jQueryRemoved": "jQuery has been removed from Ghost core and is now being loaded from the jQuery Foundation's CDN.",
-                "canBeChanged": "This can be changed or removed in your <strong>Code Injection</strong> settings area.",
-                "addingJquery": "Adding jQuery link to ghost_foot",
-                "updateIsPrivate": "Update isPrivate setting",
-                "updatePassword": "Update password setting",
-                "updateAdminClientFixture": "Update ghost-admin client fixture",
-                "addFrontendClientFixture": "Add ghost-frontend client fixture",
-                "cleaningTags": "Cleaning {length} malformed tags",
-                "collectingDataOnTagOrder": "Collecting data on tag order for posts...",
-                "updatingOrder": "Updating order on {length} tag relationships (could take a while)...",
-                "updatedOrder": "Tag order successfully updated",
-                "addingUpgrade": "Adding {version} upgrade post fixture"
-            },
-            "migration": {
-                "commands": {
-                    "migrations": "Migrations",
-                    "deletingTable": "Deleting table: {table}",
-                    "creatingTable": "Creating table: {table}",
-                    "addingColumn": "Adding column: {table}.{column}",
-                    "droppingColumn": "Dropping column: {table}.{column}",
-                    "addingUnique": "Adding unique on: {table}.{column}",
-                    "droppingUnique": "Dropping unique on: {table}.{column}"
-                },
-                "index": {
-                    "migrations": "Migrations",
-                    "complete": "Complete",
-                    "populatingDefaultSettings": "Populating default settings",
-                    "creatingDatabaseBackup": "Creating database backup",
-                    "databaseBackupDestination": "Database backup written to: {filename}",
-                    "databaseUpgradeRequired": "Database upgrade required from version {dbVersion} to {defaultVersion}",
-                    "upToDateAtVersion": "Up to date at version {dbVersion}",
-                    "databaseNotCompatible": {
-                        "error": "Your database is not compatible with this version of Ghost",
-                        "help": "You will need to create a new database"
-                    },
-                    "dbInitialisationRequired": "Database initialisation required for version {version}",
-                    "problemWithDatabase": "There is a problem with the database",
-                    "creatingTable": "Creating table: {table}",
-                    "creatingTables": "Creating tables...",
-                    "runningMigrations": "Running migrations"
-                }
+                "canBeChanged": "This can be changed or removed in your <strong>Code Injection</strong> settings area."
             },
             "utils": {
                 "index": {
@@ -578,6 +542,7 @@
             "validation": {
                 "index": {
                     "valueCannotBeBlank": "Value in [{tableName}.{columnKey}] cannot be blank.",
+                    "valueMustBeBoolean": "Value in [settings.key] must be one of true, false, 0 or 1.",
                     "valueExceedsMaxLength": "Value in [{tableName}.{columnKey}] exceeds maximum length of {maxlength} characters.",
                     "valueIsNotInteger": "Value in [{tableName}.{columnKey}] is not an integer.",
                     "themeCannotBeActivated": "{themeName} cannot be activated because it is not currently installed.",

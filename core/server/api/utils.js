@@ -283,18 +283,27 @@ utils = {
             }
         }
 
+        // will remove unwanted null values
+        _.each(object[docName], function (value, index) {
+            if (!_.isObject(object[docName][index])) {
+                return;
+            }
+
+            object[docName][index] = _.omit(object[docName][index], _.isNull);
+        });
+
         if (editId && object[docName][0].id && parseInt(editId, 10) !== parseInt(object[docName][0].id, 10)) {
             return errors.logAndRejectError(new errors.BadRequestError(i18n.t('errors.api.utils.invalidIdProvided')));
         }
 
         return Promise.resolve(object);
     },
-    checkFileExists: function (options, filename) {
-        return !!(options[filename] && options[filename].type && options[filename].path);
+    checkFileExists: function (fileData) {
+        return !!(fileData.mimetype && fileData.path);
     },
-    checkFileIsValid: function (file, types, extensions) {
-        var type = file.type,
-            ext = path.extname(file.name).toLowerCase();
+    checkFileIsValid: function (fileData, types, extensions) {
+        var type = fileData.mimetype,
+            ext = path.extname(fileData.name).toLowerCase();
 
         if (_.contains(types, type) && _.contains(extensions, ext)) {
             return true;
