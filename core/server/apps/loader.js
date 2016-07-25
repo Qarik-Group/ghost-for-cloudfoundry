@@ -10,8 +10,16 @@ var path = require('path'),
     i18n = require('../i18n'),
     loader;
 
+function isInternalApp(name) {
+    return _.contains(config.internalApps, name);
+}
+
 // Get the full path to an app by name
 function getAppAbsolutePath(name) {
+    if (isInternalApp(name)) {
+        return path.join(config.paths.internalAppPath, name);
+    }
+
     return path.join(config.paths.appPath, name);
 }
 
@@ -20,22 +28,29 @@ function getAppAbsolutePath(name) {
 function getAppRelativePath(name, relativeTo) {
     relativeTo = relativeTo || __dirname;
 
-    return path.relative(relativeTo, getAppAbsolutePath(name));
+    var relativePath = path.relative(relativeTo, getAppAbsolutePath(name));
+
+    if (relativePath.charAt(0) !== '.') {
+        relativePath = './' + relativePath;
+    }
+
+    return relativePath;
 }
 
 // Load apps through a pseudo sandbox
-function loadApp(appPath) {
-    var sandbox = new AppSandbox();
+function loadApp(appPath, isInternal) {
+    var sandbox = new AppSandbox({internal: isInternal});
 
     return sandbox.loadApp(appPath);
 }
 
 function getAppByName(name, permissions) {
     // Grab the app class to instantiate
-    var AppClass = loadApp(getAppRelativePath(name)),
+    var AppClass = loadApp(getAppRelativePath(name), isInternalApp(name)),
         appProxy = new AppProxy({
             name: name,
-            permissions: permissions
+            permissions: permissions,
+            internal: isInternalApp(name)
         }),
         app;
 
