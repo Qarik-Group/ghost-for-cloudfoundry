@@ -2,6 +2,7 @@
 
 set -e -x
 
+ghost_tag=$(cat ghost/tag)
 tar xfz ghost/source.tar.gz
 # creates TryGhost-Ghost-XXXX folder
 
@@ -15,8 +16,6 @@ cp -r TryGhost-Ghost-*/index.js ghost-updated/
 cp -r TryGhost-Ghost-*/package.json ghost-updated/
 
 cd ghost-updated
-ls -al .
-cat package.json
 
 cat package.json | jq -r "del(.dependencies.sqlite3)" > package-edited.json && mv package-edited.json package.json
 cat package.json | jq -r "del(.devDependencies.sqlite3)" > package-edited.json && mv package-edited.json package.json
@@ -28,3 +27,12 @@ cat package.json
 
 npm install --production --save
 npm shrinkwrap
+
+if [[ -z "$(git config --global user.name)" ]]
+then
+  git config --global user.name "Concourse Bot"
+  git config --global user.email "drnic+bot@starkandwayne.com"
+fi
+
+git add .
+git commit -a -m "updated to ghost ${ghost_tag}"
