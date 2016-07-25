@@ -13,7 +13,7 @@ jobs:
     trigger: true
   - put: docker-image
     params:
-      build: docs-docker-image/ci/ci_image
+      build: ghost-for-cf-docker-image/ci/ci_image
 
 resources:
 - name: ghost-for-cf-docker-image
