@@ -16,6 +16,7 @@ jobs:
     - get: ghost
       trigger: true
       params:
+        drafts: false
         include_source_tarball: true
   - task: update-ghost-version
     file: ghost-for-cf/ci/tasks/update-ghost-version.yml

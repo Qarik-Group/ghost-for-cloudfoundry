@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -x
+
 tar xfz ghost/source.tar.gz
 # creates TryGhost-Ghost-XXXX folder
 
