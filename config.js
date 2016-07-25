@@ -34,7 +34,12 @@ if (production) {
   var appEnv = cfEnv.getAppEnv();
   appUrl = appEnv.url;
   // because expressjs thinks that the X-Forward-Proto header is "http" instead of "https"
-  appUrl = appUrl.replace("https://", "http://")
+  if (appEnv.url !== null) {
+    appUrl = appUrl.replace("https://", "http://")
+  } else {
+    // app running with --no-route for debugging
+    appUrl = "http://example.com"
+  }
   console.log("App URL: " + appUrl);
   // console.log(appEnv);
   // console.log(appEnv.getServices());
