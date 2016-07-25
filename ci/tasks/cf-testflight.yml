@@ -6,7 +6,7 @@ inputs:
 - name: ghost-for-cf
 - name: ghost-updated
 
-parmas:
+params:
   cf_username:
   cf_password:
   cf_org:
