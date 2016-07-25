@@ -1,0 +1,33 @@
+---
+groups:
+- name: ci
+  jobs:
+  - build-task-image
+
+jobs:
+- name: build-task-image
+  public: true
+  serial: true
+  plan:
+  - get: ghost-for-cf-docker-image
+    trigger: true
+  - put: docker-image
+    params:
+      build: docs-docker-image/ci/ci_image
+
+resources:
+- name: ghost-for-cf-docker-image
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: {{pipeline-branch}}
+    private_key: {{github-key}}
+    paths: [ci/ci_image/*]
+
+- name: docker-image
+  type: docker-image
+  source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: dingotiles/ghost-for-cloudfoundry-pipeline
