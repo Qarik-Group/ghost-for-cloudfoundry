@@ -1,0 +1,20 @@
+---
+platform: linux
+image: docker:///dingotiles/ghost-for-cloudfoundry-pipeline
+
+inputs:
+- name: ghost-for-cf
+- name: ghost-updated
+
+parmas:
+  cf_username:
+  cf_password:
+  cf_org:
+  cf_space:
+  cf_pg_service:
+  cf_pg_service_plan:
+  cf_s3_service:
+  cf_s3_service_plan:
+
+run:
+  path: ghost-for-cf/ci/tasks/cf-testflight.sh

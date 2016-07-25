@@ -15,12 +15,20 @@ jobs:
     - get: ghost-for-cf
     - get: ghost
       trigger: true
-      params:
-        drafts: false
-        include_source_tarball: true
+      params: {include_source_tarball: true}
   - task: update-ghost-version
     file: ghost-for-cf/ci/tasks/update-ghost-version.yml
-
+  - task: testflight
+    file: ghost-for-cf/ci/tasks/cf-testflight.yml
+    params:
+      cf_username: {{cf-username}}
+      cf_password: {{cf-password}}
+      cf_org: {{cf-org}}
+      cf_space: {{cf-space}}
+      cf_pg_service: {{cf-pg-service}}
+      cf_pg_service_plan: {{cf-pg-service-plan}}
+      cf_s3_service: {{cf-s3-service}}
+      cf_s3_service_plan: {{cf-s3-service-plan}}
 - name: build-task-image
   public: true
   serial: true
