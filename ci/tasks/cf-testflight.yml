@@ -1,6 +1,8 @@
 ---
 platform: linux
-image: docker:///dingotiles/ghost-for-cloudfoundry-pipeline
+image_resource:
+  type: docker-image
+  source: {repository: "dingotiles/ghost-for-cloudfoundry-pipeline"}
 
 inputs:
 - name: ghost-for-cf
