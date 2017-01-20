@@ -1,0 +1,12 @@
+---
+platform: linux
+image: docker:///dingotiles/ghost-for-cloudfoundry-pipeline
+
+inputs:
+- name: ci
+
+params:
+  route: https://ghost-for-cloudfoundry-ci.cfapps.io
+
+run:
+  path: ci/ci/tasks/sanity-test.sh

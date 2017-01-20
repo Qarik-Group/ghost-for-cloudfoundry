@@ -2,7 +2,7 @@ var Promise         = require('bluebird'),
     _               = require('lodash'),
     validation      = require('../validation'),
     errors          = require('../../errors'),
-    uuid            = require('node-uuid'),
+    uuid            = require('uuid'),
     importer        = require('./data-importer'),
     tables          = require('../schema').tables,
     i18n            = require('../../i18n'),
@@ -71,7 +71,7 @@ handleErrors = function handleErrors(errorList) {
 checkDuplicateAttributes = function checkDuplicateAttributes(data, comparedValue, attribs) {
     // Check if any objects in data have the same attribute values
     return _.find(data, function (datum) {
-        return _.all(attribs, function (attrib) {
+        return _.every(attribs, function (attrib) {
             return datum[attrib] === comparedValue[attrib];
         });
     });

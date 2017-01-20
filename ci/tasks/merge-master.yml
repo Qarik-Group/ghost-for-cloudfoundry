@@ -1,0 +1,14 @@
+---
+platform: linux
+image: docker:///dingotiles/ghost-for-cloudfoundry-pipeline
+
+inputs:
+- name: ci
+- name: develop
+- name: master
+
+outputs:
+- name: merged
+
+run:
+  path: ci/ci/tasks/merge-master.sh

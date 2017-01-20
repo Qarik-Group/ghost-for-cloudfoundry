@@ -2,5 +2,5 @@ applications:
 - name: ghost
   instances: 1
   memory: 256M
-  disk_quota: 512M
+  disk_quota: 1G
   buildpack: nodejs_buildpack

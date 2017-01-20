@@ -1,0 +1,98 @@
+jobs:
+- name: upgrade
+  public: true
+  serial: true
+  plan:
+  - aggregate:
+    - {get: ghost, trigger: true}
+    - {get: develop, resource: ghost-for-cloudfoundry-develop}
+    - {get: ci, resource: ghost-for-cloudfoundry-ci}
+  - task: unpack-ghost-source
+    file: ci/ci/tasks/unpack-ghost-source.yml
+  - put: ghost-for-cloudfoundry-develop
+    params: {repository: develop_upgraded}
+
+  - put: upgrade-app
+    resource: deploy-app
+    params:
+      manifest: develop_upgraded/manifest.ci.yml
+      path: develop_upgraded
+  - task: upgrade-sanity-test
+    file: ci/ci/tasks/sanity-test.yml
+
+- name: merge-master
+  public: true
+  serial: true
+  plan:
+  - aggregate:
+    - {get: ghost, passed: [upgrade]}
+    - {get: develop, resource: ghost-for-cloudfoundry-develop, passed: [upgrade]}
+    - {get: master, resource: ghost-for-cloudfoundry-master}
+    - {get: ci, resource: ghost-for-cloudfoundry-ci}
+  - task: merge-to-develop
+    file: ci/ci/tasks/merge-master.yml
+  - put: master
+    resource: ghost-for-cloudfoundry-master
+    params: {repository: merged}
+
+
+- name: build-task-image
+  public: true
+  serial: true
+  plan:
+  - {get: ghost-for-cloudfoundry-ci-task-image, trigger: true}
+  - put: task-image
+    params:
+      build: ghost-for-cloudfoundry-ci-task-image/ci/ci_image
+
+resources:
+- name: ghost
+  type: github-release
+  source:
+    access_token: {{github-release-access-token}}
+    user: TryGhost
+    repository: Ghost
+
+- name: ghost-for-cloudfoundry-develop
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: develop
+    private_key: {{github-key}}
+- name: ghost-for-cloudfoundry-master
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: master
+    private_key: {{github-key}}
+- name: ghost-for-cloudfoundry-ci
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: develop
+    private_key: {{github-key}}
+- name: ghost-for-cloudfoundry-ci-task-image
+  type: git
+  source:
+    uri: git@github.com:dingotiles/ghost-for-cloudfoundry.git
+    branch: develop
+    private_key: {{github-key}}
+    paths: [ci/ci_image/*]
+
+- name: task-image
+  type: docker-image
+  source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: dingotiles/ghost-for-cloudfoundry-pipeline
+
+- name: deploy-app
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    skip_cert_check: false
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: {{cf-space}}

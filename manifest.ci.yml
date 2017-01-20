@@ -1,0 +1,12 @@
+applications:
+- name: ghost
+  instances: 1
+  memory: 256M
+  disk_quota: 1G
+  routes:
+  - route: ghost-for-cloudfoundry-ci.cfapps.io
+  buildpack: nodejs_buildpack
+  services:
+    - ghost-dingo-pg
+    - ghost-dingo-s3
+    - shared-mail
