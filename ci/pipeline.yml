@@ -26,7 +26,7 @@ jobs:
   plan:
   - aggregate:
     - {get: ghost, passed: [upgrade]}
-    - {get: develop, resource: ghost-for-cloudfoundry-develop, passed: [upgrade]}
+    - {get: develop, resource: ghost-for-cloudfoundry-develop}
     - {get: master, resource: ghost-for-cloudfoundry-master}
     - {get: ci, resource: ghost-for-cloudfoundry-ci}
   - task: merge-to-develop
