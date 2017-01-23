@@ -71,3 +71,23 @@ cf map-route ghost starkandwayne.com --hostname www --path blog
 ```
 
 Go to the `/ghost` end point to setup your blog, create your initial author/admin user, and invite other people to become authors on your blog.
+
+## Deploy using Dingo PostgreSQL
+
+We are the authors and maintainers of Dingo PostgreSQL - a batteries-included PostgreSQL as a service for any Cloud Foundry installation. It is available as a [Pivotal tile](https://network.pivotal.io/products/dingo-postgresql-for-pcf).
+
+To provision a highly-available, continuously archiving PostgreSQL database via Dingo PostgreSQL (after it has been installed by your platform ops team):
+
+```
+cf create-service dingo-postgresql cluster blog-pg
+```
+
+It may take a minute or two to start up the two-node cluster and finish its initial base backup. Poll for completion status using:
+
+```
+cf service blog-pg
+```
+
+### Why Dingo PostgreSQL?
+
+We use Dingo PostgreSQL at Stark & Wayne as the backend for our own blog and other internal applications. One day we were forced to use its disaster recovery system on our real live data. It worked. Our blog, and other databases, were recreated and recovered successfully.
