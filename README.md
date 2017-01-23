@@ -11,7 +11,7 @@ The modifications in this repository - versus the upstream https://github.com/Tr
 * `config.js` that looks for email credentials from `$VCAP_SERVICES` - used for sending invitation emails, password resets etc.
 * custom themes for https://www.starkandwayne.com/blog and https://www.dingotiles.com/blog, in addition to the default upstream Casper theme
 
-This repository also includes the Concourse pipeline `ci/pipeline.yml` for automatically attempting to upgrade to any new version of Ghost (https://github.com/TryGhost/Ghost/releases).
+This repository also includes the Concourse pipeline `ci/pipeline.yml` for automatically attempting to upgrade to any new version of Ghost (https://github.com/TryGhost/Ghost/releases). We are running this pipeline at https://ci.vsphere.starkandwayne.com/teams/main/pipelines/ghost-for-cloudfoundry
 
 ## Deploy to Cloud Foundry
 
