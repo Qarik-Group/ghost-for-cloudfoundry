@@ -9,4 +9,3 @@ applications:
   services:
     - ghost-dingo-pg
     - ghost-dingo-s3
-    - shared-mail
