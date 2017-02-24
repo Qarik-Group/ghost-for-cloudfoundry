@@ -1,4 +1,4 @@
-define('ghost-admin/tests/acceptance/authentication-test', ['exports', 'mocha', 'chai', 'jquery', 'ember-runloop', 'ghost-admin/tests/helpers/start-app', 'ghost-admin/tests/helpers/destroy-app', 'ghost-admin/tests/helpers/ember-simple-auth', 'ember-cli-mirage', 'ghost-admin/utils/window-proxy', 'ghost-admin/utils/ghost-paths'], function (exports, _mocha, _chai, _jquery, _emberRunloop, _ghostAdminTestsHelpersStartApp, _ghostAdminTestsHelpersDestroyApp, _ghostAdminTestsHelpersEmberSimpleAuth, _emberCliMirage, _ghostAdminUtilsWindowProxy, _ghostAdminUtilsGhostPaths) {
+define('ghost-admin/tests/acceptance/authentication-test', ['exports', 'mocha', 'chai', 'jquery', 'ember-runloop', 'ghost-admin/tests/helpers/start-app', 'ghost-admin/tests/helpers/destroy-app', 'ghost-admin/tests/helpers/ember-simple-auth', 'ember-cli-mirage', 'ghost-admin/utils/window-proxy', 'ghost-admin/utils/ghost-paths', 'ghost-admin/authenticators/oauth2'], function (exports, _mocha, _chai, _jquery, _emberRunloop, _ghostAdminTestsHelpersStartApp, _ghostAdminTestsHelpersDestroyApp, _ghostAdminTestsHelpersEmberSimpleAuth, _emberCliMirage, _ghostAdminUtilsWindowProxy, _ghostAdminUtilsGhostPaths, _ghostAdminAuthenticatorsOauth2) {
     var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
     var Ghost = (0, _ghostAdminUtilsGhostPaths['default'])();
@@ -13,6 +13,40 @@ define('ghost-admin/tests/acceptance/authentication-test', ['exports', 'mocha', 
 
         (0, _mocha.afterEach)(function () {
             (0, _ghostAdminTestsHelpersDestroyApp['default'])(application);
+        });
+
+        (0, _mocha.describe)('token handling', function () {
+            (0, _mocha.beforeEach)(function () {
+                // replace the default test authenticator with our own authenticator
+                application.register('authenticator:test', _ghostAdminAuthenticatorsOauth2['default']);
+
+                var role = server.create('role', { name: 'Administrator' });
+                server.create('user', { roles: [role], slug: 'test-user' });
+            });
+
+            (0, _mocha.it)('refreshes app tokens on boot', function () {
+                /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+                (0, _ghostAdminTestsHelpersEmberSimpleAuth.authenticateSession)(application, {
+                    access_token: 'testAccessToken',
+                    refresh_token: 'refreshAccessToken'
+                });
+
+                visit('/');
+
+                andThen(function () {
+                    var requests = server.pretender.handledRequests;
+                    var refreshRequest = requests.findBy('url', '/ghost/api/v0.1/authentication/token');
+
+                    (0, _chai.expect)(refreshRequest).to.exist;
+                    (0, _chai.expect)(refreshRequest.method, 'method').to.equal('POST');
+
+                    var requestBody = _jquery['default'].deparam(refreshRequest.requestBody);
+                    (0, _chai.expect)(requestBody.grant_type, 'grant_type').to.equal('password');
+                    (0, _chai.expect)(requestBody.username.access_token, 'access_token').to.equal('testAccessToken');
+                    (0, _chai.expect)(requestBody.username.refresh_token, 'refresh_token').to.equal('refreshAccessToken');
+                });
+                /* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
+            });
         });
 
         (0, _mocha.describe)('general page', function () {
@@ -918,6 +952,22 @@ define('ghost-admin/tests/acceptance/settings/apps-test', ['exports', 'mocha', '
                     (0, _chai.expect)(currentURL(), 'currentURL').to.equal('/settings/apps/slack');
                 });
             });
+
+            (0, _mocha.it)('it redirects to AMP when clicking on the grid', function () {
+                visit('/settings/apps');
+
+                andThen(function () {
+                    // has correct url
+                    (0, _chai.expect)(currentURL(), 'currentURL').to.equal('/settings/apps');
+                });
+
+                click('#amp-link');
+
+                andThen(function () {
+                    // has correct url
+                    (0, _chai.expect)(currentURL(), 'currentURL').to.equal('/settings/apps/amp');
+                });
+            });
         });
     });
 });
@@ -1167,18 +1217,6 @@ define('ghost-admin/tests/acceptance/settings/general-test', ['exports', 'mocha'
 
                 andThen(function () {
                     (0, _chai.expect)(find('#settings-general .error .response').text().trim(), 'inline validation response').to.equal('');
-                });
-
-                // handles amp checkbox correctly
-
-                andThen(function () {
-                    (0, _chai.expect)(find('input#amp').prop('checked'), 'AMP is enabled').to.be['true'];
-                });
-
-                click('input#amp');
-
-                andThen(function () {
-                    (0, _chai.expect)(find('input#amp').prop('checked'), 'AMP is disabled').to.be['false'];
                 });
 
                 // validates a facebook url correctly
