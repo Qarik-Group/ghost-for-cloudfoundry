@@ -1,6 +1,6 @@
 {
   "name": "ghost",
-  "version": "0.11.6",
+  "version": "0.11.7",
   "dependencies": {
     "abbrev": {
       "version": "1.1.0",
@@ -3203,9 +3203,9 @@
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
     },
     "uglify-js": {
-      "version": "2.8.3",
+      "version": "2.8.4",
       "from": "uglify-js@>=2.6.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.8.3.tgz",
+      "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.8.4.tgz",
       "optional": true,
       "dependencies": {
         "async": {
