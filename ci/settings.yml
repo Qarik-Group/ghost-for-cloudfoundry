@@ -1,0 +1,23 @@
+---
+meta:
+  name: ghost-for-cloudfoundry
+  target: sw
+  url:     https://ci.starkandwayne.com
+
+  github:
+    owner: dingotiles
+    repo:  ghost-for-cloudfoundry
+    private_key:  (( vault "secret/pipelines/ghost-for-cloudfoundry/github:private" ))
+    ghost_access_token: (( vault "secret/pipelines/ghost-for-cloudfoundry/ghost:access_token" ))
+
+  dockerhub:
+    email:  (( vault "secret/pipelines/ghost-for-cloudfoundry/dockerhub:email" ))
+    username: (( vault "secret/pipelines/ghost-for-cloudfoundry/dockerhub:username" ))
+    password: (( vault "secret/pipelines/ghost-for-cloudfoundry/dockerhub:password" ))
+
+  cf:
+    api:          https://api.run.pivotal.io
+    username:     (( vault "secret/pipelines/ghost-for-cloudfoundry/cf:username" ))
+    password:     (( vault "secret/pipelines/ghost-for-cloudfoundry/cf:password" ))
+    organization: dingotiles
+    space:        ci-ghost-for-cloudfoundry

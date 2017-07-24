@@ -22,7 +22,8 @@ rm -rf core npm-shrinkwrap.json
 
 cp $unpack_dir/index.js .
 cp $unpack_dir/Gruntfile.js .
-cp $unpack_dir/config.example.js .
+cp $unpack_dir/config.example.js . #- config.js is not used anymore since 1.0,0 https://github.com/TryGhost/Ghost/issues/6982 https://dev.ghost.org/nconf/
+cp $unpack_dir/MigratorConfig.js .
 cp $unpack_dir/package.json .
 # cp $unpack_dir/npm-shrinkwrap.json . - skipped since we add npm packages below
 cp $unpack_dir/PRIVACY.md GHOST_PRIVACY.md
