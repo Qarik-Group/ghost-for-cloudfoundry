@@ -652,6 +652,175 @@ define('ghost-admin/tests/acceptance/editor-test', ['exports', 'mocha', 'chai', 
     });
 });
 /* jshint expr:true */
+define('ghost-admin/tests/acceptance/error-handling-test', ['exports', 'mocha', 'chai', 'ghost-admin/tests/helpers/start-app', 'ghost-admin/tests/helpers/destroy-app', 'ghost-admin/tests/helpers/ember-simple-auth', 'ember-cli-mirage'], function (exports, _mocha, _chai, _ghostAdminTestsHelpersStartApp, _ghostAdminTestsHelpersDestroyApp, _ghostAdminTestsHelpersEmberSimpleAuth, _emberCliMirage) {
+
+    var versionMismatchResponse = function versionMismatchResponse() {
+        return new _emberCliMirage['default'].Response(400, {}, {
+            errors: [{
+                errorType: 'VersionMismatchError',
+                statusCode: 400
+            }]
+        });
+    };
+
+    var htmlErrorResponse = function htmlErrorResponse() {
+        return new _emberCliMirage['default'].Response(504, { 'Content-Type': 'text/html' }, '<!DOCTYPE html><head><title>Server Error</title></head><body>504 Gateway Timeout</body></html>');
+    };
+
+    (0, _mocha.describe)('Acceptance: Error Handling', function () {
+        var application = undefined;
+
+        (0, _mocha.beforeEach)(function () {
+            application = (0, _ghostAdminTestsHelpersStartApp['default'])();
+        });
+
+        (0, _mocha.afterEach)(function () {
+            (0, _ghostAdminTestsHelpersDestroyApp['default'])(application);
+        });
+
+        (0, _mocha.describe)('VersionMismatch errors', function () {
+            (0, _mocha.describe)('logged in', function () {
+                (0, _mocha.beforeEach)(function () {
+                    var role = server.create('role', { name: 'Administrator' });
+                    var user = server.create('user', { roles: [role] });
+
+                    server.loadFixtures();
+
+                    return (0, _ghostAdminTestsHelpersEmberSimpleAuth.authenticateSession)(application);
+                });
+
+                (0, _mocha.it)('displays an alert and disables navigation when saving', function () {
+                    server.createList('post', 3);
+
+                    // mock the post save endpoint to return version mismatch
+                    server.put('/posts/:id', versionMismatchResponse);
+
+                    visit('/');
+                    click('.posts-list li:nth-of-type(2) a'); // select second post
+                    click('.post-edit'); // preview edit button
+                    click('.js-publish-button'); // "Save post"
+
+                    andThen(function () {
+                        // has the refresh to update alert
+                        (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                        (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
+                    });
+
+                    // try navigating back to the content list
+                    click('.gh-nav-main-content');
+
+                    andThen(function () {
+                        (0, _chai.expect)(currentPath()).to.equal('editor.edit');
+                    });
+                });
+
+                (0, _mocha.it)('displays alert and aborts the transition when navigating', function () {
+                    // mock the tags endpoint to return version mismatch
+                    server.get('/tags/', versionMismatchResponse);
+
+                    visit('/');
+                    click('.gh-nav-settings-tags');
+
+                    andThen(function () {
+                        // navigation is blocked
+                        (0, _chai.expect)(currentPath()).to.equal('posts.index');
+
+                        // has the refresh to update alert
+                        (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                        (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
+                    });
+                });
+
+                (0, _mocha.it)('displays alert and aborts the transition when an ember-ajax error is thrown whilst navigating', function () {
+                    server.get('/configuration/timezones/', versionMismatchResponse);
+
+                    visit('/settings/tags');
+                    click('.gh-nav-settings-general');
+
+                    andThen(function () {
+                        // navigation is blocked
+                        (0, _chai.expect)(currentPath()).to.equal('settings.tags.index');
+
+                        // has the refresh to update alert
+                        (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                        (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
+                    });
+                });
+
+                (0, _mocha.it)('can be triggered when passed in to a component', function () {
+                    server.post('/subscribers/csv/', versionMismatchResponse);
+
+                    visit('/subscribers');
+                    click('.btn:contains("Import CSV")');
+                    fileUpload('.fullscreen-modal input[type="file"]', ['test'], { name: 'test.csv' });
+
+                    andThen(function () {
+                        // alert is shown
+                        (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                        (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
+                    });
+                });
+            });
+
+            (0, _mocha.describe)('logged out', function () {
+                (0, _mocha.it)('displays alert', function () {
+                    server.post('/authentication/token', versionMismatchResponse);
+
+                    visit('/signin');
+                    fillIn('[name="identification"]', 'test@example.com');
+                    fillIn('[name="password"]', 'password');
+                    click('.btn-blue');
+
+                    andThen(function () {
+                        // has the refresh to update alert
+                        (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                        (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
+                    });
+                });
+            });
+        });
+
+        (0, _mocha.describe)('CloudFlare errors', function () {
+            (0, _mocha.beforeEach)(function () {
+                var role = server.create('role', { name: 'Administrator' });
+                var user = server.create('user', { roles: [role] });
+
+                server.loadFixtures();
+
+                (0, _ghostAdminTestsHelpersEmberSimpleAuth.authenticateSession)(application);
+            });
+
+            (0, _mocha.it)('handles Ember Data HTML response', function () {
+                server.put('/posts/1/', htmlErrorResponse);
+                server.create('post');
+
+                visit('/editor/1');
+                click('.view-header .btn.btn-sm.js-publish-button');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                    (0, _chai.expect)(find('.gh-alert').text()).to.not.match(/html>/);
+                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/There was a problem on the server/);
+                });
+            });
+
+            (0, _mocha.it)('handles ember-ajax HTML response', function () {
+                server.del('/themes/foo/', htmlErrorResponse);
+
+                visit('/settings/general');
+                click('.theme-list-item:contains("Foo") a:contains("Delete")');
+                click('.fullscreen-modal button:contains("Delete")');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
+                    (0, _chai.expect)(find('.gh-alert').text()).to.not.match(/html>/);
+                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/There was a problem on the server/);
+                });
+            });
+        });
+    });
+});
+/* jshint expr:true */
 define('ghost-admin/tests/acceptance/ghost-desktop-test', ['exports', 'mocha', 'chai', 'ghost-admin/tests/helpers/start-app', 'ghost-admin/tests/helpers/destroy-app', 'ghost-admin/tests/helpers/ember-simple-auth'], function (exports, _mocha, _chai, _ghostAdminTestsHelpersStartApp, _ghostAdminTestsHelpersDestroyApp, _ghostAdminTestsHelpersEmberSimpleAuth) {
 
     var originalAgent = window.navigator.userAgent;
@@ -1285,7 +1454,8 @@ define('ghost-admin/tests/acceptance/settings/general-test', ['exports', 'mocha'
                 triggerEvent('#settings-general input[name="general[facebook]"]', 'blur');
 
                 andThen(function () {
-                    (0, _chai.expect)(find('#settings-general .error .response').text().trim(), 'inline validation response').to.equal('Your Page name is not a valid Facebook Page name');
+                    (0, _chai.expect)(find('#settings-general input[name="general[facebook]"]').val()).to.be.equal('https://www.facebook.com/ab99');
+                    (0, _chai.expect)(find('#settings-general .error .response').text().trim(), 'inline validation response').to.equal('');
                 });
 
                 fillIn('#settings-general input[name="general[facebook]"]', 'page/ab99');
@@ -2207,6 +2377,59 @@ define('ghost-admin/tests/acceptance/settings/tags-test', ['exports', 'mocha', '
 
                     // shows requested tag in settings pane
                     (0, _chai.expect)(find('.tag-settings-pane input[name="name"]').val(), 'loads correct tag into form').to.equal('Tag 1');
+                });
+            });
+
+            (0, _mocha.it)('rolls back attrs and clears errors when navigating', function () {
+                server.createList('tag', 2);
+
+                // navigate to first tag
+                // navigate to meta settings
+                // fill in title with too many chars
+                // check for error
+                // navigate back to main tag settings
+                // navigate to meta settings
+                // check error isn't there
+                // navigate to main tag settings
+                // fill in too many chars in the description
+                // check for error
+                // navigate to second tag
+                // navigate back to first tag
+                // check error isn't there
+
+                visit('/settings/tags/tag-0');
+                click('.meta-data-button');
+                fillIn('[name="metaTitle"]', new Array(152).join('x'));
+                triggerEvent('[name="metaTitle"]', 'blur');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.tag-meta-settings-pane .form-group:first-of-type .response').text().trim(), 'tag meta title error').to.match(/150 characters/i);
+                });
+
+                click('.tag-meta-settings-pane .back');
+                click('.meta-data-button');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.tag-meta-settings-pane .form-group:first-of-type .response').text().trim(), 'tag meta title error after navigation').to.equal('');
+
+                    (0, _chai.expect)(find('[name="metaTitle"]').val(), 'tag meta settings title value after navigation').to.equal('Meta Title for tag 0');
+                });
+
+                click('.tag-meta-settings-pane .back');
+                fillIn('[name="description"]', new Array(202).join('x'));
+                triggerEvent('[name="description"]', 'blur');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.tag-settings-pane .form-group:last-of-type .response').text().trim(), 'tag description error').to.match(/200 characters/i);
+                });
+
+                click('.tag-edit-button:last');
+                click('.tag-edit-button:first');
+
+                andThen(function () {
+                    (0, _chai.expect)(find('.tag-settings-pane .form-group:last-of-type .response').text().trim(), 'tag description error after navigation').to.equal('');
+
+                    (0, _chai.expect)(find('[name="description"]').val(), 'tag description value after navigation').to.equal('Description for tag 0.');
                 });
             });
 
@@ -3506,7 +3729,8 @@ define('ghost-admin/tests/acceptance/team-test', ['exports', 'mocha', 'chai', 'g
                     triggerEvent('#user-facebook', 'blur');
 
                     andThen(function () {
-                        (0, _chai.expect)(find('#user-facebook').closest('.form-group').hasClass('error'), 'facebook input should be in error state').to.be['true'];
+                        (0, _chai.expect)(find('#user-facebook').val()).to.be.equal('https://www.facebook.com/test');
+                        (0, _chai.expect)(find('#user-facebook').closest('.form-group').hasClass('error'), 'facebook input should be in error state').to.be['false'];
                     });
 
                     fillIn('#user-facebook', '');
@@ -3694,130 +3918,6 @@ define('ghost-admin/tests/acceptance/team-test', ['exports', 'mocha', 'chai', 'g
                     (0, _ghostAdminTestsHelpersAdapterError.errorReset)();
                     (0, _chai.expect)(currentPath()).to.equal('error404');
                     (0, _chai.expect)(currentURL()).to.equal('/team/unknown');
-                });
-            });
-        });
-    });
-});
-/* jshint expr:true */
-define('ghost-admin/tests/acceptance/version-mismatch-test', ['exports', 'mocha', 'chai', 'ghost-admin/tests/helpers/start-app', 'ghost-admin/tests/helpers/destroy-app', 'ghost-admin/tests/helpers/ember-simple-auth', 'ember-cli-mirage'], function (exports, _mocha, _chai, _ghostAdminTestsHelpersStartApp, _ghostAdminTestsHelpersDestroyApp, _ghostAdminTestsHelpersEmberSimpleAuth, _emberCliMirage) {
-
-    var versionMismatchResponse = function versionMismatchResponse() {
-        return new _emberCliMirage['default'].Response(400, {}, {
-            errors: [{
-                errorType: 'VersionMismatchError',
-                statusCode: 400
-            }]
-        });
-    };
-
-    (0, _mocha.describe)('Acceptance: Version Mismatch', function () {
-        var application = undefined;
-
-        (0, _mocha.beforeEach)(function () {
-            application = (0, _ghostAdminTestsHelpersStartApp['default'])();
-        });
-
-        (0, _mocha.afterEach)(function () {
-            (0, _ghostAdminTestsHelpersDestroyApp['default'])(application);
-        });
-
-        (0, _mocha.describe)('logged in', function () {
-            (0, _mocha.beforeEach)(function () {
-                var role = server.create('role', { name: 'Administrator' });
-                var user = server.create('user', { roles: [role] });
-
-                server.loadFixtures();
-
-                return (0, _ghostAdminTestsHelpersEmberSimpleAuth.authenticateSession)(application);
-            });
-
-            (0, _mocha.it)('displays an alert and disables navigation when saving', function () {
-                server.createList('post', 3);
-
-                // mock the post save endpoint to return version mismatch
-                server.put('/posts/:id', versionMismatchResponse);
-
-                visit('/');
-                click('.posts-list li:nth-of-type(2) a'); // select second post
-                click('.post-edit'); // preview edit button
-                click('.js-publish-button'); // "Save post"
-
-                andThen(function () {
-                    // has the refresh to update alert
-                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
-                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
-                });
-
-                // try navigating back to the content list
-                click('.gh-nav-main-content');
-
-                andThen(function () {
-                    (0, _chai.expect)(currentPath()).to.equal('editor.edit');
-                });
-            });
-
-            (0, _mocha.it)('displays alert and aborts the transition when navigating', function () {
-                // mock the tags endpoint to return version mismatch
-                server.get('/tags/', versionMismatchResponse);
-
-                visit('/');
-                click('.gh-nav-settings-tags');
-
-                andThen(function () {
-                    // navigation is blocked
-                    (0, _chai.expect)(currentPath()).to.equal('posts.index');
-
-                    // has the refresh to update alert
-                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
-                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
-                });
-            });
-
-            (0, _mocha.it)('displays alert and aborts the transition when an ember-ajax error is thrown whilst navigating', function () {
-                server.get('/configuration/timezones/', versionMismatchResponse);
-
-                visit('/settings/tags');
-                click('.gh-nav-settings-general');
-
-                andThen(function () {
-                    // navigation is blocked
-                    (0, _chai.expect)(currentPath()).to.equal('settings.tags.index');
-
-                    // has the refresh to update alert
-                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
-                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
-                });
-            });
-
-            (0, _mocha.it)('can be triggered when passed in to a component', function () {
-                server.post('/subscribers/csv/', versionMismatchResponse);
-
-                visit('/subscribers');
-                click('.btn:contains("Import CSV")');
-                fileUpload('.fullscreen-modal input[type="file"]', ['test'], { name: 'test.csv' });
-
-                andThen(function () {
-                    // alert is shown
-                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
-                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
-                });
-            });
-        });
-
-        (0, _mocha.describe)('logged out', function () {
-            (0, _mocha.it)('displays alert', function () {
-                server.post('/authentication/token', versionMismatchResponse);
-
-                visit('/signin');
-                fillIn('[name="identification"]', 'test@example.com');
-                fillIn('[name="password"]', 'password');
-                click('.btn-blue');
-
-                andThen(function () {
-                    // has the refresh to update alert
-                    (0, _chai.expect)(find('.gh-alert').length).to.equal(1);
-                    (0, _chai.expect)(find('.gh-alert').text()).to.match(/refresh/);
                 });
             });
         });
@@ -14628,7 +14728,7 @@ define('ghost-admin/tests/unit/components/gh-upgrade-notification-test', ['expor
         needs: ['helper:gh-format-html']
     }, function () {
         beforeEach(function () {
-            var upgradeMessage = { 'content': 'Ghost 10.02.91 is available! Hot Damn. <a href="http://support.ghost.org/how-to-upgrade/" target="_blank">Click here</a> to upgrade.' };
+            var upgradeMessage = { 'content': 'Ghost 10.02.91 is available! Hot Damn. <a href="https://docs.ghost.org/v0.11.9/docs/how-to-upgrade-ghost" target="_blank">Click here</a> to upgrade.' };
             this.subject().set('upgradeNotification', upgradeMessage);
         });
 
@@ -14644,7 +14744,7 @@ define('ghost-admin/tests/unit/components/gh-upgrade-notification-test', ['expor
             (0, _chai.expect)(this.$().prop('tagName')).to.equal('SECTION');
             (0, _chai.expect)(this.$().hasClass('gh-upgrade-notification')).to.be['true'];
             // caja tools sanitize target='_blank' attribute
-            (0, _chai.expect)(this.$().html()).to.contain('Hot Damn. <a href="http://support.ghost.org/how-to-upgrade/">Click here</a>');
+            (0, _chai.expect)(this.$().html()).to.contain('Hot Damn. <a href="https://docs.ghost.org/v0.11.9/docs/how-to-upgrade-ghost">Click here</a>');
         });
     });
 });
