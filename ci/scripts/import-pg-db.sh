@@ -29,8 +29,8 @@ if [[ "${elephantsql}" != "X" ]]; then
   echo "Found PostgreSQL DB via ElephantSQL"
   db_uri=$(echo "$elephantsql" | jq -r ".[0].credentials.uri")
   echo $db_uri
-  pg_dump -O -v --clean --inserts --if-exists --no-privileges --exclude-schema public ${db_uri} | \
-    grep -v -E '^(CREATE\ EXTENSION|DROP\ EXTENSION|COMMENT\ ON|SET idle_in_transaction_session_timeout)' > ${DUMP_FILE}
+  echo "Importing as single transaction..."
+  psql -f <(cat ${DUMP_FILE} | grep -v -E '^(CREATE\ EXTENSION|DROP\ EXTENSION|COMMENT\ ON|SET idle_in_transaction_session_timeout)') -1 ${db_uri}
 else
   echo "Could not find an ElephantSQL database to which to upload"
   exit 1
