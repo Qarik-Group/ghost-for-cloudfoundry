@@ -99,7 +99,7 @@ resources:
       private_key: (( grab meta.github.private_key ))
 
   - name: cf-push-staging
-    type:  cf-resource-with-tail
+    type:  cf
     source:
       api:             (( grab meta.cf.api ))
       skip_cert_check: (( grab meta.cf.skip_cert_check ))
@@ -109,7 +109,7 @@ resources:
       space:           (( grab meta.cf.spaces.staging ))
 
   - name: cf-push-production
-    type:  cf-resource-with-tail
+    type:  cf
     source:
       api:             (( grab meta.cf.api ))
       skip_cert_check: (( grab meta.cf.skip_cert_check ))
@@ -117,11 +117,3 @@ resources:
       password:        (( grab meta.cf.password ))
       organization:    (( grab meta.cf.organization ))
       space:           (( grab meta.cf.spaces.production ))
-
-resource_types:
-- name: cf-resource-with-tail
-  type: docker-image
-  source:
-    repository: govau/cf-resource
-    tag: master
-
