@@ -30,7 +30,7 @@ if [[ "${elephantsql}" != "X" ]]; then
   db_uri=$(echo "$elephantsql" | jq -r ".[0].credentials.uri")
   echo $db_uri
   echo "Importing as single transaction..."
-  psql -f <(cat ${DUMP_FILE} | grep -v -E '^(CREATE\ EXTENSION|DROP\ EXTENSION|COMMENT\ ON|SET idle_in_transaction_session_timeout)') -1 ${db_uri}
+  psql -f <(cat ${DUMP_FILE} | grep -v -E '^(CREATE\ EXTENSION|DROP\ EXTENSION|COMMENT\ ON|CREATE\ SCHEMA|DROP\ SCHEMA|SET\ idle_in_transaction_session_timeout)') -1 ${db_uri}
 else
   echo "Could not find an ElephantSQL database to which to upload"
   exit 1
