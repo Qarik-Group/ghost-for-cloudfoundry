@@ -4,9 +4,11 @@ applications:
   memory: 256M
   disk_quota: 1G
   buildpack: nodejs_buildpack
+  health-check-type: http
   routes:
   - route: blog-staging.starkandwayne.com
   services:
   - ghost-email
   - ghost-s3
   - ghost-pg
+  - ghost-mysql
