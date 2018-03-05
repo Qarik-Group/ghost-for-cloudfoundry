@@ -4,3 +4,7 @@ applications:
   memory: 256M
   disk_quota: 1G
   buildpack: nodejs_buildpack
+  random-route: true
+  services:
+  - ghost-email
+  - ghost-pg
