@@ -8,4 +8,5 @@ applications:
   - route: blog-staging.starkandwayne.com
   services:
   - ghost-email
+  - ghost-s3
   - ghost-pg
