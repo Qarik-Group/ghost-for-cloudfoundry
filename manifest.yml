@@ -9,5 +9,4 @@ applications:
   services:
   - ghost-email
   - ghost-s3
-  - ghost-pg
   - ghost-mysql
