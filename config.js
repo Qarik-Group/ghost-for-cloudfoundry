@@ -38,30 +38,55 @@ if (production) {
   console.log("App URL: " + appUrl);
   // console.log(appEnv);
   // console.log(appEnv.getServices());
-  var sqlCredentials = appEnv.getServiceCreds(/pg/);
+  var mysqlCredentials = appEnv.getServiceCreds(/mysql/);
+  var pgCredentials = appEnv.getServiceCreds(/pg/);
   var mailCredentials = appEnv.getServiceCreds(/mail/);
   var s3Credentials = appEnv.getServiceCreds(/s3/);
 
-  console.log(sqlCredentials);
+  console.log(mysqlCredentials);
+  console.log(pgCredentials);
   console.log(mailCredentials);
   console.log(s3Credentials);
 
-  config['production'] = {
-    url: appUrl,
-    database: {
-      client: 'pg',
-      connection: sqlCredentials.uri,
-      pool: {
-        min: 2,
-        max: 4
+  if (mysqlCredentials !== null) {
+    config['production'] = {
+      url: appUrl,
+      database: {
+        client: 'mysql',
+        connection: mysqlCredentials.uri,
+        pool: {
+          min: 2,
+          max: 4
+        },
+        debug: false
       },
-      debug: false
-    },
-    server: {
-      host: appEnv.bind,
-      port: appEnv.port
-    },
-    logging: false
+      server: {
+        host: appEnv.bind,
+        port: appEnv.port
+      },
+      logging: false
+    }
+  } else if (pgCredentials !== null) {
+    config['production'] = {
+      url: appUrl,
+      database: {
+        client: 'pg',
+        connection: pgCredentials.uri,
+        pool: {
+          min: 2,
+          max: 4
+        },
+        debug: false
+      },
+      server: {
+        host: appEnv.bind,
+        port: appEnv.port
+      },
+      logging: false
+    }
+  } else {
+    console.log("ERROR: cannot find PG nor MySQL service instance")
+    exit(1);
   }
 
   if (s3Credentials !== null) {
