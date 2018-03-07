@@ -1,6 +1,6 @@
 {
   "name": "ghostium-starkandwayne",
-  "version": "2.1.1.1",
+  "version": "2.2.0",
   "description": "A Ghost theme focused on content based on Medium design/ux",
   "url": "http://ghostium.oswaldoacauan.com/",
   "copyright": "2013",
@@ -9,6 +9,9 @@
     "name": "Oswaldo Acauan",
     "email": "hello@oswaldoacauan.com",
     "url": "http://oswaldoacauan.com"
+  },
+  "config": {
+    "posts_per_page": 6
   },
   "repository": {
     "type": "git",
