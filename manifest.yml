@@ -4,9 +4,10 @@ applications:
   memory: 384M
   disk_quota: 1G
   buildpack: nodejs_buildpack
-  routes:
-  - route: blog-staging.starkandwayne.com
+  health-check-type: port
   services:
   - ghost-email
   - ghost-s3
   - ghost-mysql
+  routes:
+  - route: blog-staging-bypass-cloudflare-flexible.starkandwayne.com

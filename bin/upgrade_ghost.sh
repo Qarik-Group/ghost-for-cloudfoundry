@@ -32,6 +32,8 @@ popd
 
 cp current/package.json .
 cp current/yarn.lock .
+rm -rf node_modules
+cp -r current/node_modules .
 
 mkdir -p content/adapters/storage
 rm -rf content/adapters/storage/*s3*

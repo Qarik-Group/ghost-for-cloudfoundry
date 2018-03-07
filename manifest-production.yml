@@ -4,10 +4,11 @@ applications:
   memory: 384M
   disk_quota: 1G
   buildpack: nodejs_buildpack
-  routes:
-  - route: www.starkandwayne.com/blog
-  - route: starkandwayne.com/blog
+  health-check-type: port
   services:
   - ghost-email
   - ghost-s3
   - ghost-mysql
+  routes:
+  - route: www.starkandwayne.com/blog
+  - route: starkandwayne.com/blog
