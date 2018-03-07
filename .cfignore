@@ -1,2 +1,4 @@
 node_modules
-
+/current
+/content/themes/casper
+config.*.json
