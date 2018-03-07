@@ -10,4 +10,6 @@ applications:
   - ghost-s3
   - ghost-mysql
   routes:
+  - route: www.starkandwayne.com/blog-staging
   - route: blog-staging-bypass-cloudflare-flexible.starkandwayne.com
+  - route: blog-staging.starkandwayne.com
