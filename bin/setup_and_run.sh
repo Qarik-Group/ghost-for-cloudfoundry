@@ -31,7 +31,9 @@ aws_secret_access_key=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].cre
 aws_bucket=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].credentials.bucket")
 aws_region=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].credentials.region // \"us-east-1\"")
 
-appurl=$(echo "$VCAP_APPLICATION" | jq -r ".application_uris[0]")
+# Pick the shortest route, which will be the starkandwayne.com/path version, rather than
+# www.starkandwyane.com/path. The shorter will be more flexible with cross-origin.
+appurl=$(echo $VCAP_APPLICATION| jq -r ".uris[]" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | head -n1)
 
 cat > config.production.json <<-JSON
 {
