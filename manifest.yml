@@ -10,5 +10,4 @@ applications:
   - ghost-s3
   - ghost-mysql
   routes:
-  - route: www.starkandwayne.com/blog-staging
-  - route: starkandwayne.com/blog-staging
+  - route: staging.starkandwayne.com/blog
