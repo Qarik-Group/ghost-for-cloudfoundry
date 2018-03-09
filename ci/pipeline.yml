@@ -34,10 +34,33 @@ meta:
 groups:
   - name: (( grab meta.pipeline ))
     jobs:
+      - upgrade-ghost
       - deploy-staging
       - deploy-production
 
 jobs:
+  - name: upgrade-ghost
+    public: false
+    serial: true
+    plan:
+      - get: app
+      - get: ghost
+        trigger: true
+      - task: upgrade-ghost
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag: (( grab meta.image.tag ))
+          inputs:
+          - name: app
+          - name: ghost
+          outputs: [{name: app-with-upgrade}]
+          run:
+            path: app/ci/scripts/upgrade-ghost.sh
+
   - name: deploy-staging
     public: false
     serial: true
@@ -117,3 +140,10 @@ resources:
       password:        (( grab meta.cf.password ))
       organization:    (( grab meta.cf.organization ))
       space:           (( grab meta.cf.spaces.production ))
+
+  - name: ghost
+    type: github-release
+    source:
+      access_token: (( grab meta.github.access_token ))
+      user: TryGhost
+      repository: Ghost
