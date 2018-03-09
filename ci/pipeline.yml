@@ -7,8 +7,8 @@ meta:
   url:      (( param "Please specify the full url of the target Concourse CI" ))
 
   image:
-    name: starkandwayne/concourse
-    tag: latest
+    name: starkandwayne/concourse-nodejs
+    tag: 8
 
   github:
     uri:          (( concat "git@github.com:" meta.github.owner "/" meta.github.repo ))
@@ -60,6 +60,10 @@ jobs:
           outputs: [{name: app-with-upgrade}]
           run:
             path: app/ci/scripts/upgrade-ghost.sh
+      - put: app
+        params:
+          repository: app-with-upgrade
+          rebase: true
 
   - name: deploy-staging
     public: false

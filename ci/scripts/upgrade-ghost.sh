@@ -21,3 +21,8 @@ then
   git config --global user.name "Concourse Bot"
   git config --global user.email "drnic+bot@starkandwayne.com"
 fi
+(
+  git add -A
+  git status
+  git commit -m "Update Ghost v${GHOST_VERSION}"
+)
