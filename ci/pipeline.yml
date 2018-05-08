@@ -31,6 +31,16 @@ meta:
       staging:        manifest.yml
       production:     manifest-production.yml
 
+  slack:
+    webhook:       (( param "Please specify your Slack Incoming Webhook Integration URL" ))
+    success_moji:  ":airplane_departure:"
+    fail_moji:     ":airplane_arriving:"
+    upset_moji:    ":sad_panda:"
+    channel:       "#snw-pws-apps"
+    username:      starkandwayne-ci
+    icon:          https://www.starkandwayne.com/assets/images/shield-blue-50x50.png
+    fail_url: '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Failure! " meta.slack.upset_moji ">" ))'
+
 groups:
   - name: (( grab meta.pipeline ))
     jobs:
@@ -90,6 +100,14 @@ jobs:
           path: app-with-setup
           current_app_name: (( grab meta.cf.appname ))
           show_app_log: true
+    on_failure:
+      put: notify
+      params:
+        channel:  (( grab meta.slack.channel ))
+        username: (( grab meta.slack.username ))
+        icon_url: (( grab meta.slack.icon ))
+        text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-staging\" job failed" ))'
+
   - name: deploy-production
     public: false
     serial: true
@@ -116,6 +134,19 @@ jobs:
           path: app-with-setup
           current_app_name: (( grab meta.cf.appname ))
           show_app_log: true
+    on_failure:
+      put: notify
+      params:
+        channel:  (( grab meta.slack.channel ))
+        username: (( grab meta.slack.username ))
+        icon_url: (( grab meta.slack.icon ))
+        text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-production\" job failed" ))'
+
+resource_types:
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
 
 resources:
   - name: app
@@ -151,3 +182,8 @@ resources:
       access_token: (( grab meta.github.access_token ))
       user: TryGhost
       repository: Ghost
+
+  - name: notify
+    type: slack-notification
+    source:
+      url: (( grab meta.slack.webhook ))

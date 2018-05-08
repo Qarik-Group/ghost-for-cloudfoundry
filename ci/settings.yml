@@ -2,9 +2,9 @@
 meta:
   name:    blog-starkandwayne
   team:    starkandwayne
-  # fly -t ohio-sw login -c https://ci-ohio.starkandwayne.com -n starkandwayne
+  # fly -t ohio-sw login -c https://ci2.starkandwayne.com -n starkandwayne
   target:  ohio-sw
-  url:     https://ci-ohio.starkandwayne.com
+  url:     https://ci2.starkandwayne.com
 
   github:
     owner:  starkandwayne
@@ -23,3 +23,9 @@ meta:
     spaces:
       staging:        blog-staging
       production:     blog-production
+
+  slack:
+    webhook:  ((slack-webhook))
+    icon:     ((slack-logo))
+    username: ((slack-username))
+    channel:  "#snw-pws-apps"
