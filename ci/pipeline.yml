@@ -98,7 +98,6 @@ jobs:
         params:
           manifest: (( concat "app-with-setup/" meta.cf.manifests.staging ))
           path: app-with-setup
-          current_app_name: (( grab meta.cf.appname ))
           show_app_log: true
     on_failure:
       put: notify
@@ -132,7 +131,6 @@ jobs:
         params:
           manifest: (( concat "app-with-setup/" meta.cf.manifests.production ))
           path: app-with-setup
-          current_app_name: (( grab meta.cf.appname ))
           show_app_log: true
     on_failure:
       put: notify
