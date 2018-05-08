@@ -40,6 +40,7 @@ meta:
     username:      starkandwayne-ci
     icon:          https://www.starkandwayne.com/assets/images/shield-blue-50x50.png
     fail_url: '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Failure! " meta.slack.upset_moji ">" ))'
+    success_url: '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Success " meta.slack.success_moji ">" ))'
 
 groups:
   - name: (( grab meta.pipeline ))
@@ -106,6 +107,13 @@ jobs:
         username: (( grab meta.slack.username ))
         icon_url: (( grab meta.slack.icon ))
         text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-staging\" job failed" ))'
+    on_success:
+      put: notify
+      params:
+        channel:  (( grab meta.slack.channel ))
+        username: (( grab meta.slack.username ))
+        icon_url: (( grab meta.slack.icon ))
+        text:    '(( concat meta.slack.success_url " " meta.pipeline ": \"deploy-staging\" successful" ))'
 
   - name: deploy-production
     public: false
@@ -139,6 +147,13 @@ jobs:
         username: (( grab meta.slack.username ))
         icon_url: (( grab meta.slack.icon ))
         text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-production\" job failed" ))'
+    on_success:
+      put: notify
+      params:
+        channel:  (( grab meta.slack.channel ))
+        username: (( grab meta.slack.username ))
+        icon_url: (( grab meta.slack.icon ))
+        text:    '(( concat meta.slack.success_url " " meta.pipeline ": \"deploy-production\" successful" ))'
 
 resource_types:
   - name: slack-notification
