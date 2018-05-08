@@ -148,11 +148,13 @@ cp config.production.json current
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
 
+set -x
+
 cd current
 
 echo "Setup ghost"
 yarn install
-knex-migrator init
+# knex-migrator init
 knex-migrator migrate
 cd -
 
