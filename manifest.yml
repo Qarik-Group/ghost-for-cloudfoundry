@@ -5,7 +5,7 @@ applications:
   disk_quota: 1G
   buildpack: https://github.com/cloudfoundry/nodejs-buildpack/releases/download/v1.6.21/nodejs-buildpack-v1.6.21.zip
   health-check-type: port
-  timeout: 120
+  timeout: 180
   services:
   - ghost-email
   - ghost-s3
