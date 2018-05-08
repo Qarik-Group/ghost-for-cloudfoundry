@@ -26,6 +26,6 @@ meta:
 
   slack:
     webhook:  ((slack-webhook))
-    icon:     ((slack-logo))
+    icon:     ((slack-icon-url))
     username: ((slack-username))
     channel:  "#snw-pws-apps"
