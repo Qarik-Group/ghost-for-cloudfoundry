@@ -154,8 +154,7 @@ cd current
 
 echo "Setup ghost"
 yarn install
-knex-migrator init
-knex-migrator migrate
+knex-migrator migrate --init
 cd -
 
 echo "Starting ghost"
