@@ -3,7 +3,7 @@ applications:
   instances: 1
   memory: 384M
   disk_quota: 1G
-  buildpack: https://github.com/cloudfoundry/nodejs-buildpack/releases/download/v1.6.21/nodejs-buildpack-v1.6.21.zip
+  buildpack: https://github.com/cloudfoundry/multi-buildpack
   health-check-type: port
   timeout: 180
   services:
