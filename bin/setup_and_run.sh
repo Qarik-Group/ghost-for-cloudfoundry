@@ -6,6 +6,7 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 cd "$ROOT"
 
 source bin/source_cf_env.sh
+mysqluri=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.uri")
 mysqlhost=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.hostname")
 mysqlport=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.port")
 mysqlusername=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.username")
@@ -16,9 +17,6 @@ cleardb_max_conn=10
 if [[ "${cleardb_plan}" == "spark" ]]; then
   cleardb_max_conn=3
 fi
-[[ -n $DEBUG ]] && {
-  echo "Found ClearDB URI: $mysqluri"
-}
 
 mailservice=sendgrid
 mailhostname=$(echo "$VCAP_SERVICES" | jq -r ".sendgrid[0].credentials.hostname")
@@ -148,13 +146,24 @@ cp config.production.json current
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
 
+if [[ "$(which mysqlsh)X" == "X" ]]; then
+    >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
+else
+    echo "Displaying current migrations_lock status"
+    mysqlsh --uri $mysqluri --sql -e "select * from migrations_lock;"
+
+    echo "Unlocking migrations_lock"
+    mysqlsh --uri $mysqluri --sql -e "UPDATE migrations_lock set locked=0 where lock_key='km01';"
+fi
+
 set -x
 
 cd current
 
 echo "Setup ghost"
 yarn install
-knex-migrator migrate --init
+knex-migrator init
+knex-migrator migrate
 cd -
 
 echo "Starting ghost"

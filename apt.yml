@@ -1,0 +1,7 @@
+---
+keys:
+- https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key
+repos:
+- deb http://apt.starkandwayne.com stable main
+packages:
+- mysql-shell
