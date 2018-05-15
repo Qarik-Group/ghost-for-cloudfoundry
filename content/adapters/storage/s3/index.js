@@ -44,7 +44,8 @@ class Store extends _ghostStorageBase2.default {
         pathPrefix = config.pathPrefix,
         region = config.region,
         secretAccessKey = config.secretAccessKey,
-        endpoint = config.endpoint;
+        endpoint = config.endpoint,
+        serverSideEncryption = config.serverSideEncryption;
 
     // Compatible with the aws-sdk's default environment variables
 
@@ -58,6 +59,7 @@ class Store extends _ghostStorageBase2.default {
     this.host = process.env.GHOST_STORAGE_ADAPTER_S3_ASSET_HOST || assetHost || `https://s3${this.region === 'us-east-1' ? '' : `-${this.region}`}.amazonaws.com/${this.bucket}`;
     this.pathPrefix = stripLeadingSlash(process.env.GHOST_STORAGE_ADAPTER_S3_PATH_PREFIX || pathPrefix || '');
     this.endpoint = process.env.GHOST_STORAGE_ADAPTER_S3_ENDPOINT || endpoint || '';
+    this.serverSideEncryption = process.env.GHOST_STORAGE_ADAPTER_S3_SSE || serverSideEncryption || '';
   }
 
   delete(fileName, targetDir) {
@@ -116,14 +118,18 @@ class Store extends _ghostStorageBase2.default {
             fileName = _ref2[0],
             file = _ref2[1];
 
-        return _this3.s3().putObject({
+        var config = {
           ACL: 'public-read',
           Body: file,
           Bucket: _this3.bucket,
           CacheControl: `max-age=${30 * 24 * 60 * 60}`,
           ContentType: image.type,
           Key: stripLeadingSlash(fileName)
-        }).promise().then(function () {
+        };
+        if (_this3.serverSideEncryption !== '') {
+          config.ServerSideEncryption = _this3.serverSideEncryption;
+        }
+        _this3.s3().putObject(config).promise().then(function () {
           return resolve(`${_this3.host}/${fileName}`);
         });
       }).catch(function (error) {

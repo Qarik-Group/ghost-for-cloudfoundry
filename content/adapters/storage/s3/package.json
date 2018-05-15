@@ -72,5 +72,5 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "exit 0"
   },
-  "version": "2.3.1"
+  "version": "2.4.0"
 }

@@ -1,6 +1,6 @@
 {
   "name": "ghost",
-  "version": "1.22.7",
+  "version": "1.22.8",
   "description": "The professional publishing platform",
   "author": "Ghost Foundation",
   "homepage": "http://ghost.org",
@@ -55,7 +55,7 @@
     "fs-extra": "3.0.1",
     "ghost-gql": "0.0.10",
     "ghost-ignition": "2.9.2",
-    "ghost-storage-adapter-s3": "^2.3.1",
+    "ghost-storage-adapter-s3": "^2.4.0",
     "ghost-storage-base": "0.0.3",
     "glob": "5.0.15",
     "got": "7.1.0",
