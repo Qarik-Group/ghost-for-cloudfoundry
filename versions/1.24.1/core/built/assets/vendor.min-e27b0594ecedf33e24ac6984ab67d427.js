@@ -14488,7 +14488,7 @@ this.moveCaretToSection(e,"head",t)},moveCaretToTailOfSection:function(e){var t=
 this.moveCaretToSection(e,"tail",t)},moveCaretToSection:function(e,t){var r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2],n=("head"===t?e.headPosition():e.tailPosition()).toRange()
 r&&!n.isEqual(this.editor.range)&&(this._skipCursorChange=!0),this.editor.selectRange(n)},_performEdit:function(e,t){t?e(t):this.editor.run(function(t){e(t)})},_hideCursor:function(){this.editor.element.style.caretColor="transparent"},_showCursor:function(){this.editor.element.style.caretColor="auto"},_updateModifiersFromKey:function(e,t){var r=t.isDown
 e.isShiftKey()?this._modifierKeys.shift=r:e.isAltKey()?this._modifierKeys.alt=r:e.isCtrlKey()&&(this._modifierKeys.ctrl=r)},_scrollCursorIntoView:function(){if(this._scrollContainer&&!this._isMouseDown&&!this._modifierKeys.shift){var e=this.editor.range,t=window.getSelection(),r=t&&t.getRangeAt(0),n=e.head&&e.head.section&&e.head.section.renderNode&&e.head.section.renderNode.element
-if(r){var i=r.getBoundingClientRect(),o=i.top,a=i.height,s=window.innerHeight,l=0,c=0,u=this._scrollContainer.scrollTop
+if(!(e&&e.head.section&&e.head.section.isCardSection)&&r){var i=r.getBoundingClientRect(),o=i.top,a=i.height,s=window.innerHeight,l=0,c=0,u=this._scrollContainer.scrollTop
 if(this.scrollOffsetTopSelector){var d=document.querySelector(this.scrollOffsetTopSelector)
 l=d?d.offsetHeight:0}if(this.scrollOffsetBottomSelector){var f=document.querySelector(this.scrollOffsetBottomSelector)
 c=f?f.offsetHeight:0}if(0===o&&0===a){if(!n)return
