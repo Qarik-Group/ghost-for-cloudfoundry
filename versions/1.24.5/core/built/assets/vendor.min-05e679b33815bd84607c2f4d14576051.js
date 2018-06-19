@@ -8825,7 +8825,7 @@ if(Symbol.iterator in Object(e))return function(e,t){var r=[],n=!0,i=!1,o=void 0
 try{for(var a,s=e[Symbol.iterator]();!(n=(a=s.next()).done)&&(r.push(a.value),!t||r.length!==t);n=!0);}catch(e){i=!0,o=e}finally{try{!n&&s.return&&s.return()}finally{if(i)throw o}}return r}(e,t)
 throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),c=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r]
 n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}()
-var u=["keydown","keyup","cut","copy","paste","keypress","drop"],d=function(){function e(t){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),this.editor=t,this.logger=t.loggerFor("event-manager"),this._textInputHandler=new o.default(t),this._listeners=[],this.modifierKeys={shift:!1,alt:!1,ctrl:!1},this._selectionManager=new a.default(this.editor,this.selectionDidChange.bind(this)),this.started=!0}return c(e,[{key:"init",value:function(){var e=this,r=this.editor.element;(0,t.default)("Cannot init EventManager without element",!!r),u.forEach(function(t){e._addListener(r,t)}),this._selectionManager.start()}},{key:"start",value:function(){this.started=!0}},{key:"stop",value:function(){this.started=!1}},{key:"registerInputHandler",value:function(e){this._textInputHandler.register(e)}},{key:"unregisterInputHandler",value:function(e){this._textInputHandler.unregister(e)}},{key:"unregisterAllTextInputHandlers",value:function(){this._textInputHandler.destroy(),this._textInputHandler=new o.default(this.editor)}},{key:"_addListener",value:function(e,r){var n=this;(0,t.default)("Missing listener for "+r,!!this[r])
+var u=["keydown","keyup","cut","copy","paste","keypress","drop"],d=function(){function e(t){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),this.editor=t,this.logger=t.loggerFor("event-manager"),this._textInputHandler=new o.default(t),this._listeners=[],this.modifierKeys={shift:!1},this._selectionManager=new a.default(this.editor,this.selectionDidChange.bind(this)),this.started=!0}return c(e,[{key:"init",value:function(){var e=this,r=this.editor.element;(0,t.default)("Cannot init EventManager without element",!!r),u.forEach(function(t){e._addListener(r,t)}),this._selectionManager.start()}},{key:"start",value:function(){this.started=!0}},{key:"stop",value:function(){this.started=!1}},{key:"registerInputHandler",value:function(e){this._textInputHandler.register(e)}},{key:"unregisterInputHandler",value:function(e){this._textInputHandler.unregister(e)}},{key:"unregisterAllTextInputHandlers",value:function(){this._textInputHandler.destroy(),this._textInputHandler=new o.default(this.editor)}},{key:"_addListener",value:function(e,r){var n=this;(0,t.default)("Missing listener for "+r,!!this[r])
 var i=function(e){return n._handleEvent(r,e)}
 e.addEventListener(r,i),this._listeners.push([e,r,i])}},{key:"_removeListeners",value:function(){this._listeners.forEach(function(e){var t=l(e,3),r=t[0],n=t[1],i=t[2]
 r.removeEventListener(n,i)}),this._listeners=[]}},{key:"_trigger",value:function(e,t,r){(0,n.forEach)((0,n.filter)(this._listeners,function(r){var n=l(r,2),i=n[0],o=n[1]
@@ -8842,7 +8842,7 @@ switch(!0){case r.isHorizontalArrowWithoutModifiersOtherThanShift():var o=void 0
 o=r.isShift()?n.extend(1*r.direction):n.move(r.direction),t.selectRange(o),e.preventDefault()
 break
 case r.isDelete():var a=r.direction,l="char"
-this.modifierKeys.alt&&s.default.isMac()?l="word":this.modifierKeys.ctrl&&s.default.isWin()&&(l="word"),t.performDelete({direction:a,unit:l}),e.preventDefault()
+r.altKey&&s.default.isMac()?l="word":r.ctrlKey&&s.default.isWin()&&(l="word"),t.performDelete({direction:a,unit:l}),e.preventDefault()
 break
 case r.isEnter():t.handleNewline(e)
 break
@@ -8854,13 +8854,13 @@ var a={html:t.serializePost(o,"html"),text:t.serializePost(o,"text"),mobiledoc:t
 var t=this.editor
 t.range.isCollapsed||t.performDelete(),t.post.isBlank&&t._insertEmptyMarkupSectionAtCursor()
 var n=t.range.head,i=this.modifierKeys.shift?"text":"html",o=(0,r.parsePostFromPaste)(e,t,{targetFormat:i})
-t.run(function(e){var t=e.insertPost(n,o)
+o.isBlank||t.run(function(e){var t=e.insertPost(n,o)
 e.setRange(t)})}},{key:"drop",value:function(e){e.preventDefault()
 var t=e.clientX,n=e.clientY,i=this.editor,o=i.positionAtPoint(t,n)
 if(o){var a=(0,r.parsePostFromDrop)(e,i,{logger:this.logger})
 a?i.run(function(e){var t=e.insertPost(o,a)
 e.setRange(t)}):this.logger.log("Could not determine post from drop event")}else this.logger.log("Could not find drop position")}},{key:"_updateModifiersFromKey",value:function(e,t){var r=t.isDown
-e.isShiftKey()?this.modifierKeys.shift=r:e.isAltKey()?this.modifierKeys.alt=r:e.isCtrlKey()&&(this.modifierKeys.ctrl=r)}}]),e}()
+e.isShiftKey()&&(this.modifierKeys.shift=r)}}]),e}()
 e.default=d}),define("mobiledoc-kit/editor/key-commands",["exports","mobiledoc-kit/utils/key","mobiledoc-kit/utils/array-utils","mobiledoc-kit/utils/assert","mobiledoc-kit/utils/browser","mobiledoc-kit/editor/ui"],function(e,t,r,n,i,o){"use strict"
 function a(e){var t=e.post
 e.selectRange(t.toRange())}e.buildKeyCommand=function(e){var i=e.str
@@ -9511,9 +9511,8 @@ n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Obj
 var d=["style","head","title","meta"].map(a.normalizeTagName),f=/\n/g
 var h=function(){function e(t){var r=arguments.length<=1||void 0===arguments[1]?{}:arguments[1];(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),this.builder=t,this.plugins=r.plugins||[]}return u(e,[{key:"parse",value:function(e){var t=this
 if(this._isSkippable(e))return[]
-this.sections=[],this.state={},this._updateStateFromElement(e)
-var r=(0,a.isTextNode)(e)?[e]:e.childNodes
-return this.state.section.isListSection?this.parseListItems(r):(0,s.forEach)(r,function(e){t.parseNode(e)}),this._closeCurrentSection(),this.sections}},{key:"parseListItems",value:function(e){var t=this,r=this.state;(0,s.forEach)(e,function(e){var n=new t.constructor(t.builder).parse(e)[0]
+if(this.sections=[],this.state={},this._updateStateFromElement(e),!this.runPlugins(e)){var r=(0,a.isTextNode)(e)?[e]:e.childNodes
+this.state.section.isListSection?this.parseListItems(r):(0,s.forEach)(r,function(e){t.parseNode(e)})}return this._closeCurrentSection(),this.sections}},{key:"parseListItems",value:function(e){var t=this,r=this.state;(0,s.forEach)(e,function(e){var n=new t.constructor(t.builder).parse(e)[0]
 n&&n.isListItem&&r.section.items.append(n)})}},{key:"runPlugins",value:function(e){for(var t=this,r=!1,n={addSection:function(e){t._closeCurrentSection(),t.sections.push(e)},addMarkerable:function(e){var r=t.state,n=r.section;(0,c.default)("Markerables can only be appended to markup sections and list item sections",n&&n.isMarkerable),r.text&&t._createMarker(),n.markers.append(e)},nodeFinished:function(){r=!0}},i=0;i<this.plugins.length;i++){if((0,this.plugins[i])(e,this.builder,n),r)return!0}return!1}},{key:"parseNode",value:function(e){if(this.state.section||this._updateStateFromElement(e),!this.runPlugins(e))switch(e.nodeType){case a.NODE_TYPES.TEXT:this.parseTextNode(e)
 break
 case a.NODE_TYPES.ELEMENT:this.parseElementNode(e)}}},{key:"parseElementNode",value:function(e){var t,r=this,n=this.state,i=this._markupsFromElement(e)
@@ -9943,7 +9942,7 @@ return 0===t?r:"-"+r})},e.capitalize=function(e){return e.charAt(0).toUpperCase(
 return-1!==r&&r===e.length-t.length}}),define("mobiledoc-kit/utils/to-range",["exports","mobiledoc-kit/utils/cursor/range","mobiledoc-kit/utils/cursor/position","mobiledoc-kit/utils/assert"],function(e,t,r,n){"use strict"
 e.default=function(e){if((0,n.default)('Must pass non-blank object to "toRange"',!!e),e instanceof t.default)return e
 if(e instanceof r.default)return e.toRange();(0,n.default)("Incorrect structure for rangeLike: "+e,!1)}}),define("mobiledoc-kit/version",["exports"],function(e){"use strict"
-e.default="0.10.21"}),define("mobiledoc-kit/views/tooltip",["exports","mobiledoc-kit/views/view","mobiledoc-kit/utils/element-utils"],function(e,t,r){"use strict"
+e.default="0.10.22-ghost.1"}),define("mobiledoc-kit/views/tooltip",["exports","mobiledoc-kit/views/view","mobiledoc-kit/utils/element-utils"],function(e,t,r){"use strict"
 var n=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r]
 n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),i=function(e,t,r){for(var n=!0;n;){var i=e,o=t,a=r
 n=!1,null===i&&(i=Function.prototype)
@@ -14455,9 +14454,11 @@ var b=e.ADD_CARD_HOOK="addComponent",g=e.REMOVE_CARD_HOOK="removeComponent",v=e.
 function k(e){var t=Object.create(null)
 return e.forEach(function(e){e&&(e="is"+Ember.String.capitalize(Ember.String.camelize(e)),t[e]=!0)}),t}function x(e){var t=e.range,r=t.head
 t.isCollapsed&&Object.keys(A).forEach(function(t){if(t=t.toLowerCase(),r.marker&&r.marker.hasMarkup(t)&&e._editState.activeMarkups.findBy("tagName",t)){var n=r.markerIn(1)
-n&&n.hasMarkup(t)||e._editState.activeMarkups.filterBy("tagName",t).forEach(function(t){e._editState.toggleMarkupState(t)})}})}function S(e,t){var r=t.builder,n=t.editor
-n.activeSection&&n.activeSection.isBlank&&t.removeSection(n.activeSection),e.forEach(function(e){var n={files:[e]},i=r.createCardSection("image",n)
-t.insertSection(i)})}e.default=Ember.Component.extend({layout:s.default,tagName:"article",classNames:["koenig-editor","w-100","flex-grow","relative","center","mb0","mt0"],mobiledoc:null,placeholder:"Write here...",autofocus:!1,spellcheck:!0,options:null,headerOffset:0,dropTargetSelector:null,scrollContainerSelector:null,scrollOffsetTopSelector:null,scrollOffsetBottomSelector:null,editor:null,activeMarkupTagNames:null,activeSectionTagNames:null,selectedRange:null,componentCards:null,linkRange:null,selectedCard:null,_localMobiledoc:null,_upstreamMobiledoc:null,_startedRunLoop:!1,_lastIsEditingDisabled:!1,_isRenderingEditor:!1,_skipCursorChange:!1,_modifierKeys:null,willCreateEditor:function(){},didCreateEditor:function(){},onChange:function(){},cursorDidExitAtTop:function(){},editorOptions:Ember.computed(function(){var e=this.options||{},t=this.atoms||[],r=this.cards||[]
+n&&n.hasMarkup(t)||e._editState.activeMarkups.filterBy("tagName",t).forEach(function(t){e._editState.toggleMarkupState(t)})}})}function S(e,t){var r=t.builder,n=t.editor,i=n.post.sections,o=n.activeSection
+if(o.isBlank||o.isListItem||!o.next||(o=o.next),o.isListItem){var a=o.parent,s=r.createMarkupSection()
+a.next?t.insertSectionBefore(i,s,a.next):t.insertSectionAtEnd(s),t.setRange(s.toRange()),o=t._range.head.section}var l=void 0
+e.forEach(function(e){var n={files:[e]}
+l=r.createCardSection("image",n),t.insertSectionBefore(i,l,o)}),o.isBlank&&t.removeSection(o),t.setRange(l.tailPosition())}e.default=Ember.Component.extend({layout:s.default,tagName:"article",classNames:["koenig-editor","w-100","flex-grow","relative","center","mb0","mt0"],mobiledoc:null,placeholder:"Write here...",autofocus:!1,spellcheck:!0,options:null,headerOffset:0,dropTargetSelector:null,scrollContainerSelector:null,scrollOffsetTopSelector:null,scrollOffsetBottomSelector:null,editor:null,activeMarkupTagNames:null,activeSectionTagNames:null,selectedRange:null,componentCards:null,linkRange:null,selectedCard:null,_localMobiledoc:null,_upstreamMobiledoc:null,_startedRunLoop:!1,_lastIsEditingDisabled:!1,_isRenderingEditor:!1,_skipCursorChange:!1,_modifierKeys:null,willCreateEditor:function(){},didCreateEditor:function(){},onChange:function(){},cursorDidExitAtTop:function(){},editorOptions:Ember.computed(function(){var e=this.options||{},t=this.atoms||[],r=this.cards||[]
 return t=Array.concat(i.default,t),r=Array.concat(o.default,r),Ember.assign({placeholder:this.placeholder,spellcheck:this.spellcheck,autofocus:this.autofocus,atoms:t,cards:r},e)}),init:function(){this._super.apply(this,arguments)
 var e=this.mobiledoc
 e||(e=y,this.set("mobiledoc",e)),this.set("componentCards",Ember.A([])),this.set("activeMarkupTagNames",{}),this.set("activeSectionTagNames",{}),this._modifierKeys={shift:!1,alt:!1,ctrl:!1},this._onMousedownHandler=Ember.run.bind(this,this.handleMousedown),window.addEventListener("mousedown",this._onMousedownHandler),this._onMouseupHandler=Ember.run.bind(this,this.handleMouseup),window.addEventListener("mouseup",this._onMouseupHandler),this._startedRunLoop=!1},willRender:function(){var e,r=this,n=this.mobiledoc||y,i=this._localMobiledoc&&this._localMobiledoc===n||this._upstreamMobiledoc&&this._upstreamMobiledoc===n,o=this._lastIsEditingDisabled===this.isEditingDisabled
@@ -14504,7 +14505,7 @@ if(n&&!n.isCollapsed&&n.headSection===n.tailSection&&n.headSection.isMarkerable&
 return t.run(function(e){e.addMarkupToRange(n,l)}),t.selectRange(n.tail),e.preventDefault(),void e.stopImmediatePropagation()}if(s&&!o&&!this._modifierKeys.shift){e.preventDefault(),e.stopImmediatePropagation()
 var c={type:"paste",preventDefault:function(){},target:t.element,clipboardData:{getData:function(e){if("text/html"===e)return(0,a.default)(s,!1)}}}
 t.triggerEvent(t.element,"paste",c)}if(o){e.preventDefault(),e.stopImmediatePropagation()
-var u=o.replace(/<b(\s|>)/gi,"<strong$1").replace(/<\/b>/gi,"</strong>").replace(/<i(\s|>)/gi,"<em$1").replace(/<\/i>/gi,"</em>"),f={type:"paste",preventDefault:function(){},target:t.element,clipboardData:{getData:function(e){return"text/plain"===e?s:"text/html"===e?"<div>"+u+"</div>":void 0}}}
+var u=o.replace(/<b(\s|>)/gi,"<strong$1").replace(/<\/b>/gi,"</strong>").replace(/<i(\s|>)/gi,"<em$1").replace(/<\/i>/gi,"</em>"),f={type:"paste",preventDefault:function(){},target:t.element,clipboardData:{getData:function(e){return"text/plain"===e?s:"text/html"===e?u:void 0}}}
 t.triggerEvent(t.element,"paste",f)}}},handleMousedown:function(e){1===e.which&&(this._isMouseDown=!0)},handleMouseup:function(e){1===e.which&&(this._isMouseDown=!1)},handleDragOver:function(e){if(e.dataTransfer){if(navigator.userAgent.indexOf("Chrome")>-1){var t=e.dataTransfer.effectAllowed
 e.dataTransfer.dropEffect="move"===t||"linkMove"===t?"move":"copy"}e.stopPropagation(),e.preventDefault()}},handleDragLeave:function(e){e.preventDefault()},handleDrop:function(e){var t=e.target.closest(".__mobiledoc-card")
 if(t){var r=t.firstChild.id
@@ -14619,16 +14620,16 @@ break}return e.abrupt("return")
 case 5:this._hasSelectedRange&&!this._isMouseDown?this._showToolbar(this._skipMousemove):this._hideToolbar(),this._skipMousemove=!1
 case 7:case"end":return e.stop()}},e,this)})).restartable(),_handleMousedown:function(e){1===e.which&&(this._isMouseDown=!0)},_handleMousemove:function(){this._hasSelectedRange&&!this.showToolbar&&this.set("showToolbar",!0),this._removeMousemoveHandler()},_removeMousemoveHandler:function(){window.removeEventListener("mousemove",this._onMousemoveHandler),this._onMousemoveHandler=null},_handleMouseup:function(e){1===e.which&&(this._isMouseDown=!1,this._toggleVisibility.perform(!0))},_handleResize:function(){this.showToolbar&&(this._throttleResize=Ember.run.throttle(this,this._positionToolbar,100))},_showToolbar:function(e){this._positionToolbar(),e&&this.set("showToolbar",!0),this.showToolbar||this._onMousemoveHandler||(this._onMousemoveHandler=Ember.run.bind(this,this._handleMousemove),window.addEventListener("mousemove",this._onMousemoveHandler)),this._lastRange=this.editorRange},_hideToolbar:function(){this.isDestroyed&&this.isDestroying||this.set("showToolbar",!1),this._lastRange=null,this._removeMousemoveHandler()},_positionToolbar:function(){var e=this.element.parentNode.getBoundingClientRect(),t=window.getSelection().getRangeAt(0).getBoundingClientRect(),r=this.element.getBoundingClientRect(),i=r.width,o=r.height,a={},s=50;(a={top:t.top-e.top-o-n,left:t.left-e.left+t.width/2-i/2,right:null}).left<0&&(a.left=0,(s=(t.left-e.left+t.width/2)/i*100)<5&&(s=5))
 a.left+i>e.width&&(a.left=null,a.right=0,(s=100+(t.right-e.right-t.width/2)/i*100)>95&&(s=95))
-this._removeStyleElement(),50!==s&&this._addStyleElement("left: calc("+s+"% - 8px)"),this.setProperties(a)},_addStyleElement:function(e){var t=document.createElement("style")
-t.id=this.elementId+"-style",t.innerHTML="#"+this.elementId+" > ul:after { "+e+" }",document.head.appendChild(t)},_removeStyleElement:function(){var e=document.querySelector("#"+this.elementId+"-style")
+this._removeStyleElement(),50!==s&&this._addStyleElement(s),this.setProperties(a)},_addStyleElement:function(e){var t="left: calc("+e+"% - 10px);",r="left: calc("+e+"% - 8px);",n=document.createElement("style")
+n.id=this.elementId+"-style",n.innerHTML="\n            #"+this.elementId+" > ul:before { "+t+" }\n            #"+this.elementId+" > ul:after { "+r+" }\n        ",document.head.appendChild(n)},_removeStyleElement:function(){var e=document.querySelector("#"+this.elementId+"-style")
 e&&e.remove()}})}),define("koenig-editor/options/atoms",["exports"],function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=[{name:"soft-return",type:"dom",render:function(){return document.createElement("br")}}]}),define("koenig-editor/options/cards",["exports","koenig-editor/utils/create-component-card"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.CARD_MENU=void 0,e.default=[(0,t.default)("card-markdown"),(0,t.default)("code",{deleteIfEmpty:"payload.code"}),(0,t.default)("embed",{hasEditMode:!1,deleteIfEmpty:"payload.html"}),(0,t.default)("hr",{hasEditMode:!1,selectAfterInsert:!1}),(0,t.default)("html",{deleteIfEmpty:"payload.html"}),(0,t.default)("image",{hasEditMode:!1}),(0,t.default)("markdown",{deleteIfEmpty:"payload.markdown"})]
 e.CARD_MENU=[{title:"Basic",items:[{label:"Image",icon:"koenig/image",matches:["image","img"],type:"card",replaceArg:"image"},{label:"Markdown",icon:"koenig/markdown",matches:["markdown","md"],type:"card",replaceArg:"markdown"},{label:"HTML",icon:"koenig/html",matches:["html"],type:"card",replaceArg:"html"},{label:"Divider",icon:"koenig/divider",matches:["divider","horizontal-rule","hr"],type:"card",replaceArg:"hr"}]},{title:"Embed",items:[{label:"YouTube",icon:"koenig/youtube",matches:["youtube"],type:"card",replaceArg:"embed",params:["url"]},{label:"Twitter",icon:"koenig/twitter",matches:["twitter"],type:"card",replaceArg:"embed",params:["url"]},{label:"Facebook",icon:"koenig/facebook",matches:["facebook"],type:"card",replaceArg:"embed",params:["url"]},{label:"SoundCloud",icon:"koenig/soundcloud",matches:["soundcloud"],type:"card",replaceArg:"embed",params:["url"]},{label:"CodePen",icon:"koenig/codepen",matches:["codepen"],type:"card",replaceArg:"embed",params:["url"]},{label:"Other...",icon:"koenig/code-block",matches:["embed"],type:"card",replaceArg:"embed",params:["url"]}]}]}),define("koenig-editor/options/key-commands",["exports","mobiledoc-kit/utils/browser","koenig-editor/components/koenig-editor"],function(e,t,r){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.DEFAULT_KEY_COMMANDS=void 0,e.default=function(e,t){n.forEach(function(r){e.registerKeyCommand({str:r.str,run:function(){return r.run(e,t)}})})}
 var n=e.DEFAULT_KEY_COMMANDS=[{str:"ENTER",run:function(e,t){var r=e.range,n=r.isCollapsed,i=r.head,o=i.offset,a=i.section
-return!!(n&&0===o&&a.tagName&&a.tagName.match(/^h\d$/))&&(e.run(function(e){var t=e.builder.createMarkupSection("p"),r=a.parent.sections
-e.insertSectionBefore(r,t,a)}),void t._scrollCursorIntoView())}},{str:"META+ENTER",run:function(e,t){if(!t.selectedCard)return!1
+return n&&0===o&&a.tagName&&a.tagName.match(/^h\d$/)?(e.run(function(e){var t=e.builder.createMarkupSection("p"),r=a.parent.sections
+e.insertSectionBefore(r,t,a)}),void t._scrollCursorIntoView()):!!(n&&a.isBlank&&a.isListItem&&a.next&&a.next.isListItem)&&(e.run(function(e){e.toggleSection("p",a.headPosition())}),void t._scrollCursorIntoView())}},{str:"META+ENTER",run:function(e,t){if(!t.selectedCard)return!1
 t.editCard(t.selectedCard)}},{str:"CTRL+ENTER",run:function(e,r){if(!t.default.isWin()||!r.selectedCard)return!1
 r.editCard(r.selectedCard)}},{str:"SHIFT+ENTER",run:function(e){e.range.headSection.isMarkerable&&e.run(function(t){var r=t.builder.createAtom("soft-return")
 t.insertMarkers(e.range.head,[r])})}},{str:"BACKSPACE",run:function(e,t){var n=e.range,i=n.head,o=n.isCollapsed,a=n.head,s=a.marker,l=a.offset,c=a.section,u=c.next,d=c.prev
@@ -14647,27 +14648,38 @@ a=a.extend(o.length),i.toggleMarkup(t,a),s=i.deleteAtPosition(s,-1),i.setRange(s
 if(t.selectedCard){var l="card-section"===s.next.type,c=t.getCardFromSection(s.next)
 return t.deleteCard(t.selectedCard),void(l&&t.selectCard(c))}if(!i||a!==s.length||!s.next||"card-section"!==s.next.type||s.isBlank)return!1
 var u=t.getCardFromSection(s.next)
-t.deleteCard(u,r.CURSOR_BEFORE)}},{str:"UP",run:function(e,t){var r=e.range,n=r.isCollapsed,i=r.head,o=i.offset,a=i.section,s=a.isListItem?a.parent.prev:a.prev
-return!n||0!==o&&!a.isCardSection||s||t.send("exitCursorAtTop"),!1}},{str:"LEFT",run:function(e,t){var r=e.range,n=r.isCollapsed,i=r.head,o=i.offset,a=i.section,s=a.isListItem?a.parent.prev:a.prev
+t.deleteCard(u,r.CURSOR_BEFORE)}},{str:"UP",run:function(e,t){var r=e.range,n=r.isCollapsed,i=r.head,o=i.offset,a=i.section,s=a.isListItem&&!a.prev?a.parent.prev:a.prev
+return!n||0!==o&&!a.isCardSection||s||t.send("exitCursorAtTop"),!1}},{str:"LEFT",run:function(e,t){var r=e.range,n=r.isCollapsed,i=r.head,o=i.offset,a=i.section,s=a.isListItem&&!a.prev?a.parent.prev:a.prev
 if(!n||0!==o&&!a.isCardSection||s){if(!t.selectedCard||t.selectedCard.postModel!==a)return!1
 t.moveCaretToTailOfSection(a.prev,!1)}else t.send("exitCursorAtTop")}},{str:"CTRL+K",run:function(e,r){return!!t.default.isWin()&&r.send("editLink",e.range)}},{str:"META+K",run:function(e,t){return t.send("editLink",e.range)}}]}),define("koenig-editor/options/parser-plugins",["exports"],function(e){"use strict"
-Object.defineProperty(e,"__esModule",{value:!0}),e.brToSoftBreakAtom=r,e.removeLeadingNewline=n,e.imgToCard=i,e.hrToCard=o,e.preCodeToCard=a
+Object.defineProperty(e,"__esModule",{value:!0}),e.brToSoftBreakAtom=r,e.removeLeadingNewline=n,e.figureToImageCard=i,e.imgToCard=o,e.hrToCard=a,e.preCodeToCard=s
 var t=function(){return function(e,t){if(Array.isArray(e))return e
 if(Symbol.iterator in Object(e))return function(e,t){var r=[],n=!0,i=!1,o=void 0
 try{for(var a,s=e[Symbol.iterator]();!(n=(a=s.next()).done)&&(r.push(a.value),!t||r.length!==t);n=!0);}catch(e){i=!0,o=e}finally{try{!n&&s.return&&s.return()}finally{if(i)throw o}}return r}(e,t)
 throw new TypeError("Invalid attempt to destructure non-iterable instance")}}()
 function r(e,t,r){var n=r.addMarkerable,i=r.nodeFinished
 1===e.nodeType&&"BR"===e.tagName&&(n(t.createAtom("soft-return")),i())}function n(e){3===e.nodeType&&"#text"===e.nodeName&&(e.nodeValue=e.nodeValue.replace(/^\n/,""))}function i(e,t,r){var n=r.addSection,i=r.nodeFinished
-if(1===e.nodeType&&"IMG"===e.tagName){var o={src:e.src},a=e.nextSibling
-a&&"FIGCAPTION"===a.tagName&&(o.caption=a.textContent,e.parentNode.removeChild(a)),n(t.createCardSection("image",o)),i()}}function o(e,t,r){var n=r.addSection,i=r.nodeFinished
-1===e.nodeType&&"HR"===e.tagName&&(n(t.createCardSection("hr")),i())}function a(e,r,n){var i=n.addSection,o=n.nodeFinished
+if(1===e.nodeType&&"FIGURE"===e.tagName){var o=e.querySelector("img"),a=e.querySelector("figcaption")
+if(o){var s={src:o.src}
+a&&(s.caption=a.textContent),n(t.createCardSection("image",s)),i()}}}function o(e,t,r){var n=r.addSection,i=r.nodeFinished
+if(1===e.nodeType&&"IMG"===e.tagName){var o={src:e.src}
+n(t.createCardSection("image",o)),i()}}function a(e,t,r){var n=r.addSection,i=r.nodeFinished
+1===e.nodeType&&"HR"===e.tagName&&(n(t.createCardSection("hr")),i())}function s(e,r,n){var i=n.addSection,o=n.nodeFinished
 if(1===e.nodeType&&"PRE"===e.tagName){var a=t(e.children,1)[0]
 if(a&&"CODE"===a.tagName){var s={code:a.textContent}
-i(r.createCardSection("code",s)),o()}}}e.default=[r,n,i,o,a]}),define("koenig-editor/options/text-expansions",["exports","mobiledoc-kit/editor/text-input-handlers"],function(e,t){"use strict"
-Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,r){e.unregisterTextInputHandler("heading"),e.onTextInput({name:"md_heading",match:/^(#{1,6}) /,run:function(e,t){var n="h"+t[1].length,i=e.range
+i(r.createCardSection("code",s)),o()}}}e.default=[r,n,i,o,a,s]}),define("koenig-editor/options/text-expansions",["exports"],function(e){"use strict"
+function t(e,t,r){var n=e.range,i=e.range,o=i.head,a=i.head.section
+if(a.textUntil(o)===t[0])if(a.isListItem){if(a.parent.tagName===r)return
+e.run(function(i){var o=a.parent.toRange(),s=e.post
+n=n.extend(-t[0].length),i.deleteRange(n)
+var l=void 0
+s.walkMarkerableSections(o,function(e){var t=e===a,n=i.changeSectionTagName(e,r)
+t&&(l=n)}),i.setRange(l.headPosition().toRange())})}else e.run(function(e){n=n.extend(-t[0].length)
+var i=e.deleteRange(n)
+e.setRange(i),e.toggleSection(r)})}Object.defineProperty(e,"__esModule",{value:!0}),e.replaceWithListSection=t,e.default=function(e,r){e.unregisterTextInputHandler("heading"),e.onTextInput({name:"md_heading",match:/^(#{1,6}) /,run:function(e,t){var n="h"+t[1].length,i=e.range
 i.head.section.textUntil(i.head)===t[0]&&e.run(function(e){i=i.extend(-t[0].length)
 var o=e.deleteRange(i)
-e.setRange(o),r.send("toggleHeaderSection",n,e)})}}),e.onTextInput({name:"md_ul",match:/^- $/,run:function(e){(0,t.replaceWithListSection)(e,"ul")}}),e.onTextInput({name:"md_blockquote",match:/^> /,run:function(e,t){var n=e.range,i=n,o=i.head,a=i.head.section
+e.setRange(o),r.send("toggleHeaderSection",n,e)})}}),e.unregisterTextInputHandler("ul"),e.onTextInput({name:"md_ul",match:/^\* |^- /,run:function(e,r){t(e,r,"ul")}}),e.unregisterTextInputHandler("ol"),e.onTextInput({name:"md_ol",match:/^1\.? /,run:function(e,r){t(e,r,"ol")}}),e.onTextInput({name:"md_blockquote",match:/^> /,run:function(e,t){var n=e.range,i=n,o=i.head,a=i.head.section
 a.textUntil(o)===t[0]&&"blockquote"!==a.tagName&&e.run(function(e){n=n.extend(-t[0].length)
 var i=e.deleteRange(n)
 e.setRange(i),r.send("toggleSection","blockquote",e)})}}),e.onTextInput({name:"md_hr",match:/^---$/,run:function(e){var t=e.range,n=t.head,i=t.head.section
