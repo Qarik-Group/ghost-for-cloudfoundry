@@ -335,8 +335,8 @@ aws-sdk@2.6.3:
     xmlbuilder "2.6.2"
 
 aws-sdk@^2.6.3:
-  version "2.268.1"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.268.1.tgz#d4a2152d7d34c52b6d1c7a4809a2672db7f2996a"
+  version "2.272.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.272.1.tgz#d81e6c6f3e82d55cf98250650de4c079c89b76b7"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
