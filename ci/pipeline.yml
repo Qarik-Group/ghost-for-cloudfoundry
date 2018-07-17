@@ -51,7 +51,7 @@ groups:
 
 jobs:
   - name: upgrade-ghost
-    public: false
+    public: true
     serial: true
     plan:
       - get: app
