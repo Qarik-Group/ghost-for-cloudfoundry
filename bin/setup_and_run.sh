@@ -154,11 +154,13 @@ export PATH=$PATH:/home/vcap/deps/0/node/bin
 if [[ "$(which mysqlsh)X" == "X" ]]; then
     >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
 else
+    set +e
     echo "Displaying current migrations_lock status"
     mysqlsh --uri $mysqluri --sql -e "select * from migrations_lock;"
 
     echo "Unlocking migrations_lock"
     mysqlsh --uri $mysqluri --sql -e "UPDATE migrations_lock set locked=0 where lock_key='km01';"
+    set -e
 fi
 
 set -x
