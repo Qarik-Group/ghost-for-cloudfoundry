@@ -2,7 +2,7 @@
 
 This repo is a fork of the lovely open source blogging engine [Ghost](https://github.com/TryGhost/Ghost) to make it easy to run on any Cloud Foundry.
 
-For example, we run Ghost at https://www.starkandwayne.com/blog, https://www.starkandwayne.com/videos and https://www.dingotiles.com/blog using this repository.
+For example, we run Ghost at https://www.starkandwayne.com/blog using this repository.
 
 The modifications in this repository - versus the upstream https://github.com/TryGhost/Ghost - are:
 
@@ -11,13 +11,13 @@ The modifications in this repository - versus the upstream https://github.com/Tr
 * `bin/setup_and_run.sh` that looks for email credentials from `$VCAP_SERVICES` - used for sending invitation emails, password resets etc.
 * custom themes for https://www.starkandwayne.com/blog and https://www.dingotiles.com/blog, in addition to the default upstream Casper theme
 
-This repository also includes the Concourse pipeline `ci/pipeline.yml` for automatically attempting to upgrade to any new version of Ghost (https://github.com/TryGhost/Ghost/releases). We are running this pipeline at https://ci.starkandwayne.com/teams/main/pipelines/ghost-for-cloudfoundry
+This repository also includes the Concourse pipeline `ci/pipeline.yml` for automatically attempting to upgrade to any new version of Ghost (https://github.com/TryGhost/Ghost/releases). We are running this pipeline at https://ci2.starkandwayne.com/teams/starkandwayne/pipelines/blog-starkandwayne
 
 ## Deploy to Cloud Foundry
 
 First, target your Cloud Foundry and create a space for deploying the application and its dependent service instances:
 
-```
+```plain
 cf login -a https://api.run.pivotal.io
 cf create-space blog-production
 cf target -s blog-production
@@ -31,7 +31,7 @@ Next, provision three service instances:
 
 For Pivotal Web Services, as an example, you might choose ClearDB for MySQL, SendGrid for email, and a custom user-provided service instance for your AWS S3 account.
 
-```
+```plain
 cf create-service cleardb spark ghost-mysql
 cf create-service sendgrid free ghost-email
 cf create-user-provided-service ghost-s3 -p '{"access_key_id":"AKIAI74XXXX","secret_access_key":"rXuScFqhvqXXXXX","bucket":"BUCKETNAME","region":"us-east-1"}'
@@ -41,20 +41,20 @@ As the services are already bound via manifest, there's no need to bind them via
 
 Next, deploy/push the Ghost application without starting it, and then restart:
 
-```
+```plain
 cf push --no-start --random-route
 cf restart ghost
 ```
 
 In another terminal window you can observe the Ghost logs using:
 
-```
+```plain
 cf logs ghost
 ```
 
 The last line of the logs will include the URL:
 
-```
+```plain
 2017-01-23T11:41:40.84+1000 [APP/PROC/WEB/0]OUT Ghost is running in production...
 2017-01-23T11:41:40.84+1000 [APP/PROC/WEB/0]OUT Your blog is now available on http://ghost-villalike-mee.cfapps.io
 ```
@@ -65,7 +65,7 @@ The `--random-route` flag above is optional. You can bind any route to your Clou
 
 For example, we have Ghost running on Pivotal Web Services, and we bound https://www.starkandwayne.com/blog to this application. The command we used to do this was:
 
-```
+```plain
 cf map-route ghost starkandwayne.com --hostname www --path blog
 ```
 
