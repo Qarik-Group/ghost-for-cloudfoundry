@@ -146,7 +146,6 @@
             'https://www.linkedin.com/shareArticle?mini=true&url=' +encodeURIComponent(location.href),
             500,550);
           break;
-          )
         case 'share-twitter':
           _openWindow(
             'https://twitter.com/share?url=' + encodeURIComponent(location.href) + '&text=' + encodeURIComponent(document.title),
