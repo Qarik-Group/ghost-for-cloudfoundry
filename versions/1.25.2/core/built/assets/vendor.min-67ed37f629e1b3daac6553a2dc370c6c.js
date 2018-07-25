@@ -15604,7 +15604,7 @@ e&&e.isCollapsed&&t&&!t.isListItem&&(t.isBlank||""===t.text)?(this._editorRange=
 if(e){var t=this.element.parentNode.getBoundingClientRect(),r=e.renderNode.element
 if(r){var n=r.getBoundingClientRect().top-t.top
 this.set("top",n)}}},_showMenu:function(){this.set("showMenu",!0),this._moveCaretToCachedEditorRange(),Ember.run.schedule("afterRender",this,function(){this._focusSearch()}),this._onWindowMousedownHandler=Ember.run.bind(this,this._handleWindowMousedown),window.addEventListener("mousedown",this._onWindowMousedownHandler),this._onKeydownHandler=Ember.run.bind(this,this._handleKeydown),window.addEventListener("keydown",this._onKeydownHandler)},_hideMenu:function(){this.showMenu&&(this._editorRange=null,window.removeEventListener("mousedown",this._onWindowMousedownHandler),window.removeEventListener("keydown",this._onKeydownHandler),this.set("showMenu",!1))},_focusSearch:function(){var e=this.element.querySelector("input")
-e&&e.focus()},_handleWindowMousedown:function(e){e.target.closest("#"+this.elementId)||this._hideMenu()},_mousemoveRaf:function(e){this._mousemoveTicking||requestAnimationFrame(Ember.run.bind(this,this._handleMousemove,e)),this._mousemoveTicking=!0},_handleMousemove:function(e){if(!this.showMenu){var t=e.pageX,r=e.pageY,n=this.editor
+e&&e.focus()},_handleWindowMousedown:function(e){e.target.closest("#"+this.elementId)||this._hideMenu()},_mousemoveRaf:function(e){this._mousemoveTicking||requestAnimationFrame(Ember.run.bind(this,this._handleMousemove,e)),this._mousemoveTicking=!0},_handleMousemove:function(e){if(!this.showMenu&&this.element){var t=e.pageX,r=e.pageY,n=this.editor
 t<this.element.parentNode.getBoundingClientRect().left&&(t+=40)
 try{var i=n.positionAtPoint(t,r)
 if(i){var o=i.toRange()
