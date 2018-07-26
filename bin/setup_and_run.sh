@@ -55,7 +55,7 @@ cat > config.production.json <<-JSON
       "database": "${mysqldatabase}"
     },
     "pool": {
-      "min": 1,
+      "min": 2,
       "max": ${cleardb_max_conn}
     }
   },
