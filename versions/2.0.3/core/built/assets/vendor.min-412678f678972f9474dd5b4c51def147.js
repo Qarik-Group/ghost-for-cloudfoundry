@@ -8867,7 +8867,7 @@ switch(!0){case r.isHorizontalArrowWithoutModifiersOtherThanShift():var o=void 0
 o=r.isShift()?n.extend(1*r.direction):n.move(r.direction),t.selectRange(o),e.preventDefault()
 break
 case r.isDelete():var s=r.direction,l="char"
-r.altKey&&a.default.isMac()?l="word":r.ctrlKey&&a.default.isWin()&&(l="word"),t.performDelete({direction:s,unit:l}),e.preventDefault()
+r.altKey&&a.default.isMac()?l="word":r.ctrlKey&&!a.default.isMac()&&(l="word"),t.performDelete({direction:s,unit:l}),e.preventDefault()
 break
 case r.isEnter():t.handleNewline(e)
 break
@@ -9969,7 +9969,7 @@ return 0===t?r:"-"+r})},e.capitalize=function(e){return e.charAt(0).toUpperCase(
 return-1!==r&&r===e.length-t.length}}),define("mobiledoc-kit/utils/to-range",["exports","mobiledoc-kit/utils/cursor/range","mobiledoc-kit/utils/cursor/position","mobiledoc-kit/utils/assert"],function(e,t,r,n){"use strict"
 e.default=function(e){if((0,n.default)('Must pass non-blank object to "toRange"',!!e),e instanceof t.default)return e
 if(e instanceof r.default)return e.toRange();(0,n.default)("Incorrect structure for rangeLike: "+e,!1)}}),define("mobiledoc-kit/version",["exports"],function(e){"use strict"
-e.default="0.11.1-ghost.2"}),define("mobiledoc-kit/views/tooltip",["exports","mobiledoc-kit/views/view","mobiledoc-kit/utils/element-utils"],function(e,t,r){"use strict"
+e.default="0.11.1-ghost.3"}),define("mobiledoc-kit/views/tooltip",["exports","mobiledoc-kit/views/view","mobiledoc-kit/utils/element-utils"],function(e,t,r){"use strict"
 var n=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r]
 n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),i=function(e,t,r){for(var n=!0;n;){var i=e,o=t,s=r
 n=!1,null===i&&(i=Function.prototype)
