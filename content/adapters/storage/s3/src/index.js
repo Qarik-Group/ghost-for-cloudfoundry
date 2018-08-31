@@ -1,18 +1,15 @@
 import AWS from 'aws-sdk'
 import BaseStore from 'ghost-storage-base'
 import { join } from 'path'
-import Promise, { promisify } from 'bluebird'
 import { readFile } from 'fs'
 
-const readFileAsync = promisify(readFile)
-
+const readFileAsync = fp => new Promise((resolve, reject) => readFile(fp, (err, data) => err ? reject(err) : resolve(data)))
 const stripLeadingSlash = s => s.indexOf('/') === 0 ? s.substring(1) : s
+const stripEndingSlash = s => s.indexOf('/') === (s.length - 1) ? s.substring(0, s.length - 1) : s
 
 class Store extends BaseStore {
   constructor (config = {}) {
     super(config)
-
-    AWS.config.setPromisesDependency(Promise)
 
     const {
       accessKeyId,
@@ -22,7 +19,8 @@ class Store extends BaseStore {
       region,
       secretAccessKey,
       endpoint,
-      serverSideEncryption
+      serverSideEncryption,
+      forcePathStyle
     } = config
 
     // Compatible with the aws-sdk's default environment variables
@@ -37,33 +35,28 @@ class Store extends BaseStore {
     this.pathPrefix = stripLeadingSlash(process.env.GHOST_STORAGE_ADAPTER_S3_PATH_PREFIX || pathPrefix || '')
     this.endpoint = process.env.GHOST_STORAGE_ADAPTER_S3_ENDPOINT || endpoint || ''
     this.serverSideEncryption = process.env.GHOST_STORAGE_ADAPTER_S3_SSE || serverSideEncryption || ''
+    this.s3ForcePathStyle = Boolean(process.env.GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE) || Boolean(forcePathStyle) || false
   }
 
   delete (fileName, targetDir) {
     const directory = targetDir || this.getTargetDir(this.pathPrefix)
 
     return new Promise((resolve, reject) => {
-      return this.s3()
+      this.s3()
         .deleteObject({
           Bucket: this.bucket,
           Key: stripLeadingSlash(join(directory, fileName))
-        })
-        .promise()
-        .then(() => resolve(true))
-        .catch(() => resolve(false))
+        }, (err) => err ? resolve(false) : resolve(true))
     })
   }
 
   exists (fileName, targetDir) {
     return new Promise((resolve, reject) => {
-      return this.s3()
+      this.s3()
         .getObject({
           Bucket: this.bucket,
           Key: stripLeadingSlash(join(targetDir, fileName))
-        })
-        .promise()
-        .then(() => resolve(true))
-        .catch(() => resolve(false))
+        }, (err) => err ? resolve(false) : resolve(true))
     })
   }
 
@@ -72,7 +65,8 @@ class Store extends BaseStore {
       accessKeyId: this.accessKeyId,
       bucket: this.bucket,
       region: this.region,
-      secretAccessKey: this.secretAccessKey
+      secretAccessKey: this.secretAccessKey,
+      s3ForcePathStyle: this.s3ForcePathStyle
     }
     if (this.endpoint !== '') {
       options.endpoint = this.endpoint
@@ -100,29 +94,26 @@ class Store extends BaseStore {
           config.ServerSideEncryption = this.serverSideEncryption
         }
         this.s3()
-          .putObject(config)
-          .promise()
-          .then(() => resolve(`${this.host}/${fileName}`))
-      }).catch(error => reject(error))
+          .putObject(config, (err, data) => err ? reject(err) : resolve(`${this.host}/${fileName}`))
+      })
+      .catch(err => reject(err))
     })
   }
 
   serve () {
-    return (req, res, next) => {
+    return (req, res, next) =>
       this.s3()
         .getObject({
           Bucket: this.bucket,
-          Key: stripLeadingSlash(req.path)
-        }).on('httpHeaders', function (statusCode, headers, response) {
-          res.set(headers)
+          Key: stripLeadingSlash(stripEndingSlash(this.pathPrefix) + req.path)
         })
-            .createReadStream()
-            .on('error', function (err) {
-              res.status(404)
-              next(err)
-            })
-            .pipe(res)
-    }
+        .on('httpHeaders', (statusCode, headers, response) => res.set(headers))
+        .createReadStream()
+        .on('error', err => {
+          res.status(404)
+          next(err)
+        })
+        .pipe(res)
   }
 
   read (options) {
@@ -136,17 +127,13 @@ class Store extends BaseStore {
       if (!path.startsWith(this.host)) {
         reject(new Error(`${path} is not stored in s3`))
       }
-
       path = path.substring(this.host.length)
 
       this.s3()
         .getObject({
           Bucket: this.bucket,
           Key: stripLeadingSlash(path)
-        })
-        .promise()
-        .then((data) => resolve(data.Body))
-        .catch(error => reject(error))
+        }, (err, data) => err ? reject(err) : resolve(data.Body))
     })
   }
 }

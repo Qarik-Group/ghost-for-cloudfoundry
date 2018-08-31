@@ -16,18 +16,22 @@ var _ghostStorageBase2 = _interopRequireDefault(_ghostStorageBase);
 
 var _path = require('path');
 
-var _bluebird = require('bluebird');
-
-var _bluebird2 = _interopRequireDefault(_bluebird);
-
 var _fs = require('fs');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var readFileAsync = (0, _bluebird.promisify)(_fs.readFile);
-
+var readFileAsync = function readFileAsync(fp) {
+  return new Promise(function (resolve, reject) {
+    return (0, _fs.readFile)(fp, function (err, data) {
+      return err ? reject(err) : resolve(data);
+    });
+  });
+};
 var stripLeadingSlash = function stripLeadingSlash(s) {
   return s.indexOf('/') === 0 ? s.substring(1) : s;
+};
+var stripEndingSlash = function stripEndingSlash(s) {
+  return s.indexOf('/') === s.length - 1 ? s.substring(0, s.length - 1) : s;
 };
 
 class Store extends _ghostStorageBase2.default {
@@ -36,8 +40,6 @@ class Store extends _ghostStorageBase2.default {
 
     super(config);
 
-    _awsSdk2.default.config.setPromisesDependency(_bluebird2.default);
-
     var accessKeyId = config.accessKeyId,
         assetHost = config.assetHost,
         bucket = config.bucket,
@@ -45,7 +47,8 @@ class Store extends _ghostStorageBase2.default {
         region = config.region,
         secretAccessKey = config.secretAccessKey,
         endpoint = config.endpoint,
-        serverSideEncryption = config.serverSideEncryption;
+        serverSideEncryption = config.serverSideEncryption,
+        forcePathStyle = config.forcePathStyle;
 
     // Compatible with the aws-sdk's default environment variables
 
@@ -60,6 +63,7 @@ class Store extends _ghostStorageBase2.default {
     this.pathPrefix = stripLeadingSlash(process.env.GHOST_STORAGE_ADAPTER_S3_PATH_PREFIX || pathPrefix || '');
     this.endpoint = process.env.GHOST_STORAGE_ADAPTER_S3_ENDPOINT || endpoint || '';
     this.serverSideEncryption = process.env.GHOST_STORAGE_ADAPTER_S3_SSE || serverSideEncryption || '';
+    this.s3ForcePathStyle = Boolean(process.env.GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE) || Boolean(forcePathStyle) || false;
   }
 
   delete(fileName, targetDir) {
@@ -67,14 +71,12 @@ class Store extends _ghostStorageBase2.default {
 
     var directory = targetDir || this.getTargetDir(this.pathPrefix);
 
-    return new _bluebird2.default(function (resolve, reject) {
-      return _this.s3().deleteObject({
+    return new Promise(function (resolve, reject) {
+      _this.s3().deleteObject({
         Bucket: _this.bucket,
         Key: stripLeadingSlash((0, _path.join)(directory, fileName))
-      }).promise().then(function () {
-        return resolve(true);
-      }).catch(function () {
-        return resolve(false);
+      }, function (err) {
+        return err ? resolve(false) : resolve(true);
       });
     });
   }
@@ -82,14 +84,12 @@ class Store extends _ghostStorageBase2.default {
   exists(fileName, targetDir) {
     var _this2 = this;
 
-    return new _bluebird2.default(function (resolve, reject) {
-      return _this2.s3().getObject({
+    return new Promise(function (resolve, reject) {
+      _this2.s3().getObject({
         Bucket: _this2.bucket,
         Key: stripLeadingSlash((0, _path.join)(targetDir, fileName))
-      }).promise().then(function () {
-        return resolve(true);
-      }).catch(function () {
-        return resolve(false);
+      }, function (err) {
+        return err ? resolve(false) : resolve(true);
       });
     });
   }
@@ -99,7 +99,8 @@ class Store extends _ghostStorageBase2.default {
       accessKeyId: this.accessKeyId,
       bucket: this.bucket,
       region: this.region,
-      secretAccessKey: this.secretAccessKey
+      secretAccessKey: this.secretAccessKey,
+      s3ForcePathStyle: this.s3ForcePathStyle
     };
     if (this.endpoint !== '') {
       options.endpoint = this.endpoint;
@@ -112,8 +113,8 @@ class Store extends _ghostStorageBase2.default {
 
     var directory = targetDir || this.getTargetDir(this.pathPrefix);
 
-    return new _bluebird2.default(function (resolve, reject) {
-      _bluebird2.default.all([_this3.getUniqueFileName(image, directory), readFileAsync(image.path)]).then(function (_ref) {
+    return new Promise(function (resolve, reject) {
+      Promise.all([_this3.getUniqueFileName(image, directory), readFileAsync(image.path)]).then(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
             fileName = _ref2[0],
             file = _ref2[1];
@@ -129,11 +130,11 @@ class Store extends _ghostStorageBase2.default {
         if (_this3.serverSideEncryption !== '') {
           config.ServerSideEncryption = _this3.serverSideEncryption;
         }
-        _this3.s3().putObject(config).promise().then(function () {
-          return resolve(`${_this3.host}/${fileName}`);
+        _this3.s3().putObject(config, function (err, data) {
+          return err ? reject(err) : resolve(`${_this3.host}/${fileName}`);
         });
-      }).catch(function (error) {
-        return reject(error);
+      }).catch(function (err) {
+        return reject(err);
       });
     });
   }
@@ -142,11 +143,11 @@ class Store extends _ghostStorageBase2.default {
     var _this4 = this;
 
     return function (req, res, next) {
-      _this4.s3().getObject({
+      return _this4.s3().getObject({
         Bucket: _this4.bucket,
-        Key: stripLeadingSlash(req.path)
+        Key: stripLeadingSlash(stripEndingSlash(_this4.pathPrefix) + req.path)
       }).on('httpHeaders', function (statusCode, headers, response) {
-        res.set(headers);
+        return res.set(headers);
       }).createReadStream().on('error', function (err) {
         res.status(404);
         next(err);
@@ -159,7 +160,7 @@ class Store extends _ghostStorageBase2.default {
 
     options = options || {};
 
-    return new _bluebird2.default(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       // remove trailing slashes
       var path = (options.path || '').replace(/\/$|\\$/, '');
 
@@ -167,16 +168,13 @@ class Store extends _ghostStorageBase2.default {
       if (!path.startsWith(_this5.host)) {
         reject(new Error(`${path} is not stored in s3`));
       }
-
       path = path.substring(_this5.host.length);
 
       _this5.s3().getObject({
         Bucket: _this5.bucket,
         Key: stripLeadingSlash(path)
-      }).promise().then(function (data) {
-        return resolve(data.Body);
-      }).catch(function (error) {
-        return reject(error);
+      }, function (err, data) {
+        return err ? reject(err) : resolve(data.Body);
       });
     });
   }
