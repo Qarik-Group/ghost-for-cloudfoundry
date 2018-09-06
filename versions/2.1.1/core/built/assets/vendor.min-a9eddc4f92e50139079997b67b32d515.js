@@ -15034,60 +15034,67 @@ let n=function(e){return t=>t.closest&&t.closest(e)}
 this.element.contains(t)||r.find(n(`#${this.element.id}`))||r.find(n('[data-kg="plus-menu"]'))||r.find(n(".liquid-destination"))||this.editor.element.contains(t)||this.deselectCard()},_handleMousemove(){this.showToolbar||(this.set("showToolbar",!0),this._removeMousemoveHandler())},_removeMousemoveHandler(){window.removeEventListener("mousemove",this._onMousemoveHandler),this._onMousemoveHandler=null},_fireWhenRendered(e){this.element?Ember.run.bind(this,e)():Ember.run.scheduleOnce("afterRender",this,e)},_createMutationObserver(e,t,r){function n(e){"childList"===e.type&&Array.prototype.forEach.call(e.target.querySelectorAll('input[type="text"]'),function(e){s.includes(e)||(s.push(e),e.addEventListener("focus",t,!1),e.addEventListener("blur",r,!1))})}function i(e){e.removeEventListener("focus",t,!1),e.removeEventListener("blur",r,!1),function(e){s.splice(s.indexOf(e),1)}(e)}function o(e){e.forEach(n)}let s=[],a=function(e){let t=new MutationObserver(o)
 return t.observe(e,{childList:!0,subtree:!0}),t}(e)
 return{disconnect(){"disconnect"in a&&(a.disconnect(),s.forEach(i))}}},_inputFocus(){this._hasDisabledContenteditable=!0,this.editor.element.contentEditable=!1},_inputBlur(){this._hasDisabledContenteditable=!1,this.editor.element.contentEditable=!0}})}),define("koenig-editor/components/koenig-editor",["exports","mobiledoc-kit/editor/editor","mobiledoc-kit/utils/key","mobiledoc-kit/utils/cursor/range","koenig-editor/utils/reading-time","koenig-editor/utils/count-words","koenig-editor/options/atoms","koenig-editor/options/cards","ghost-admin/utils/format-markdown","koenig-editor/templates/components/koenig-editor","koenig-editor/options/parser-plugins","koenig-editor/options/key-commands","koenig-editor/options/text-expansions","npm:validator","mobiledoc-kit/renderers/mobiledoc","mobiledoc-kit/utils/parse-utils","koenig-editor/utils/markup-utils"],function(e,t,r,n,i,o,s,a,l,c,u,d,h,f,p,m,b){"use strict"
-Object.defineProperty(e,"__esModule",{value:!0}),e.SPECIAL_MARKUPS=e.NO_CURSOR_MOVEMENT=e.CURSOR_AFTER=e.CURSOR_BEFORE=e.BLANK_DOC=e.TESTING_EXPANDO_PROPERTY=e.REMOVE_CARD_HOOK=e.ADD_CARD_HOOK=void 0,e.arrayToMap=A,e.toggleSpecialFormatEditState=x
-const g=e.ADD_CARD_HOOK="addComponent",v=e.REMOVE_CARD_HOOK="removeComponent",y=e.TESTING_EXPANDO_PROPERTY="__mobiledoc_kit_editor",_=e.BLANK_DOC={version:p.MOBILEDOC_VERSION,markups:[],atoms:[],cards:[],sections:[[1,"p",[[0,[],0,""]]]]},M=e.CURSOR_BEFORE=-1,w=e.CURSOR_AFTER=1,E=e.NO_CURSOR_MOVEMENT=0,k=e.SPECIAL_MARKUPS={S:"~~",CODE:"`",SUP:"^",SUB:"~"}
-function A(e){let t=Object.create(null)
-return e.forEach(e=>{e&&(e=`is${Ember.String.capitalize(Ember.String.camelize(e))}`,t[e]=!0)}),t}function x(e){var t=e.range
+Object.defineProperty(e,"__esModule",{value:!0}),e.SPECIAL_MARKUPS=e.NO_CURSOR_MOVEMENT=e.CURSOR_AFTER=e.CURSOR_BEFORE=e.BLANK_DOC=e.TESTING_EXPANDO_PROPERTY=e.REMOVE_CARD_HOOK=e.ADD_CARD_HOOK=void 0,e.arrayToMap=x,e.toggleSpecialFormatEditState=S
+var g=function(){return function(e,t){if(Array.isArray(e))return e
+if(Symbol.iterator in Object(e))return function(e,t){var r=[],n=!0,i=!1,o=void 0
+try{for(var s,a=e[Symbol.iterator]();!(n=(s=a.next()).done)&&(r.push(s.value),!t||r.length!==t);n=!0);}catch(e){i=!0,o=e}finally{try{!n&&a.return&&a.return()}finally{if(i)throw o}}return r}(e,t)
+throw new TypeError("Invalid attempt to destructure non-iterable instance")}}()
+const v=e.ADD_CARD_HOOK="addComponent",y=e.REMOVE_CARD_HOOK="removeComponent",_=e.TESTING_EXPANDO_PROPERTY="__mobiledoc_kit_editor",M=e.BLANK_DOC={version:p.MOBILEDOC_VERSION,markups:[],atoms:[],cards:[],sections:[[1,"p",[[0,[],0,""]]]]},w=e.CURSOR_BEFORE=-1,E=e.CURSOR_AFTER=1,k=e.NO_CURSOR_MOVEMENT=0,A=e.SPECIAL_MARKUPS={S:"~~",CODE:"`",SUP:"^",SUB:"~"}
+function x(e){let t=Object.create(null)
+return e.forEach(e=>{e&&(e=`is${Ember.String.capitalize(Ember.String.camelize(e))}`,t[e]=!0)}),t}function S(e){var t=e.range
 let r=t.head
-t.isCollapsed&&Object.keys(k).forEach(t=>{if(t=t.toLowerCase(),r.marker&&r.marker.hasMarkup(t)&&e._editState.activeMarkups.findBy("tagName",t)){let n=r.markerIn(1)
-n&&n.hasMarkup(t)||e._editState.activeMarkups.filterBy("tagName",t).forEach(t=>{e._editState.toggleMarkupState(t)})}})}function S(e,t){let r,n=t.builder,i=t.editor,o=i.post.sections,s=i.activeSection
+t.isCollapsed&&Object.keys(A).forEach(t=>{if(t=t.toLowerCase(),r.marker&&r.marker.hasMarkup(t)&&e._editState.activeMarkups.findBy("tagName",t)){let n=r.markerIn(1)
+n&&n.hasMarkup(t)||e._editState.activeMarkups.filterBy("tagName",t).forEach(t=>{e._editState.toggleMarkupState(t)})}})}function C(e,t){let r,n=t.builder,i=t.editor,o=i.post.sections,s=i.activeSection
 if(!s&&!(s=i.post.sections.tail).isMarkerable){let e=n.createMarkupSection()
 t.insertSectionAtEnd(e),t.setRange(e.toRange()),s=t._range.head.section}if(s.isBlank||s.isListItem||!s.next||(s=s.next),s.isListItem){let e=s.parent,r=n.createMarkupSection()
 e.next?t.insertSectionBefore(o,r,e.next):t.insertSectionAtEnd(r),t.setRange(r.toRange()),s=t._range.head.section}e.forEach(e=>{let i={files:[e]}
 r=n.createCardSection("image",i),t.insertSectionBefore(o,r,s)}),s.isBlank&&t.removeSection(s),t.setRange(r.tailPosition())}e.default=Ember.Component.extend({layout:c.default,tagName:"article",classNames:["koenig-editor","w-100","flex-grow","relative","center","mb0","mt0"],mobiledoc:null,placeholder:"Write here...",autofocus:!1,spellcheck:!0,options:null,headerOffset:0,dropTargetSelector:null,scrollContainerSelector:null,scrollOffsetTopSelector:null,scrollOffsetBottomSelector:null,editor:null,activeMarkupTagNames:null,activeSectionTagNames:null,selectedRange:null,componentCards:null,linkRange:null,selectedCard:null,_localMobiledoc:null,_upstreamMobiledoc:null,_startedRunLoop:!1,_lastIsEditingDisabled:!1,_isRenderingEditor:!1,_skipCursorChange:!1,_modifierKeys:null,willCreateEditor(){},didCreateEditor(){},onChange(){},cursorDidExitAtTop(){},wordCountDidChange(){},editorOptions:Ember.computed(function(){let e=this.options||{},t=this.atoms||[],r=this.cards||[]
 return t=Array.concat(s.default,t),r=Array.concat(a.default,r),Ember.assign({placeholder:this.placeholder,spellcheck:this.spellcheck,autofocus:this.autofocus,atoms:t,cards:r},e)}),init(){this._super(...arguments)
 let e=this.mobiledoc
-e||(e=_,this.set("mobiledoc",e)),this.set("componentCards",Ember.A([])),this.set("activeMarkupTagNames",{}),this.set("activeSectionTagNames",{}),this._modifierKeys={shift:!1,alt:!1,ctrl:!1},this._onMousedownHandler=Ember.run.bind(this,this.handleMousedown),window.addEventListener("mousedown",this._onMousedownHandler),this._onMouseupHandler=Ember.run.bind(this,this.handleMouseup),window.addEventListener("mouseup",this._onMouseupHandler),this._startedRunLoop=!1},willRender(){let e=this.mobiledoc||_,r=this._localMobiledoc&&this._localMobiledoc===e||this._upstreamMobiledoc&&this._upstreamMobiledoc===e,n=this._lastIsEditingDisabled===this.isEditingDisabled
+e||(e=M,this.set("mobiledoc",e)),this.set("componentCards",Ember.A([])),this.set("activeMarkupTagNames",{}),this.set("activeSectionTagNames",{}),this._modifierKeys={shift:!1,alt:!1,ctrl:!1},this._onMousedownHandler=Ember.run.bind(this,this.handleMousedown),window.addEventListener("mousedown",this._onMousedownHandler),this._onMouseupHandler=Ember.run.bind(this,this.handleMouseup),window.addEventListener("mouseup",this._onMouseupHandler),this._startedRunLoop=!1},willRender(){let e=this.mobiledoc||M,r=this._localMobiledoc&&this._localMobiledoc===e||this._upstreamMobiledoc&&this._upstreamMobiledoc===e,n=this._lastIsEditingDisabled===this.isEditingDisabled
 if(r&&n)return
 this._lastIsEditingDisabled=this.isEditingDisabled,this._upstreamMobiledoc=e,this._localMobiledoc=null,this.willCreateEditor()
 let i=this.editor
 i&&i.destroy()
 let o=this.editorOptions
 o.mobiledoc=e,o.showLinkTooltips=!1,o.undoDepth=50,o.parserPlugins=u.default
-let s={[g]:({env:e,options:t,payload:r},n)=>{let o=e.name,s=a.CARD_COMPONENT_MAP[o],l=r.files,c=Ember.copy(r,!0)
+let s={[v]:({env:e,options:t,payload:r},n)=>{let o=e.name,s=a.CARD_COMPONENT_MAP[o],l=r.files,c=Ember.copy(r,!0)
 c.files=l
 let u=Ember.Object.create({cardName:o,componentName:s,koenigOptions:n,payload:c,env:e,options:t,editor:i,postModel:e.postModel,isSelected:!1,isEditing:!1}),d=`koenig-editor-card-${Ember.guidFor(u)}`,h=document.createElement("div")
-return h.id=d,u.setProperties({destinationElementId:d,destinationElement:h}),Ember.run.schedule("afterRender",()=>{this.componentCards.pushObject(u)}),{card:u,element:h}},[v]:e=>{this.componentCards.removeObject(e)}}
+return h.id=d,u.setProperties({destinationElementId:d,destinationElement:h}),Ember.run.schedule("afterRender",()=>{this.componentCards.pushObject(u)}),{card:u,element:h}},[y]:e=>{this.componentCards.removeObject(e)}}
 o.cardOptions=s,i=new t.default(o),(0,d.default)(i,this),(0,h.default)(i,this),i.willRender(()=>{Ember.run.currentRunLoop||(this._startedRunLoop=!0,Ember.run.begin())}),i.didRender(()=>{this._startedRunLoop&&(this._startedRunLoop=!1,Ember.run.end()),this._cleanupScheduled&&Ember.run.schedule("afterRender",this,this._cleanup)}),i.postDidChange(()=>{Ember.run.join(()=>{this.postDidChange(i)})}),i.cursorDidChange(()=>{Ember.run.join(()=>{this.cursorDidChange(i)})}),i.inputModeDidChange(()=>{this.isDestroyed||Ember.run.join(()=>{this.inputModeDidChange(i)})}),this.isEditingDisabled&&i.disableEditing(),this.set("editor",i),this.didCreateEditor(this),Ember.run.schedule("afterRender",this,this._calculateWordCount)},didInsertElement(){this._super(...arguments)
 let e=this.element.querySelector('[data-kg="editor"]')
-this._pasteHandler=Ember.run.bind(this,this.handlePaste),e.addEventListener("paste",this._pasteHandler),this.scrollContainerSelector&&(this._scrollContainer=document.querySelector(this.scrollContainerSelector)),this._dropTarget=document.querySelector(this.dropTargetSelector)||this.element,this._dragOverHandler=Ember.run.bind(this,this.handleDragOver),this._dragLeaveHandler=Ember.run.bind(this,this.handleDragLeave),this._dropHandler=Ember.run.bind(this,this.handleDrop),this._dropTarget.addEventListener("dragover",this._dragOverHandler),this._dropTarget.addEventListener("dragleave",this._dragLeaveHandler),this._dropTarget.addEventListener("drop",this._dropHandler)},didRender(){this._super(...arguments)
+this._pasteHandler=Ember.run.bind(this,this.handlePaste),e.addEventListener("paste",this._pasteHandler),this.scrollContainerSelector&&(this._scrollContainer=document.querySelector(this.scrollContainerSelector)),this._keydownHandler=Ember.run.bind(this,this.handleKeydown),window.addEventListener("keydown",this._keydownHandler),this._keyupHandler=Ember.run.bind(this,this.handleKeyup),window.addEventListener("keyup",this._keyupHandler),this._dropTarget=document.querySelector(this.dropTargetSelector)||this.element,this._dragOverHandler=Ember.run.bind(this,this.handleDragOver),this._dragLeaveHandler=Ember.run.bind(this,this.handleDragLeave),this._dropHandler=Ember.run.bind(this,this.handleDrop),this._dropTarget.addEventListener("dragover",this._dragOverHandler),this._dropTarget.addEventListener("dragleave",this._dragLeaveHandler),this._dropTarget.addEventListener("drop",this._dropHandler)},didRender(){this._super(...arguments)
 let e=this.editor
 if(!e.hasRendered){let t=this.element.querySelector('[data-kg="editor"]')
 this._isRenderingEditor=!0,e.render(t),this._isRenderingEditor=!1}},willDestroyElement(){let e=this.editor,t=this._dropTarget
-t.removeEventListener("dragover",this._dragOverHandler),t.removeEventListener("dragleave",this._dragLeaveHandler),t.removeEventListener("drop",this._dropHandler),this.element.querySelector('[data-kg="editor"]').removeEventListener("paste",this._pasteHandler),e.destroy(),this._super(...arguments)},actions:{exitCursorAtTop(){this.selectedCard&&this.deselectCard(this.selectedCard),this.cursorDidExitAtTop()},toggleMarkup(e,t){(t||this.editor).toggleMarkup(e)},toggleSection(e,t){(t||this.editor).toggleSection(e)},toggleHeaderSection(e,t,r={}){let n=this.editor
+t.removeEventListener("dragover",this._dragOverHandler),t.removeEventListener("dragleave",this._dragLeaveHandler),t.removeEventListener("drop",this._dropHandler),window.removeEventListener("keydown",this._keydownHandler),window.removeEventListener("keyup",this._keyupHandler),this.element.querySelector('[data-kg="editor"]').removeEventListener("paste",this._pasteHandler),e.destroy(),this._super(...arguments)},actions:{exitCursorAtTop(){this.selectedCard&&this.deselectCard(this.selectedCard),this.cursorDidExitAtTop()},toggleMarkup(e,t){(t||this.editor).toggleMarkup(e)},toggleSection(e,t){(t||this.editor).toggleSection(e)},toggleHeaderSection(e,t,r={}){let n=this.editor
 if(!r.force&&n.activeSection.tagName===e)return
 this._performEdit(function(t){t.removeMarkupFromRange(n.activeSection.toRange(),e=>"a"!==e.tagName),t.toggleSection(e)},t)},replaceWithCardSection(e,t,r){let n=this.editor,i=t.head.section
 n.run(t=>{let n=t.builder.createCardSection(e,r),o=i.next,s=!o
 if(t.replaceSection(i,n),s){let e=t.builder.createMarkupSection("p")
 t.insertSectionAtEnd(e),t.setRange(e.tailPosition())}else t.setRange(o.headPosition())}),Ember.run.schedule("afterRender",this,function(){let e=this.componentCards.lastObject
 e.koenigOptions.hasEditMode?this.editCard(e):e.koenigOptions.selectAfterInsert&&this.selectCard(e)})},selectCard(e){this.selectCard(e)},editCard(e){this.editCard(e)},deselectCard(e){this.deselectCard(e)},editLink(e){let t=(0,b.getLinkMarkupFromRange)(e)
-e.isCollapsed&&!t||!e.headSection.isMarkerable||this.set("linkRange",e)},cancelEditLink(){this.set("linkRange",null)},deleteCard(e,t=w){this.deleteCard(e,t)},moveCursorToPrevSection(e){let t=this.getSectionFromCard(e)
+e.isCollapsed&&!t||!e.headSection.isMarkerable||this.set("linkRange",e)},cancelEditLink(){this.set("linkRange",null)},deleteCard(e,t=E){this.deleteCard(e,t)},moveCursorToPrevSection(e){let t=this.getSectionFromCard(e)
 t.prev&&(this.deselectCard(e),this.moveCaretToTailOfSection(t.prev,!1))},moveCursorToNextSection(e){let t=this.getSectionFromCard(e)
 t.next?(this.deselectCard(e),this.moveCaretToHeadOfSection(t.next,!1)):this.send("addParagraphAfterCard",e)},addParagraphAfterCard(e){let t=this.editor,r=this.getSectionFromCard(e),n=r.parent.sections,i=r.next
 this.deselectCard(e),t.run(e=>{let t=e.builder.createMarkupSection("p")
 i?e.insertSectionBefore(n,t,i):e.insertSectionAtEnd(t),e.setRange(t.tailPosition())})}},cleanup(){this._cleanupScheduled=!0},_cleanup(){this.componentCards.forEach(e=>{let t=e.koenigOptions.deleteIfEmpty
 if(t){if("string"==typeof t){let e=t
-t=(t=>Ember.isBlank(Ember.get(t,e)))}t(e)&&this.deleteCard(e,E)}}),this._cleanupScheduled=!1},postDidChange(e){let t=this.serializeVersion,r=e.serialize(t)
+t=(t=>Ember.isBlank(Ember.get(t,e)))}t(e)&&this.deleteCard(e,k)}}),this._cleanupScheduled=!1},postDidChange(e){let t=this.serializeVersion,r=e.serialize(t)
 this._localMobiledoc=r,this.onChange(r),this._calculateWordCount()},cursorDidChange(e){var t=e.range
 let r=t.head,i=t.tail,o=t.direction,s=t.isCollapsed,a=t.head.section
 if(this._skipCursorChange)return this._skipCursorChange=!1,this.set("selectedRange",e.range),void this._scrollCursorIntoView()
-if(!this.selectedCard||this.selectedCard.postModel!==a)if(!a||!s||"card-section"!==a.type||0!==r.offset&&1!==r.offset){if(this.selectedCard&&!e.range.isBlank&&this.deselectCard(this.selectedCard),x(e),1===o&&!s&&0===i.offset&&i.section.prev){let t=i.section.prev,o=new n.default(r,t.tailPosition())
+if(!this.selectedCard||this.selectedCard.postModel!==a)if(!a||!s||"card-section"!==a.type||0!==r.offset&&1!==r.offset){if(this.selectedCard&&!e.range.isBlank&&this.deselectCard(this.selectedCard),S(e),1===o&&!s&&0===i.offset&&i.section.prev){let t=i.section.prev,o=new n.default(r,t.tailPosition())
 return e.selectRange(o)}this.set("selectedRange",e.range),this._scrollCursorIntoView()}else Ember.run.schedule("afterRender",this,()=>{let t=this.getCardFromSection(a)
-this.selectCard(t),this.set("selectedRange",e.range)})},inputModeDidChange(e){let t=A(e.activeMarkups.map(e=>e.tagName)),r=A(e.activeSections.map(e=>e.isNested?e.parent.tagName:e.tagName))
-x(e),this._isRenderingEditor?Ember.run.schedule("afterRender",()=>{this.set("activeMarkupTagNames",t),this.set("activeSectionTagNames",r)}):(this.set("activeMarkupTagNames",t),this.set("activeSectionTagNames",r))},handlePaste(e){let t=this.editor
+this.selectCard(t),this.set("selectedRange",e.range)})},inputModeDidChange(e){let t=x(e.activeMarkups.map(e=>e.tagName)),r=x(e.activeSections.map(e=>e.isNested?e.parent.tagName:e.tagName))
+S(e),this._isRenderingEditor?Ember.run.schedule("afterRender",()=>{this.set("activeMarkupTagNames",t),this.set("activeSectionTagNames",r)}):(this.set("activeMarkupTagNames",t),this.set("activeSectionTagNames",r))},handleKeydown(e){let t=r.default.fromEvent(e)
+if(this._updateModifiersFromKey(t,{isDown:!0}),"Dead"===e.key&&192===e.keyCode)return this._isGraveInput=!0
+this._isGraveInput=!1,"`"===e.key&&"Space"===e.code&&this._triggerTextHandlers()},handleKeyup(e){let t=r.default.fromEvent(e)
+this._updateModifiersFromKey(t,{isDown:!1}),this._isGraveInput&&" "===e.key&&(this._isGraveInput=!1,this._triggerTextHandlers())},handlePaste(e){let t=this.editor
 if(!t.cursor.isAddressable(e.target))return
 let r=Array.from(e.clipboardData.files).filter(e=>e.type.indexOf("image")>-1)
-if(r.length>0)return e.preventDefault(),e.stopImmediatePropagation(),void t.run(e=>{S(r,e)})
+if(r.length>0)return e.preventDefault(),e.stopImmediatePropagation(),void t.run(e=>{C(r,e)})
 let n=t.range
 var i=(0,m.getContentFromPasteEvent)(e)
 let o=i.html,s=i.text
@@ -15104,14 +15111,12 @@ t.triggerEvent(t.element,"paste",n)}},handleMousedown(e){1===e.which&&(this._isM
 e.dataTransfer.dropEffect="move"===t||"linkMove"===t?"move":"copy"}e.stopPropagation(),e.preventDefault()}},handleDragLeave(e){e.preventDefault()},handleDrop(e){let t=e.target.closest(".__mobiledoc-card")
 if(t){let e=t.firstChild.id,r=this.componentCards.findBy("destinationElementId",e)
 if(r.isEditing||r.component.handlesDragDrop)return}if(e.preventDefault(),e.dataTransfer.files){let t=Array.from(e.dataTransfer.files).filter(e=>e.type.indexOf("image")>-1)
-t.length>0&&(this.editor.run(e=>{S(t,e)}),this._scrollCursorIntoView({jumpToCard:!0}))}},dragStart(e){e.preventDefault()},keyDown(e){let t=r.default.fromEvent(e)
-this._updateModifiersFromKey(t,{isDown:!0})},keyUp(e){let t=r.default.fromEvent(e)
-this._updateModifiersFromKey(t,{isDown:!1})},selectCard(e,t=!1){if(e===this.selectedCard&&t===e.isEditing)return
+t.length>0&&(this.editor.run(e=>{C(t,e)}),this._scrollCursorIntoView({jumpToCard:!0}))}},dragStart(e){e.preventDefault()},selectCard(e,t=!1){if(e===this.selectedCard&&t===e.isEditing)return
 this.selectedCard&&e!==this.selectedCard&&this.deselectCard(this.selectedCard),e.setProperties({isEditing:t,isSelected:!0}),this.selectedCard=e,this._hideCursor()
 let r=this.getSectionFromCard(e)
 this.moveCaretToTailOfSection(r)},editCard(e){e===this.selectedCard&&e.isEditing||this.selectCard(e,!0)},deselectCard(e){e.set("isEditing",!1),e.set("isSelected",!1),this.selectedCard=null,this._showCursor()},deleteCard(e,t){this.editor.run(r=>{let n,i=e.env.postModel
-if(n=t===M?i.prev&&i.prev.tailPosition():i.next&&i.next.headPosition(),r.removeSection(i),t!==E&&!n){let e=r.builder.createMarkupSection("p")
-return r.insertSectionAtEnd(e),r.setRange(e.tailPosition())}if(t!==E)return r.setRange(n)})},getCardFromSection(e){if(!e||"card-section"!==e.type)return
+if(n=t===w?i.prev&&i.prev.tailPosition():i.next&&i.next.headPosition(),r.removeSection(i),t!==k&&!n){let e=r.builder.createMarkupSection("p")
+return r.insertSectionAtEnd(e),r.setRange(e.tailPosition())}if(t!==k)return r.setRange(n)})},getCardFromSection(e){if(!e||"card-section"!==e.type)return
 let t=e.renderNode.element.querySelector(".__mobiledoc-card").firstChild.id
 return this.componentCards.findBy("destinationElementId",t)},getSectionFromCard:e=>e.env.postModel,moveCaretToHeadOfSection(e,t=!0){this.moveCaretToSection(e,"head",t)},moveCaretToTailOfSection(e,t=!0){this.moveCaretToSection(e,"tail",t)},moveCaretToSection(e,t,r=!0){let n=("head"===t?e.headPosition():e.tailPosition()).toRange()
 r&&!n.isEqual(this.editor.range)&&(this._skipCursorChange=!0),this.editor.selectRange(n)},_performEdit(e,t){t?e(t):this.editor.run(t=>{e(t)})},_hideCursor(){this.editor.element.style.caretColor="transparent"},_showCursor(){this.editor.element.style.caretColor="auto"},_updateModifiersFromKey(e,{isDown:t}){e.isShiftKey()?this._modifierKeys.shift=t:e.isAltKey()?this._modifierKeys.alt=t:e.isCtrlKey()&&(this._modifierKeys.ctrl=t)},_scrollCursorIntoView(e={jumpToCard:!1}){if(!this._scrollContainer||this._isMouseDown||this._modifierKeys.shift)return
@@ -15129,8 +15134,12 @@ let u=e+r,d=0,h=u-n,f=!1
 this._scrollContainer.scrollTop+this._scrollContainer.offsetHeight+200>=this._scrollContainer.scrollHeight&&(f=!0,d=parseFloat(getComputedStyle(this.element.parentNode).getPropertyValue("padding-bottom"))),u>n-l-d&&(this._scrollContainer.scrollTop=f?this._scrollContainer.scrollHeight:c+l+h+20)}},_calculateWordCount(){Ember.run.throttle(this,this._throttledWordCount,100,!1)},_throttledWordCount(){let e=0,t=0
 if(this.editor.post.walkAllLeafSections(r=>{if(r.isCardSection){let n=this.getCardFromSection(r),i=Ember.get(n,"component.counts")||{}
 e+=i.wordCount||0,t+=i.imageCount||0}else e+=(0,o.default)(r.text)}),e!==this.wordCount||t!==this.imageCount){let r=(0,i.default)({wordCount:e,imageCount:t})
-this.wordCount=e,this.imageCount=t,this.readingTime=r,this.wordCountDidChange({wordCount:e,imageCount:t,readingTime:r})}},_setExpandoProperty(e){let t=Ember.getOwner(this).resolveRegistration("config:environment")
-this.element&&"test"===t.environment&&(this.element[y]=e)}})}),define("koenig-editor/components/koenig-link-input",["exports","koenig-editor/templates/components/koenig-link-input","koenig-editor/components/koenig-toolbar","koenig-editor/utils/markup-utils"],function(e,t,r,n){"use strict"
+this.wordCount=e,this.imageCount=t,this.readingTime=r,this.wordCountDidChange({wordCount:e,imageCount:t,readingTime:r})}},_triggerTextHandlers(){let e=this.editor
+e.cursor.isAddressable(event.target)&&Ember.run.next(this,function(){let t=e._eventManager._textInputHandler._findHandler()
+if(t){var r=g(t,2)
+let n=r[0],i=r[1]
+n.run(e,i)}})},_setExpandoProperty(e){let t=Ember.getOwner(this).resolveRegistration("config:environment")
+this.element&&"test"===t.environment&&(this.element[_]=e)}})}),define("koenig-editor/components/koenig-link-input",["exports","koenig-editor/templates/components/koenig-link-input","koenig-editor/components/koenig-toolbar","koenig-editor/utils/markup-utils"],function(e,t,r,n){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 e.default=Ember.Component.extend({layout:t.default,attributeBindings:["style"],classNames:["kg-input-bar","absolute","z-999"],editor:null,linkRange:null,selectedRange:null,top:null,left:null,right:null,href:"",_selectedRange:null,_windowRange:null,_onMousedownHandler:null,_onMouseupHandler:null,cancel(){},style:Ember.computed("top","left","right",function(){let e=this.getProperties("top","left","right"),t=Object.keys(e).map(t=>{if(null!==e[t])return`${t}: ${e[t]}px`})
 return Ember.String.htmlSafe(t.compact().join("; "))}),init(){this._super(...arguments),this._selectedRange=this.selectedRange,this._linkRange=this.linkRange
