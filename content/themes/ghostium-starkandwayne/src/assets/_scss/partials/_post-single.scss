@@ -75,6 +75,31 @@
   }
 }
 
+.post-company-avatar {
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin-bottom: 10px;
+
+  img {
+    width: 100%;
+  }
+
+  .post-side & {
+    float: right;
+  }
+
+  .post-footer & {
+    float: left;
+    margin-bottom: 0;
+    margin-right: 10px;
+
+    @include breakpoint(x-small) {
+      display: none;
+    }
+  }
+}
+
 .post-author-info {
   .post-side & {
     clear: right;
