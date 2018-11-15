@@ -21,7 +21,7 @@
         <li class="post-item-meta-item">
           {{#foreach tags}}
             <a itemprop="{{#if @first}}articleSection{{else}}keywords{{/if}}" href="{{url}}">{{name}}</a>
-            {{#if @last}} {{else}}, {{/if}}
+            {{~#if @last}} {{else}}, {{/if}}
           {{/foreach}}
         </li>
       {{/if}}
