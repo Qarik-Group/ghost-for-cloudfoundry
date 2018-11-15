@@ -1,9 +1,9 @@
 {
   "name": "ghostium-starkandwayne",
-  "version": "2.1.1.1",
+  "version": "2.2.2",
   "dependencies": {
     "modernizr": "~2.6.2",
-    "jquery": "~2.0.3"
+    "jquery": "~3.3.1"
   },
   "homepage": "http://ghostium.oswaldoacauan.com/",
   "authors": [
