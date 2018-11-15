@@ -13,18 +13,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{meta_title}}">
-    <meta name="twitter:description" content="{{meta_description}}">
-
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{{meta_title}}">
-    <meta property="og:description" content="{{meta_description}}">
-
-    {{> custom/meta this}}
-
-    <link href="{{asset 'images/favicon.ico'}}" rel="shortcut icon" type="image/x-icon">
-
     <link href="//fonts.googleapis.com/" rel="dns-prefetch">
     <link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
 
@@ -34,6 +22,9 @@
     <link href="/assets/_components/prism/themes/prism.css">
     <link href="/assets/css/style.css">
     <!-- endbuild -->
+
+    <!-- TODO: move starkandwayne.css into scss build system -->
+    <link rel="stylesheet" href="{{asset 'css/starkandwayne.css'}}"/>
 
     <!-- build:js /assets/js/head-scripts.min.js -->
     <script src="/assets/_components/modernizr/modernizr.js"></script>
@@ -60,6 +51,8 @@
       </div>
     </main>
 
+    {{!-- jQuery needs to come before `{{ghost_foot}}` so that jQuery can be used in code injection --}}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     {{ghost_foot}}
 
     <!-- build:js /assets/js/foot-scripts.min.js -->
@@ -70,6 +63,7 @@
     <script src="/assets/js/drawer.js"></script>
     <script src="/assets/js/imageLoader.js"></script>
     <script src="/assets/js/scripts.js"></script>
+    <script src="/assets/js/headerlink.js"></script>
     <!-- endbuild -->
 
     <script type="text/javascript">
@@ -89,5 +83,8 @@
       (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
       }());
     </script>
+
+    <!-- prompt reader to get emailed new blog posts -->
+    <script src="https://starkandwayne.activehosted.com/f/embed.php?id=1" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>

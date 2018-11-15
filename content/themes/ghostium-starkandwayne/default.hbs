@@ -17,6 +17,8 @@
     <link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
 
     <link rel="stylesheet" href="{{asset 'css/ffaf0a85.main.min.css'}}"/>
+
+    <!-- TODO: move starkandwayne.css into scss build system -->
     <link rel="stylesheet" href="{{asset 'css/starkandwayne.css'}}"/>
 
     <script src="{{asset 'js/358dbb19.head-scripts.min.js'}}"></script>
@@ -43,9 +45,10 @@
     </main>
 
     {{!-- jQuery needs to come before `{{ghost_foot}}` so that jQuery can be used in code injection --}}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     {{ghost_foot}}
-    <script src="{{asset 'js/8fc2c4fd.foot-scripts.min.js'}}"></script>
+
+    <script src="{{asset 'js/4edc54b1.foot-scripts.min.js'}}"></script>
 
     <script type="text/javascript">
       {{> custom/config}}
