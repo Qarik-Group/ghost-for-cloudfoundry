@@ -82,23 +82,26 @@ jobs:
     plan:
       - get: app
         trigger: true
-      - task: setup-app
-        name: setup-app
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag: (( grab meta.image.tag ))
-          inputs: [{name: app}]
-          outputs: [{name: app-with-setup}]
-          run:
-            path: app/ci/scripts/setup-app.sh
+      # - task: setup-app
+      #   name: setup-app
+      #   config:
+      #     platform: linux
+      #     image_resource:
+      #       type: docker-image
+      #       source:
+      #         repository: (( grab meta.image.name ))
+      #         tag: (( grab meta.image.tag ))
+      #     inputs: [{name: app}]
+      #     outputs: [{name: app-with-setup}]
+      #     run:
+      #       path: app/ci/scripts/setup-app.sh
       - put: cf-push-staging
         params:
           manifest: (( concat "app-with-setup/" meta.cf.manifests.staging ))
-          path: app-with-setup
+          # path: app-with-setup
+          # manifest: (( con-with-setup/" meta.cf.manifests.staging ))
+          manifest: (( concat "app/" meta.cf.manifests.staging ))
+          path: app
           show_app_log: true
     on_failure:
       put: notify
@@ -122,23 +125,25 @@ jobs:
       - get: app
         trigger: false
         passed: [deploy-staging]
-      - task: setup-app
-        name: setup-app
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag: (( grab meta.image.tag ))
-          inputs: [{name: app}]
-          outputs: [{name: app-with-setup}]
-          run:
-            path: app/ci/scripts/setup-app.sh
+      # - task: setup-app
+      #   name: setup-app
+      #   config:
+      #     platform: linux
+      #     image_resource:
+      #       type: docker-image
+      #       source:
+      #         repository: (( grab meta.image.name ))
+      #         tag: (( grab meta.image.tag ))
+      #     inputs: [{name: app}]
+      #     outputs: [{name: app-with-setup}]
+      #     run:
+      #       path: app/ci/scripts/setup-app.sh
       - put: cf-push-production
         params:
-          manifest: (( concat "app-with-setup/" meta.cf.manifests.production ))
-          path: app-with-setup
+          # manifest: (( concat "app-with-setup/" meta.cf.manifests.production ))
+          # path: app-with-setup
+          manifest: (( concat "app/" meta.cf.manifests.production ))
+          path: app
           show_app_log: true
     on_failure:
       put: notify
