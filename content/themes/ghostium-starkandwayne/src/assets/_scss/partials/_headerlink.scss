@@ -1,9 +1,5 @@
-h3 .headline-link, h4 .headline-link {
-  font-family: "Whitney SSm A", "Whitney SSm B", "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
-  font-weight: 400;
-  font-size: 1.1rem;
-  position: absolute;
-  top: 0.2rem;
-  left: -1rem;
+h2 .headline-link, h3 .headline-link, h4 .headline-link {
+  font-size: 0.8em;
   color: #ccc;
+  border: 0;
 }

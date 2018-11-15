@@ -22,6 +22,17 @@
     // =================
     Drawer.init();
 
+    // Add header anchor links
+    // =================
+    $('.post-body h2,h3').each(
+      function(i, h) {
+        var header = $(h);
+        var headerID = header.attr('id');
+        var headerText = header.text();
+        header.html(headerText + " <a class='headline-link' title='Permanent link' href='#" + headerID + "'>¶</a>");
+      }
+    );
+
     // PrismJS handler
     // =================
     Prism.languages.html = Prism.languages.markup;
