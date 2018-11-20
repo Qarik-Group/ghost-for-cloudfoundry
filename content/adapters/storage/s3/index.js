@@ -48,7 +48,8 @@ class Store extends _ghostStorageBase2.default {
         secretAccessKey = config.secretAccessKey,
         endpoint = config.endpoint,
         serverSideEncryption = config.serverSideEncryption,
-        forcePathStyle = config.forcePathStyle;
+        forcePathStyle = config.forcePathStyle,
+        acl = config.acl;
 
     // Compatible with the aws-sdk's default environment variables
 
@@ -64,6 +65,7 @@ class Store extends _ghostStorageBase2.default {
     this.endpoint = process.env.GHOST_STORAGE_ADAPTER_S3_ENDPOINT || endpoint || '';
     this.serverSideEncryption = process.env.GHOST_STORAGE_ADAPTER_S3_SSE || serverSideEncryption || '';
     this.s3ForcePathStyle = Boolean(process.env.GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE) || Boolean(forcePathStyle) || false;
+    this.acl = process.env.GHOST_STORAGE_ADAPTER_S3_ACL || acl || 'public-read';
   }
 
   delete(fileName, targetDir) {
@@ -123,7 +125,7 @@ class Store extends _ghostStorageBase2.default {
             file = _ref2[1];
 
         var config = {
-          ACL: 'public-read',
+          ACL: _this3.acl,
           Body: file,
           Bucket: _this3.bucket,
           CacheControl: `max-age=${30 * 24 * 60 * 60}`,
