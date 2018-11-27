@@ -57,6 +57,12 @@ jobs:
       - get: app
       - get: ghost
         trigger: true
+      - put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text_file: ghost/body
       - task: upgrade-ghost
         config:
           platform: linux
