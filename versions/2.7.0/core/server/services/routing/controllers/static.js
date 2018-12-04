@@ -1,0 +1,57 @@
+const _ = require('lodash'),
+    Promise = require('bluebird'),
+    debug = require('ghost-ignition').debug('services:routing:controllers:static'),
+    helpers = require('../helpers');
+
+function processQuery(query, locals) {
+    const api = require('../../../api')[locals.apiVersion];
+    query = _.cloneDeep(query);
+
+    // CASE: If you define a single data key for a static route (e.g. data: page.team), this static route will represent
+    //       the target resource. That means this static route has to behave the same way than the original resource url.
+    //       e.g. the meta data package needs access to the full resource including relations.
+    //       We override the `include` property for now, because the full data set is required anyway.
+    if (_.get(query, 'resource') === 'posts') {
+        _.extend(query.options, {
+            include: 'author,authors,tags'
+        });
+    }
+
+    // Return a promise for the api query
+    return (api[query.alias] || api[query.resource])[query.type](query.options);
+}
+
+module.exports = function staticController(req, res, next) {
+    debug('staticController', res.routerOptions);
+
+    let props = {};
+
+    _.each(res.routerOptions.data, function (query, name) {
+        props[name] = processQuery(query, res.locals);
+    });
+
+    return Promise.props(props)
+        .then(function handleResult(result) {
+            let response = {};
+
+            if (res.routerOptions.data) {
+                response.data = {};
+
+                _.each(res.routerOptions.data, function (config, name) {
+                    if (config.type === 'browse') {
+                        response.data[name] = result[name];
+                    } else {
+                        response.data[name] = result[name][config.alias] || result[name][config.resource];
+                    }
+                });
+            }
+
+            // @TODO: get rid of this O_O
+            _.each(response.data, function (data) {
+                helpers.secure(req, data);
+            });
+
+            helpers.renderer(req, res, helpers.formatResponse.entries(response));
+        })
+        .catch(helpers.handleError(next));
+};
