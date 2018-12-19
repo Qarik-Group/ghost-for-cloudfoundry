@@ -24,7 +24,8 @@
     "ghost",
     "blog",
     "theme",
-    "medium"
+    "medium",
+    "ghost-theme"
   ],
   "dependencies": {},
   "devDependencies": {
