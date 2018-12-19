@@ -1,0 +1,390 @@
+article {
+  position: relative;
+}
+
+.introduction {
+    padding-bottom: 25px;
+}
+
+.introduction p{
+    font-style: italic;
+    font-size: 15pt;
+}
+
+.page {
+    padding-top: 25px;
+}
+.post {
+  margin-bottom: 0;
+}
+
+.post-list {
+    padding-top: 0px;
+}
+
+.post-item-header,
+.post-item-footer,
+.post-item-excerpt {
+  padding-bottom: 5px;
+}
+
+.post-item-header {
+    position: relative
+}
+
+.post-item-header h2 {
+    padding-top: 0;
+}
+
+.post-item-footer {
+  padding-top: 5px;
+  background-color: inherit
+}
+
+.post-item {
+  position: relative;
+  padding: 20px 0;
+  border-bottom: 1px solid #F2F2F2;
+  word-wrap: break-word
+}
+
+.post-item:first-child {
+  padding-top: 0
+}
+
+.post-item:last-child {
+  border-bottom: 0
+}
+
+.post-item-title {
+  line-height: 1.1
+}
+
+.post-item-title a {
+  text-decoration: none
+}
+
+.post-item-excerpt {
+  padding: 0;
+  font-size: 18px;
+  line-height: 1.4
+}
+
+.post-item-excerpt p {
+  margin: 0
+}
+
+.post-item-meta-list,
+.post-meta-list {
+  margin: 0;
+  padding: 0;
+  list-style: none
+}
+
+.post-item-meta-item,
+.post-meta-item {
+  display: inline-block;
+  font-size: 16px;
+  color: #B3B3B3
+}
+
+.post-item-meta-item:before,
+.post-meta-item:before {
+  content: ' · '
+}
+
+.post-item-meta-item:first-child:before,
+.post-meta-item:first-child:before {
+  content: '';
+  display: none
+}
+
+.post-item-meta-item a,
+.post-meta-item a {
+  color: #B3B3B3;
+  text-decoration: none;
+  -webkit-transition: text-decoration .2s;
+  transition: text-decoration .2s
+}
+
+.post-item-meta-item a:focus,
+.post-meta-item a:focus,
+.post-item-meta-item a:hover,
+.post-meta-item a:hover {
+  color: #B3B3B3;
+  text-decoration: underline
+}
+
+.post-item-meta-item time,
+.post-meta-item time,
+.post-item-meta-item span,
+.post-meta-item span {
+  display: inline-block
+}
+
+@media only screen and (max-width:479px) {
+
+  .post-item-meta-item:before,
+  .post-meta-item:before {
+    display: none
+  }
+}
+
+.post-list-pagination {
+  text-align: center;
+  font-size: 14px;
+  font-family: "Open Sans", "Myriad Pro", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  padding: 25px 0;
+  overflow: hidden;
+  border-top: 1px solid #F2F2F2
+}
+
+.post-list-pagination-item {
+  color: #B3B3B3
+}
+
+@media only screen and (max-width:319px) {
+  .post-list-pagination-item.post-list-pagination-item-current {
+    display: none
+  }
+}
+
+.post-list-pagination-item.post-list-pagination-item-prev,
+.post-list-pagination-item.post-list-pagination-item-next {
+  text-decoration: none;
+  -webkit-transition: all .3s;
+  transition: all .3s
+}
+
+.post-list-pagination-item.post-list-pagination-item-prev:hover,
+.post-list-pagination-item.post-list-pagination-item-prev:focus,
+.post-list-pagination-item.post-list-pagination-item-next:hover,
+.post-list-pagination-item.post-list-pagination-item-next:focus {
+  color: #57A3E8
+}
+
+.post-list-pagination-item.post-list-pagination-item-prev {
+  float: left
+}
+
+.post-list-pagination-item.post-list-pagination-item-next {
+  float: right
+}
+
+@media only screen and (max-width:767px) {
+  .post {
+    padding-top: 30px
+  }
+}
+
+.post-container {
+  position: relative
+}
+
+.post-meta-list {
+  line-height: 1;
+  margin-bottom: 15px;
+  font-family: "Open Sans", "Myriad Pro", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
+}
+
+.post-meta-item {
+  font-size: 13.5px
+}
+
+.post-title {
+  line-height: 1;
+  padding-bottom: 15px
+}
+
+.post-title a {
+  text-decoration: none
+}
+
+.post-title a:hover {
+  color: inherit
+}
+
+.post-subtitle {
+  font-style: italic;
+  font-family: "Droid Serif", Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 400;
+  line-height: 1.2;
+  padding-bottom: 15px
+}
+
+.post-footer .post-author {
+  padding-right: 20px
+}
+
+.post-footer {
+    background-color: inherit;
+}
+
+.post-author-avatar {
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin-bottom: 10px
+}
+
+.post-author-avatar img {
+  border-radius: 100%;
+  width: 100%
+}
+
+.post-author-bio {
+  margin-top: 10px;
+}
+
+.post-side .post-author-avatar {
+  float: right
+}
+
+.post-footer .post-author-avatar {
+  float: left;
+  margin-bottom: 0;
+  margin-right: 10px
+}
+
+@media only screen and (max-width:479px) {
+  .post-footer .post-author-avatar {
+    display: none
+  }
+}
+
+.post-company-avatar {
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin-bottom: 10px
+}
+
+.post-company-avatar img {
+  width: 100%
+}
+
+.post-side .post-company-avatar {
+  float: right
+}
+
+.post-footer .post-company-avatar {
+  float: left;
+  margin-bottom: 0;
+  margin-right: 10px
+}
+
+@media only screen and (max-width:479px) {
+  .post-footer .post-company-avatar {
+    display: none
+  }
+}
+
+.post-side .post-author-info {
+  clear: right
+}
+
+.post-footer .post-author-info {
+  overflow: hidden
+}
+
+.post-author-info p {
+  font-size: 12px;
+  font-style: italic;
+  color: #B3B3B3;
+  margin-bottom: 0
+}
+
+.post-author-info p a {
+  color: #B3B3B3
+}
+
+.post-author-name,
+.post-info-title {
+  display: block;
+  line-height: 1;
+  margin-bottom: 5px;
+  text-decoration: none;
+  font-family: "Open Sans", "Myriad Pro", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  font-weight: 700
+}
+
+.post-author-name {
+    padding-top: 20px;
+}
+.post-info {
+  margin-top: 10px
+}
+
+.post-info-title {
+  letter-spacing: -.5px;
+  font-style: normal;
+  color: #333;
+  font-size: 13px;
+  margin-bottom: 0
+}
+
+.post-side {
+  position: absolute;
+  top: 0;
+  left: -230px;
+  width: 160px;
+  padding: 0 5px;
+  text-align: right;
+  z-index: 300
+}
+
+@media only screen and (max-width:1139px) {
+  .post-side {
+    display: none
+  }
+}
+
+.post-body h1,
+.post-body .h1,
+.post-body h2,
+.post-body .h2 {
+  padding-top: 30px;
+  margin-bottom: 4px
+}
+
+.post-body h1~hr,
+.post-body .h1~hr,
+.post-body h2~hr,
+.post-body .h2~hr {
+  margin-bottom: 0
+}
+
+.post-footer {
+  overflow: hidden;
+  border-top: 2px solid #F2F2F2;
+  padding: 40px 0
+}
+
+.post-footer>.post-social,
+.post-footer>.post-author {
+  width: 50%;
+  float: left
+}
+
+.post-footer-heading {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  color: #B3B3B3;
+  text-transform: uppercase;
+  letter-spacing: 1px
+}
+
+.post-social {
+  text-align: right
+}
+
+.post-footer .post-social {
+  padding-left: 20px
+}
+
+.post-comments {
+  border-top: 2px solid #F2F2F2;
+  padding: 40px 0
+}
