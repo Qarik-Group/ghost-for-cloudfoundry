@@ -201,6 +201,7 @@ article {
 .post-title {
   line-height: 1;
   padding-bottom: 15px;
+  position: relative;
 }
 
 .post-title a {
