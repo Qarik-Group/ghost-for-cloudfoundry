@@ -394,3 +394,7 @@ article {
   border-top: 2px solid #F2F2F2;
   padding: 40px 0;
 }
+
+.post-header {
+  position: inherit;
+}
