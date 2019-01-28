@@ -8,7 +8,9 @@
   position: relative;
 }
 
-.post-header {}
+.post-header {
+  position: inherit;
+}
 
 .post-meta-list {
   @extend .post-item-meta-list;
