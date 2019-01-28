@@ -199,10 +199,8 @@ article {
 }
 
 .post-title {
-  line-height: 1;
-  padding-bottom: 15px;
-  position: relative;
-}
+  line-height: 1.5;
+  padding-bottom: 15px;}
 
 .post-title a {
   text-decoration: none;
