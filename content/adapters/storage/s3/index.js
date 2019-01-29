@@ -49,6 +49,7 @@ class Store extends _ghostStorageBase2.default {
         endpoint = config.endpoint,
         serverSideEncryption = config.serverSideEncryption,
         forcePathStyle = config.forcePathStyle,
+        signatureVersion = config.signatureVersion,
         acl = config.acl;
 
     // Compatible with the aws-sdk's default environment variables
@@ -65,6 +66,7 @@ class Store extends _ghostStorageBase2.default {
     this.endpoint = process.env.GHOST_STORAGE_ADAPTER_S3_ENDPOINT || endpoint || '';
     this.serverSideEncryption = process.env.GHOST_STORAGE_ADAPTER_S3_SSE || serverSideEncryption || '';
     this.s3ForcePathStyle = Boolean(process.env.GHOST_STORAGE_ADAPTER_S3_FORCE_PATH_STYLE) || Boolean(forcePathStyle) || false;
+    this.signatureVersion = process.env.GHOST_STORAGE_ADAPTER_S3_SIGNATURE_VERSION || signatureVersion || 'v4';
     this.acl = process.env.GHOST_STORAGE_ADAPTER_S3_ACL || acl || 'public-read';
   }
 
@@ -100,6 +102,7 @@ class Store extends _ghostStorageBase2.default {
     var options = {
       bucket: this.bucket,
       region: this.region,
+      signatureVersion: this.signatureVersion,
       s3ForcePathStyle: this.s3ForcePathStyle
 
       // Set credentials only if provided, falls back to AWS SDK's default provider chain
