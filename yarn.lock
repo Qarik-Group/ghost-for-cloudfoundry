@@ -169,6 +169,16 @@ ajv-keywords@^2.1.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
   integrity sha1-YXmX/F9gV2iUxDX5QNgZ4TW4B2I=
 
+ajv@6.8.1:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.8.1.tgz#0890b93742985ebf8973cd365c5b23920ce3cb20"
+  integrity sha512-eqxCp82P+JfqL683wwsL73XmFs1eG6qjw+RD3YHx+Jll1r0jNd4dh8QG9NYAeNGA/hnZjeEDgtTskgJULbxpWQ==
+  dependencies:
+    fast-deep-equal "^2.0.1"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
+
 ajv@^5.2.3, ajv@^5.3.0:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
@@ -638,10 +648,10 @@ body@^5.1.0:
     raw-body "~1.1.0"
     safe-json-parse "~1.0.1"
 
-bookshelf-relations@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/bookshelf-relations/-/bookshelf-relations-1.0.0.tgz#709b49a8b51bbe30873a453b6b18c74858e52839"
-  integrity sha512-Skw9U4qRpoxMRHDLnaOt1/bgdsizsqmGhRAd81Gh7eB4rnmnVTlcoiDKWZDdAsRz2dUR6TSusgRHFbHvg5s5Qg==
+bookshelf-relations@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bookshelf-relations/-/bookshelf-relations-1.1.0.tgz#35c883c569d8bddb334bbe4bed1fdc1e64d6d0ad"
+  integrity sha512-PWgPbijA+LIMXiC59TitMX32Il5IJ856B4Sri+DF0XO/hh1CuMg2xmJv8U3MrJuynzazVGSz2whHhokdxWCsJg==
   dependencies:
     bluebird "3.5.3"
     ghost-ignition "3.0.0"
