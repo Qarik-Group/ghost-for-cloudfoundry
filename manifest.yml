@@ -14,4 +14,4 @@ applications:
   - ghost-mysql
   routes:
   - route: staging.starkandwayne.com/blog
-  stack: cflinuxfs3
+  stack: cflinuxfs2
