@@ -4,8 +4,7 @@ applications:
   memory: 384M
   disk_quota: 1G
   buildpacks:
-  - https://github.com/cloudfoundry/apt-buildpack
-  - https://github.com/cloudfoundry/nodejs-buildpack
+  - nodejs-buildpack
   health-check-type: port
   timeout: 180
   services:
@@ -14,4 +13,4 @@ applications:
   - ghost-mysql
   routes:
   - route: staging.starkandwayne.com/blog
-  stack: cflinuxfs2
+  stack: cflinuxfs3
