@@ -5,7 +5,7 @@ applications:
   disk_quota: 1G
   buildpacks:
   - https://github.com/cloudfoundry/apt-buildpack
-  - https://github.com/cloudfoundry/nodejs-buildpack#v1.6.21
+  - https://github.com/cloudfoundry/nodejs-buildpack
   health-check-type: port
   timeout: 180
   services:
