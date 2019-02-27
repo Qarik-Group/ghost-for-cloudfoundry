@@ -70,3 +70,27 @@ cf map-route ghost starkandwayne.com --hostname www --path blog
 ```
 
 Go to the `/ghost` end point to setup your blog, create your initial author/admin user, and invite other people to become authors on your blog.
+
+## MySQL notes
+
+Historically I (@drnic) discovered that Ghost's DB migrations might set a lock during startup and cause startup to fail. My workaround during `bin/setup_and_run.sh` is to run the following before starting the Node.js process:
+
+```shell
+mysqlsh --uri $mysqluri --sql -e "UPDATE migrations_lock set locked=0 where lock_key='km01';"
+```
+
+The `mysqlsh` application comes from the `mysql-shell` package.
+
+This package for Ubuntu Xenial 16.04 (used by `cflinuxfs3` stack) was downloaded and cached within http://apt.starkandwayne.com; from which it is installed via the `apt-buildpack` (see `apt.yml`).
+
+```plain
+$ deb-s3 list --bucket apt.starkandwayne.com
+...
+mysql-shell            8.0.15-1ubuntu16.04  amd64
+```
+
+For future reference, I uploaded the .deb file using `deb-s3` CLI:
+
+```plain
+deb-s3 upload ~/Downloads/mysql-shell_8.0.15-1ubuntu18.04_amd64.deb --bucket apt.starkandwayne.com --sign <id>
+```

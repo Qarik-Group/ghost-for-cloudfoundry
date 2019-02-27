@@ -11,7 +11,8 @@ if [[ "${CF_INSTANCE_INDEX:-0}" != "0" ]]; then
 fi
 
 source bin/source_cf_env.sh
-mysqluri=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.uri")
+mysqluri=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.uri" | sed -e "s/\?.*//")
+# the 'sed' will strip ?reconnect from mysql://u:p@host:3306/dbname?reconnect=true
 mysqlhost=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.hostname")
 mysqlport=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.port")
 mysqlusername=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.username")
