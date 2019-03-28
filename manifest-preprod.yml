@@ -1,0 +1,17 @@
+applications:
+- name: ghost-preprod
+  instances: 1
+  memory: 384M
+  disk_quota: 1G
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack
+  - https://github.com/cloudfoundry/nodejs-buildpack
+  health-check-type: port
+  timeout: 180
+  services:
+  - ghost-email
+  - ghost-s3
+  - ghost-mysql-preprod
+  routes:
+  - route: preprod.starkandwayne.com/blog
+  stack: cflinuxfs3
