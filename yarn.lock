@@ -546,9 +546,9 @@ aws-sdk@2.6.3:
     xmlbuilder "2.6.2"
 
 aws-sdk@^2.331.0:
-  version "2.433.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.433.0.tgz#1f8b122e7697defd4e1ca9707c9187157d7bd544"
-  integrity sha512-p1OL35yw89BpL4Pzpu8Ct0/0w2HNUU/pjx5vC9D0t0rb/5T0cRa4ms13XdeSgGm8tVDLDOwuESlF+vE4oUkNig==
+  version "2.435.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.435.0.tgz#f1f10a9776ad3ac4e658f7d9834aa56fcac93f51"
+  integrity sha512-cXHe3V7Syv2JT/0xMO2xPO9T0Y1LZ5ccXeb7ZB/q54xzP1JIv0d7KIVIAoRx8gGn8VZTAd/6UV/D+r/dKTo9+g==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2258,7 +2258,17 @@ express-brute@1.0.1, express-brute@^1.0.0:
     long-timeout "~0.1.1"
     underscore "~1.8.3"
 
-express-hbs@1.0.5, express-hbs@^1.0.3:
+express-hbs@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/express-hbs/-/express-hbs-1.1.0.tgz#703c3855c30c8052c7d6f9df642d538404c492b5"
+  integrity sha512-4TQ8kwsMyiJ5yh3F5tWnAmYtYn4tHx7kjK42/Hlmq00/ekw6KMeRgK1INJtUK4QETJcQXiuTtwx68yNoNVAomQ==
+  dependencies:
+    handlebars "4.0.13"
+    js-beautify "1.6.8"
+    lodash "4.17.11"
+    readdirp "2.1.0"
+
+express-hbs@^1.0.3:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/express-hbs/-/express-hbs-1.0.5.tgz#6553b6bfcc55a965ee6161a6f374837f1eecea1f"
   integrity sha512-eVqu6wAieXohjreBpq4uxq5lLH6PWp/Feg+jlDe7gk48iltMx96VjfbQRaD89RSYKO8gHLc6v5SCIJTkOc0R8A==
