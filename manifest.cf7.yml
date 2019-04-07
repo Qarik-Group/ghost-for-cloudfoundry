@@ -1,0 +1,26 @@
+applications:
+- name: ghost
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack
+  - https://github.com/cloudfoundry/nodejs-buildpack
+  services:
+  - ghost-email
+  - ghost-s3
+  - ghost-mysql
+  routes:
+  - route: staging.starkandwayne.com/blog
+  stack: cflinuxfs3
+
+  processes:
+  - type: web
+    command: bin/setup_and_run.sh
+    instances: 1
+    memory: 384M
+    disk_quota: 1G
+    health-check-type: port
+    timeout: 180
+
+  # ideas
+  metadata:
+    labels:
+      test-label: 1
