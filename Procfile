@@ -1,1 +1,2 @@
-web: bin/setup_and_run.sh
+web: node current/index.js
+noop: tail -f /dev/null
