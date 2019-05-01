@@ -8,7 +8,7 @@ meta:
 
   image:
     name: starkandwayne/concourse-nodejs
-    tag: 8
+    tag: 10
 
   github:
     uri:          (( concat "git@github.com:" meta.github.owner "/" meta.github.repo ))
