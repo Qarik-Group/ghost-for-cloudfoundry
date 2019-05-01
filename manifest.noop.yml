@@ -1,0 +1,18 @@
+applications:
+- name: ghost
+  instances: 1
+  memory: 384M
+  disk_quota: 1G
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack
+  - nodejs_buildpack
+  timeout: 180
+  services:
+  - ghost-email
+  - ghost-s3
+  - ghost-mysql
+  routes:
+  - route: staging.starkandwayne.com/blog
+  stack: cflinuxfs3
+  command: 'tail -f /dev/null'
+  health-check-type: none

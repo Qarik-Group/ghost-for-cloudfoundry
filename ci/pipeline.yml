@@ -29,6 +29,7 @@ meta:
       production:     (( concat meta.name "-production" ))
     manifests:
       staging:        manifest.yml
+      staging-debug:  manifest.noop.yml
       production:     manifest-production.yml
 
   slack:
@@ -48,6 +49,9 @@ groups:
       - upgrade-ghost
       - deploy-staging
       - deploy-production
+  - name: debug
+    jobs:
+      - deploy-staging-debug
 
 jobs:
   - name: upgrade-ghost
@@ -84,7 +88,7 @@ jobs:
 
   - name: deploy-staging
     public: false
-    serial: true
+    serial_groups: [staging]
     plan:
       - get: app
         trigger: true
@@ -103,7 +107,7 @@ jobs:
       #       path: app/ci/scripts/setup-app.sh
       - put: cf-push-staging
         params:
-          manifest: (( concat "app-with-setup/" meta.cf.manifests.staging ))
+          # manifest: (( concat "app-with-setup/" meta.cf.manifests.staging ))
           # path: app-with-setup
           # manifest: (( con-with-setup/" meta.cf.manifests.staging ))
           manifest: (( concat "app/" meta.cf.manifests.staging ))
@@ -123,6 +127,24 @@ jobs:
         username: (( grab meta.slack.username ))
         icon_url: (( grab meta.slack.icon ))
         text:    '(( concat meta.slack.success_url " " meta.pipeline ": \"deploy-staging\" successful" ))'
+
+  - name: deploy-staging-debug
+    public: false
+    serial_groups: [staging]
+    plan:
+      - get: app
+      - put: cf-push-staging
+        params:
+          manifest: (( concat "app/" meta.cf.manifests.staging-debug ))
+          path: app
+          show_app_log: true
+    on_failure:
+      put: notify
+      params:
+        channel:  (( grab meta.slack.channel ))
+        username: (( grab meta.slack.username ))
+        icon_url: (( grab meta.slack.icon ))
+        text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-staging-debug\" job failed" ))'
 
   - name: deploy-production
     public: false
