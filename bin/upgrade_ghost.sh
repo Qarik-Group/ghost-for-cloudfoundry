@@ -31,7 +31,7 @@ pushd current
 popd
 
 cp current/package.json .
-sed -i -e 's% core\/server\/public\/% current/core/server/public/%' package.json
+sed -i -e 's%^"postinstall".*$%"postinstall": ""%' package.json
 
 cp current/yarn.lock .
 rm -rf node_modules
