@@ -28,11 +28,10 @@ popd
 pushd current
   yarn add ghost-storage-adapter-s3
   yarn add aws-sdk@2.6.3
-  yarn global add cpy-cli@2.0.0
 popd
 
 cp current/package.json .
-sed -i -e 's%^"postinstall".*$%"postinstall": ""%' package.json
+sed -i -E 's/"postinstall":(.*)cpy/"postinstall":\1cp/' package.json
 
 cp current/yarn.lock .
 rm -rf node_modules
