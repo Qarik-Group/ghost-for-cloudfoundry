@@ -28,6 +28,7 @@ popd
 pushd current
   yarn add ghost-storage-adapter-s3
   yarn add aws-sdk@2.6.3
+  yarn global add cpy-cli@2.0.0
 popd
 
 cp current/package.json .
