@@ -31,6 +31,7 @@ pushd current
 popd
 
 cp current/package.json .
+
 mkdir -p current/core/server/public
 sed -i -E 's%"postinstall":(.*)cpy(.*.js\s+)(core/server/public/)%"postinstall":\1cp\2current/\3%' package.json
 
