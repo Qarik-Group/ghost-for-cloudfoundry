@@ -33,7 +33,7 @@ popd
 cp current/package.json .
 
 mkdir -p current/core/server/public
-sed -i -E 's%"postinstall":(.*)cpy(.*.js\s+)(core/server/public/)%"postinstall":\1cp\2current/\3%' package.json
+sed -i -E 's%"postinstall":(.*)cpy(.*.js\s+)(core/server/public/)%"postinstall":\1cp\2/home/vcap/current/\3%' package.json
 
 cp current/yarn.lock .
 rm -rf node_modules
