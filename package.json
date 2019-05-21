@@ -1,6 +1,6 @@
 {
   "name": "ghost",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "description": "The professional publishing platform",
   "author": "Ghost Foundation",
   "homepage": "https://ghost.org",
@@ -32,7 +32,7 @@
     "lint": "yarn lint:server && yarn lint:test",
     "posttest": "yarn lint",
     "fixmodulenotdefined": "yarn cache clean && cd core/client && rm -rf node_modules tmp dist && yarn && cd ../../",
-    "postinstall": ""
+    "postinstall": "cpy node_modules/@tryghost/members-theme-bindings/build/members-theme-bindings.js core/server/public/"
   },
   "engines": {
     "node": "^6.9.0 || ^8.9.0 || ^10.13.0",
