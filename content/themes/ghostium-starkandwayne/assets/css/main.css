@@ -3222,7 +3222,7 @@ form.contact-form-bg input[type=submit]:hover {
     border-radius: 8px
 }
 
-.content p {
+.content p, .content ul, .content ol {
     font-family: "Noto Serif", serif;
     font-size: 14pt
 }

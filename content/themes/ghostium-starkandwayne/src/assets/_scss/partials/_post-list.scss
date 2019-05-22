@@ -59,7 +59,7 @@
   color: $muted-text-color;
 
   &:before {
-    content: ' · ';
+    content: ' \u2022 ';
   }
 
   &:first-child:before {
