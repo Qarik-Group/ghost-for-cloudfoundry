@@ -13,4 +13,6 @@ To update the theme:
     npm run-script build
     ```
 
+This will both compile the JavaScript and CSS into small files, and it will verify that the Ghost theme is still valid against latest Ghost (using `gscan`).
+
 Note, this toolchain also requires Ruby/RubyGems to install the `sass` and `csscss` CLIs that are used.
