@@ -5,10 +5,11 @@ This is the theme for starkandwayne.com/blog.
 To update the theme:
 
 1. Make edits to files within `src/` only. Do not manually edit `assets/`. This folder is generated from `src/`.
-1. Use nodejs/npm to compile the JavaScript/CSS and generate updated Ghost templates to reference these files.
+1. Use nodejs/yarn to compile the JavaScript/CSS and generate updated Ghost templates to reference these files.
 
     ```plain
-    npm install
+    npm install -g grunt gscan
+    yarn install
     npm run-script build
     ```
 

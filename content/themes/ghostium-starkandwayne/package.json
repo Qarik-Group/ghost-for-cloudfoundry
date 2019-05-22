@@ -47,13 +47,14 @@
     "grunt-svgmin": "*",
     "grunt-text-replace": "*",
     "grunt-usemin": "*",
-    "matchdep": "*"
+    "matchdep": "*",
+    "gscan": "*"
   },
   "engines": {
     "node": ">=10.0"
   },
   "scripts": {
-    "build": "grunt build --force && cp build/default.hbs default.hbs && rm -rf assets/{js,css} && mkdir -p assets/{js,css} && cp build/assets/js/* assets/js && cp build/assets/css/*.css assets/css",
+    "build": "grunt build --force && cp build/default.hbs default.hbs && rm -rf assets/{js,css} && mkdir -p assets/{js,css} && cp build/assets/js/* assets/js && cp build/assets/css/*.css assets/css && gscan .",
     "test": "grunt --verbose",
     "postinstall": "bundle install && bower install"
   }
