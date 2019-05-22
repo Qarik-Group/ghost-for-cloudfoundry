@@ -3,7 +3,7 @@
 <section class="wrapper wrapper-post">
   <div class="wrapper-container">
     <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
-      {{#post}}
+      {{#is "post"}}
         <section class="post-container">
           <header class="post-header">
             <ul class="post-meta-list">
@@ -81,7 +81,7 @@
             </div>
           </footer>
         </section>
-      {{/post}}
+      {{/is}}
       <section itemprop="comment" class="post-comments">
         <div id="disqus_thread"></div>
       </section>
@@ -94,9 +94,9 @@
 <script type="text/javascript">
   {{> custom/config}}
 
-  {{#post}}
+  {{#is "post"}}
     var disqus_identifier = '{{comment_id}}';
-  {{/post}}
+  {{/is}}
 
   if(typeof DISQUS !== 'object') {
     (function () {

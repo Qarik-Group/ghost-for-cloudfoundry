@@ -3,7 +3,7 @@
 <section class="wrapper wrapper-post">
   <div class="wrapper-container">
     <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
-      {{#post}}
+      {{#is "post"}}
         <section class="post-container">
           <header class="post-header">
             <h1 itemprop="name headline" class="post-title"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
@@ -23,9 +23,6 @@
                 </a>
                 <p class="post-author-bio">{{primary_author.bio}}</p>
               </div>
-              <a href="https://www.starkandwayne.com" class="post-company-avatar">
-                <img src="{{asset "images/sw-logo-512px-tinypng.png"}}">
-              </a>
             </div>
           </aside>
           <div itemprop="articleBody" class="post-body">
@@ -55,7 +52,7 @@
             </div>
           </footer>
         </section>
-      {{/post}}
+      {{/is}}
     </article>
 
     {{> footer this}}

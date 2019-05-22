@@ -1,29 +1,32 @@
 {{!< default}}
 
-<section class="page">
-  <div id="container" class="container">
-    <div class="row">
-      <div class="col-md-2">  
-      </div>
-      <div class="col-md-8">
-        <div class="content">
+<aside role="banner" class="cover">
+  <div {{#if @site.cover_image}}data-load-image="{{@site.cover_image}}"{{/if}} class="cover-image"></div>
+  <div class="cover-container">
+    {{#if @site.logo}}
+      <a href="{{@site.url}}" class="cover-logo" data-pjax>
+        <img src="{{@site.logo}}" alt="Blog Logo">
+      </a>
+    {{/if}}
+    <h1 class="cover-title">{{@site.title}}</h1>
+    <p class="cover-description">{{@site.description}}</p>
+  </div>
+</aside>
 
-        {{> custom/featured this}}
+<section class="wrapper" tabindex="0">
+  <div class="wrapper-container">
+    {{> custom/featured this}}
 
-        <section class="post-list">
-          {{#foreach posts}}
-            {{> post/list this}}
-          {{/foreach}}
-        </section>
+    <section class="post-list">
+      {{#foreach posts}}
+        {{> post/list this}}
+      {{/foreach}}
+    </section>
 
-        {{#if pagination}}
-          {{pagination}}
-        {{/if}}
-      </div>
-    </div>
-    <div class="col-md-2">  
-    </div>
+    {{#if pagination}}
+      {{pagination}}
+    {{/if}}
+
+    {{> footer this}}
   </div>
 </section>
-
-{{> footer this}}
