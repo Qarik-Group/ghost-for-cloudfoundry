@@ -12,16 +12,16 @@
           </header>
           <aside class="post-side">
             <div class="post-author">
-              {{#if author.profile_image}}
-                <a href="{{author.website}}" class="post-author-avatar">
-                  <img src="{{author.profile_image}}" alt="{{author.name}}">
+              {{#if primary_author.profile_image}}
+                <a href="{{primary_author.website}}" class="post-author-avatar">
+                  <img src="{{primary_author.profile_image}}" alt="{{primary_author.name}}">
                 </a>
               {{/if}}
               <div class="post-author-info">
-                <a href="{{author.website}}" class="post-author-name">
-                  {{author.name}}
+                <a href="{{primary_author.website}}" class="post-author-name">
+                  {{primary_author.name}}
                 </a>
-                <p class="post-author-bio">{{author.bio}}</p>
+                <p class="post-author-bio">{{primary_author.bio}}</p>
               </div>
             </div>
           </aside>
@@ -30,17 +30,17 @@
           </div>
           <footer class="post-footer">
             <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
-              {{#if author.profile_image}}
-                <a href="{{author.website}}" class="post-author-avatar">
-                  <img itemprop="image" src="{{author.profile_image}}" alt="{{author.name}}">
+              {{#if primary_author.profile_image}}
+                <a href="{{primary_author.website}}" class="post-author-avatar">
+                  <img itemprop="image" src="{{primary_author.profile_image}}" alt="{{primary_author.name}}">
                 </a>
               {{/if}}
               <div class="post-author-info">
                 <h4 class="post-footer-heading">Written By</h4>
-                <a href="{{author.website}}" itemprop="url" class="post-author-name">
-                  <span itemprop="name">{{author.name}}</span>
+                <a href="{{primary_author.website}}" itemprop="url" class="post-author-name">
+                  <span itemprop="name">{{primary_author.name}}</span>
                 </a>
-                <p itemprop="description" class="post-author-bio">{{author.bio}}</p>
+                <p itemprop="description" class="post-author-bio">{{primary_author.bio}}</p>
               </div>
             </div>
             <div class="post-social">
