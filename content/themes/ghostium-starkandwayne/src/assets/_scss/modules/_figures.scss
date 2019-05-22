@@ -34,7 +34,7 @@
   }
 }
 
-img {
+img, .kg-width-full img, .kg-width-wide img {
   max-width: 100%;
   margin: 0 auto;
 }
@@ -46,7 +46,7 @@ figure {
   outline: 0;
   width: 100%;
 
-  img {
+  img, .kg-width-full img, .kg-width-wide img {
     @extend .center-block;
   }
 
