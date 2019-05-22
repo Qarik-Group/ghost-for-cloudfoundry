@@ -54,7 +54,7 @@
     "node": ">=10.0"
   },
   "scripts": {
-    "build": "grunt build --force && cp build/*.hbs . && rm -rf assets/{js,css} && mkdir -p assets/{js,css} && cp build/assets/js/* assets/js && cp build/assets/css/*.css assets/css && gscan . --verbose",
+    "build": "grunt build --force && cp build/*.hbs . && rm -rf partials && cp -r build/partials . && rm -rf assets/{js,css} && mkdir -p assets/{js,css} && cp build/assets/js/* assets/js && cp build/assets/css/*.css assets/css && gscan . --verbose",
     "test": "grunt --verbose",
     "postinstall": "bundle install && bower install"
   }
