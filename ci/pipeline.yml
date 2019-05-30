@@ -49,9 +49,6 @@ groups:
       - upgrade-ghost
       - deploy-staging
       - deploy-production
-  - name: debug
-    jobs:
-      - deploy-staging-debug
 
 jobs:
   - name: upgrade-ghost
@@ -127,24 +124,6 @@ jobs:
         username: (( grab meta.slack.username ))
         icon_url: (( grab meta.slack.icon ))
         text:    '(( concat meta.slack.success_url " " meta.pipeline ": \"deploy-staging\" successful" ))'
-
-  - name: deploy-staging-debug
-    public: false
-    serial_groups: [staging]
-    plan:
-      - get: app
-      - put: cf-push-staging
-        params:
-          manifest: (( concat "app/" meta.cf.manifests.staging-debug ))
-          path: app
-          show_app_log: true
-    on_failure:
-      put: notify
-      params:
-        channel:  (( grab meta.slack.channel ))
-        username: (( grab meta.slack.username ))
-        icon_url: (( grab meta.slack.icon ))
-        text:    '(( concat meta.slack.fail_url " " meta.pipeline ": \"deploy-staging-debug\" job failed" ))'
 
   - name: deploy-production
     public: false
