@@ -46,11 +46,19 @@ meta:
 groups:
   - name: (( grab meta.pipeline ))
     jobs:
+      - upgrade-apt-buildpack
       - upgrade-ghost
       - deploy-staging
       - deploy-production
 
 jobs:
+  - name: upgrade-apt-buildpack
+    public: true
+    serial: true
+    plan:
+      - get: apt-buildpack
+        trigger: true
+
   - name: upgrade-ghost
     public: true
     serial: true
@@ -204,11 +212,18 @@ resources:
   - name: ghost
     type: github-release
     source:
-      access_token: (( grab meta.github.access_token ))
       user: TryGhost
       repository: Ghost
+      access_token: (( grab meta.github.access_token ))
 
   - name: notify
     type: slack-notification
     source:
       url: (( grab meta.slack.webhook ))
+
+  - name: apt-buildpack
+    type: github-release
+    source:
+      user: cloudfoundry
+      repository: apt-buildpack
+      access_token: (( grab meta.github.access_token ))
