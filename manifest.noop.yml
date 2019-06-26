@@ -4,7 +4,7 @@ applications:
   memory: 384M
   disk_quota: 1G
   buildpacks:
-  - https://github.com/cloudfoundry/apt-buildpack
+  - https://github.com/cloudfoundry/apt-buildpack/releases/download/v0.1.8/apt-buildpack-cflinuxfs3-v0.1.8.zip
   - nodejs_buildpack
   timeout: 180
   services:
