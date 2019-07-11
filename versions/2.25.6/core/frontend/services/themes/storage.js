@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const activate = require('./activate');
 const validate = require('./validate');
 const list = require('./list');
-const Storage = require('./Storage');
+const ThemeStorage = require('./ThemeStorage');
 const themeLoader = require('./loader');
 const toJSON = require('./to-json');
 
@@ -14,13 +14,12 @@ const debug = require('ghost-ignition').debug('api:themes');
 let themeStorage;
 
 const getStorage = () => {
-    themeStorage = themeStorage || new Storage();
+    themeStorage = themeStorage || new ThemeStorage();
 
     return themeStorage;
 };
 
 module.exports = {
-    get: require('./to-json'),
     getZip: (themeName) => {
         const theme = list.get(themeName);
 
@@ -70,17 +69,18 @@ module.exports = {
                 return themeLoader.loadOneTheme(shortName);
             })
             .then((loadedTheme) => {
+                const overrideTheme = (shortName === settingsCache.get('active_theme'));
                 // CASE: if this is the active theme, we are overriding
-                if (shortName === settingsCache.get('active_theme')) {
+                if (overrideTheme) {
                     debug('Activating theme (method C, on API "override")', shortName);
                     activate(loadedTheme, checkedTheme);
-
-                    // CASE: clear cache
-                    this.headers.cacheInvalidate = true;
                 }
 
                 // @TODO: unify the name across gscan and Ghost!
-                return toJSON(shortName, checkedTheme);
+                return {
+                    themeOverridden: overrideTheme,
+                    theme: toJSON(shortName, checkedTheme)
+                };
             })
             .finally(() => {
                 // @TODO: we should probably do this as part of saving the theme
