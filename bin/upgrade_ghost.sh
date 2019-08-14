@@ -32,7 +32,7 @@ popd
 
 cp current/package.json .
 sed -i -e 's%"postinstall".*$%"postinstall": ""%' package.json
-sed -i -e 's%./core/shared/nql-map-key-values%./current/core/shared/nql-map-key-values%' package.json
+sed -i -e "s%./core/shared/nql-map-key-values%./versions/${GHOST_VERSION}/core/shared/nql-map-key-values%" package.json
 
 cp current/yarn.lock .
 rm -rf node_modules
