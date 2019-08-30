@@ -1,57 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{meta_title}}</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Poppins:300,400,500,600,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/extra.css">
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,target-densitydpi=device-dpi">
-    <meta name="generator" content="verse">
-    <meta name="X-UA-Compatible" content="IE=edge">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/blog/assets/css/libs.css">
-    <link rel="stylesheet" type="text/css" href="/blog/assets/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/blog/assets/css/blog-specific.css">
-    <link rel="alternate home" type="application/rss+xml" title="Stark & Wayne - RSS feed" href="/feed.xml">
-
-    <!-- http://embedresponsively.com/ -->
-    <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
-    </style>
+    <link rel="apple-touch-icon" sizes="57x57" href="/fav/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/fav/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/fav/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/fav/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/fav/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/fav/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/fav/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/fav/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/fav/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/fav/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png">
+    <link rel="manifest" href="/fav/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/fav/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
     {{ghost_head}}
   </head>
-  <body class="{{body_class}} dark-load">
-    {{> header this}}
+  <body class="{{body_class}}">
+    <!--[if IE]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <header>
+      <div class="container">
+        <a class="brand" href="/">
+          <img src="/images/logo.png" alt="Stark &amp; Wayne">
+        </a>
+        <div class="burger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="nav-primary">
+          <li>
+            <a href="/about">About Us</a>
+          </li>
+          <li class="menu-item-has-children">
+            <a href="#">Services</a>
+            <ul class="sub-menu">
+              <li><a href="/services/cloud-foundry-managed-services">Cloud Foundry Managed Services</a></li>
+              <li><a href="/services/platform-services">Platform Services</a></li>
+              <li><a href="/services/consulting-services">Consulting Services</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="/open-source">Open Source</a>
+          </li>
+          <li class="menu-item-has-children">
+            <a>Resource Center</a>
+            <ul class="sub-menu">
+              <li><a href="/case-studies">Case Studies</a></li>
+              <li><a href="/interviews-and-talks">Interviews and Talks</a></li>
+              <li><a href="/resources/techsession">Tech Sessions</a></li>
+              <li><a href="/resources/training.html">Training</a></li>
+              <li><a href="https://ultimateguidetobosh.com/">Ultimate Guide to BOSH</a></li>
+            </ul>
+          </li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact-us">Contact Us</a></li>
+        </ul>
+      </div>
+    </header>
 
     {{{body}}}
 
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <script type="text/javascript" src="/blog/assets/js/libs.js"></script>
-    <script type="text/javascript" src="/blog/assets/js/common.js"></script>
-    <script type="text/javascript">
-    _linkedin_partner_id = "571860";
-    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-    </script><script type="text/javascript">
-    (function(){var s = document.getElementsByTagName("script")[0];
-    var b = document.createElement("script");
-    b.type = "text/javascript";b.async = true;
-    b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
-    s.parentNode.insertBefore(b, s);})();
-    </script>
-    <noscript>
-    <img height="1" width="1" style="display:none;" alt="" src="https://dc.ads.linkedin.com/collect/?pid=571860&fmt=gif" />
-    </noscript>
+    <footer class="simple">
+      <div class="container">
+        <div class="footer-top experts-on-these-platforms"></div>
+        <div class="footer-mid">
+          <div class="footer-col first-col">
+            <img src="/images/logo.png" alt="Stark &amp; Wayne">
+            <p>Stark & Wayne is the premier BOSH, Cloud Foundry, and Cloud Native
+            consulting firm.</p>
+            <p>If your platform needs help, call Stark & Wayne for success, you'll
+            never look back.</p>
 
-    {{!-- jQuery needs to come before `{{ghost_foot}}` so that jQuery can be used in code injection --}}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    {{ghost_foot}}
+            <a href="mailto:beahero@starkandwayne.com">beahero@starkandwayne.com</a>
+            <address>(415) 860-2185
+10 John James Audubon Pkwy
+Buffalo, NY 14228
+United States</address></p>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="/services/cloud-foundry-managed-services">Cloud Foundry<br>Managed Services</a></li>
+              <li><a href="/services/platform-services">Platform Services</a></li>
+              <li><a href="/services/consulting-services">Consulting Services</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Resource Center</h4>
+            <ul>
+              <li><a href="/case-studies">Case Studies</a></li>
+              <li><a href="/interviews-and-talks">Interviews and Talks</a></li>
+              <li><a href="/resources/techsession">Tech Sessions</a></li>
+              <li><a href="/resources/training.html">Training</a></li>
+              <li><a href="https://ultimateguidetobosh.com/">Ultimate Guide to BOSH</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Reference</h4>
+            <ul>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/contact-us">Contact Us</a></li>
+              <li><a href="/newsletter">Newsletter Subscription</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-    <script src="{{asset 'js/f503e356.foot-scripts.min.js'}}"></script>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="copyright">&copy; 2019 Stark & Wayne.  All Rights Reserved.</div>
+          <ul class="social-links">
+            <li><a href="https://www.facebook.com/starkandwayne">
+                <img src="/images/icons/facebook.svg" alt="Facebook"></a></li>
+            <li><a href="https://twitter.com/starkandwayne">
+                <img src="/images/icons/twitter.svg" alt="@starkandwayne on Twitter"></a></li>
+            <li><a href="https://linkedin.com/starkandwayne">
+                <img src="/images/icons/linkedin.svg" alt="LinkedIn"></a></li>
+            <li><a href="https://www.youtube.com/user/starkandwayne">
+                <img src="/images/icons/youtube.svg" alt="YouTube"></a></li>
+            <li><a href="https://github.com/starkandwayne">
+                <img src="/images/icons/github.svg" alt="@starkandwayne on GitHub"></a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="/scripts/script.js"></script>
+
+    <div id="lb"><div>
+      <a href="#" rel="close">✕</a>
+      <div class="lb-inner"></div>
+    </div></div>
 
     <script type="text/javascript">
       {{> custom/config}}
@@ -73,7 +172,7 @@
 
     <!-- prompt reader to get emailed new blog posts -->
     <script src="https://starkandwayne.activehosted.com/f/embed.php?id=1" type="text/javascript" charset="utf-8"></script>
-
-
+  </body>
+</html>
   </body>
 </html>

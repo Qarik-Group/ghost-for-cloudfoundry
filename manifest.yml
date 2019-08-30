@@ -4,15 +4,15 @@ applications:
   memory: 384M
   disk_quota: 1G
   buildpacks:
-  - https://github.com/cloudfoundry/apt-buildpack/releases/download/v0.1.8/apt-buildpack-cflinuxfs3-v0.1.8.zip
-  - nodejs_buildpack
+    - https://github.com/cloudfoundry/apt-buildpack/releases/download/v0.1.8/apt-buildpack-cflinuxfs3-v0.1.8.zip
+    - nodejs_buildpack
   health-check-type: port
   timeout: 180
   services:
-  - ghost-email
-  - ghost-s3
-  - ghost-mysql
+    #  - ghost-email
+    - ghost-s3
+    - ghost-mysql
   routes:
-  - route: staging.starkandwayne.com/blog
+    - route: staging.starkandwayne.com/blog
   stack: cflinuxfs3
   command: ''

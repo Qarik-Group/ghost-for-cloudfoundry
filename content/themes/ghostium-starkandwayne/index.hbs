@@ -1,29 +1,26 @@
 {{!< default}}
 
-<section class="page">
-  <div id="container" class="container">
-    <div class="row">
-      <div class="col-md-2">  
+<div class="hero interior" style="background-image: url(/images/banners/hero.jpg)">
+  <div class="container">
+      <div class="hero-content">
+          <h1 style="color: white;">Blog</h1>
       </div>
-      <div class="col-md-8">
-        <div class="content">
-
-        {{> custom/featured this}}
-
-        <section class="post-list">
-          {{#foreach posts}}
-            {{> post/list this}}
-          {{/foreach}}
-        </section>
-
-        {{#if pagination}}
-          {{pagination}}
-        {{/if}}
-      </div>
-    </div>
-    <div class="col-md-2">  
-    </div>
   </div>
-</section>
+</div>
 
-{{> footer this}}
+<div class="page blog-intro">
+  <p>You can become a superhero of automation and development by learning and practicing. This is our blog from our learnings and practice.</p>
+  <p>We are consultants and trainers in Cloud Foundry, devops automation and continous delivery. We have the best jobs in the world helping you have the best job in the world.</p>
+</div>
+
+<div id="blog">
+  {{#foreach posts}}
+    {{> post/list this}}
+  {{/foreach}}
+</div>
+
+{{#if pagination}}
+  <div class="page blog-pagination">
+    {{pagination}}
+  </div>
+{{/if}}

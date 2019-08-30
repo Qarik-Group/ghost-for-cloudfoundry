@@ -1,110 +1,59 @@
 {{!< default}}
-<!--email_off-->
-<section class="page">
-  <div id="container" class="container">
-    <div class="row">
-      <div class="col-md-2">  
-      </div>
-      <div class="col-md-8">
-        <div class="content">
-          <section class="wrapper wrapper-post">
-            <div class="wrapper-container">
-              <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
-                {{#post}}
-                  <section class="post-container">
-                    <header class="post-header">
-                      <ul class="post-meta-list">
-                        <li class="post-meta-item">
-                          <time datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">
-                            {{date published_at timeago="true"}}
-                          </time>
-                        </li>
-                        {{#if tags}}
-                          <li class="post-meta-item">
-                            {{#foreach tags}}
-                              <span itemprop="{{#if @first}}articleSection{{else}}keywords{{/if}}">{{name}}</span>
-                            {{/foreach}}
-                          </li>
-                        {{/if}}
-                        <li class="post-meta-item">
-                          <a href="#disqus_thread" data-disqus-identifier="{{comment_id}}"></a>
-                        </li>
-                      </ul>
-                      <h1 itemprop="name headline" class="post-title"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
-                      {{! A subtitle not available in Ghosts yet }}
-                      <!--h2 itemprop="about" class="post-subtitle"></h2-->
-                    </header>
-                    <aside class="post-side">
-                      <div class="post-author">
-                        {{#if author.profile_image}}
-                          <a href="{{author.website}}" class="post-author-avatar">
-                            <img src="{{author.profile_image}}" alt="{{author.name}}">
-                          </a>
-                        {{/if}}
-                        <div class="post-author-info">
-                          <a href="{{author.website}}" class="post-author-name">
-                            {{author.name}}
-                          </a>
-                          <p class="post-author-bio">{{author.bio}}</p>
-                        </div>
-                        <a href="https://www.starkandwayne.com" class="post-company-avatar">
-                          <img src="{{asset "images/sw-logo-512px-tinypng.png"}}">
-                        </a>
-                      </div>
-                    </aside>
-                    <div itemprop="articleBody" class="post-body">
-                      {{{content}}}
-                    </div>
-                    <footer class="post-footer">
-                      <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
-                        {{#if author.profile_image}}
-                          <a href="{{author.website}}" class="post-author-avatar">
-                            <img itemprop="image" src="{{author.profile_image}}" alt="{{author.name}}">
-                          </a>
-                        {{/if}}
-                        <div class="post-author-info">
-                          <h4 class="post-footer-heading">Written By</h4>
-                          <a href="{{author.website}}" itemprop="url" class="post-author-name">
-                            <span itemprop="name">{{author.name}}</span>
-                          </a>
-                          <p itemprop="description" class="post-author-bio">{{author.bio}}</p>
-                          {{#if author.location}}
-                            <p class="post-author-location">{{author.location}}</p>
-                          {{/if}}
-                          {{#if author.website}}
-                            <p class="post-author-website">
-                              <a href="{{author.website}}" rel="nofollow">{{author.website}}</a>
-                            </p>
-                          {{/if}}
-                          <p class="post-info">
-                            <b class="post-info-title">Published on</b>
-                            <time class="post-date">{{date format='MMMM DD, YYYY'}}</time>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="post-social">
-                        <h4 class="post-footer-heading">Spread the word</h4>
-                        <a href="#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
-                        <a href="#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
-                        <a href="#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
-                        <a href="#" data-action="share-linkedin"><i class="fa fa-fw fa-lg fa-linkedin"></i></a>
-                      </div>
-                    </footer>
-                  </section>
-                {{/post}}
-                <section itemprop="comment" class="post-comments">
-                  <div id="disqus_thread"></div>
-                </section>
-              </article>
-            </div>
-          </section>
-      </div>
-    </div>
-    <div class="col-md-2">  
+
+<div class="hero interior" style="background-image: url(/images/banners/hero.jpg">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="post-title" itemprop="name headline"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
     </div>
   </div>
-</section>
-{{> footer this}}
+</div>
+
+<!--email_off-->
+<article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
+  {{#post}}
+  <div class="page">
+    {{#if feature_image}}
+    <img class="header" src="{{feature_image}}">
+    {{/if}}
+
+    <h1 class="title"><span datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</span>
+      {{{title}}}</h1>
+
+      {{{content}}}
+  </div>
+
+  <div class="post-footer">
+    <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author post-author-info">
+      <a href="{{author.website}}" class="post-author-avatar" target="_blank">
+        <img itemprop="image" src="{{#if author.profile_image}}{{author.profile_image}}{{else}}/images/default-avatar.jpg{{/if}}">
+      </a>
+      <div>
+        <h4 class="post-footer-heading">Written By</h4>
+        <a href="{{author.website}}" itemprop="url" class="post-author-name" target="_blank">
+          <span itemprop="name">{{author.name}}</span>
+        </a>
+      </div>
+      <div>
+        <p itemprop="description" class="post-author-bio">{{author.bio}}</p>
+        {{#if author.location}}
+          <p class="post-author-location">{{author.location}}</p>
+        {{/if}}
+        {{#if author.website}}
+        <p class="post-author-website">
+          <a href="{{author.website}}" rel="nofollow">{{author.website}}</a>
+        </p>
+        {{/if}}
+      </div>
+    </div>
+    <div class="post-social">
+      <h4 class="post-footer-heading">Spread the word</h4>
+      <a href="#" data-action="share-twitter"><img src="/images/icons/twitter-b.svg"></a>
+      <a href="#" data-action="share-facebook"><img src="/images/icons/facebook-b.svg"></a>
+      <a href="#" data-action="share-linkedin"><img src="/images/icons/linkedin-b.svg"></a>
+    </div>
+  </div>
+  {{/post}}
+</article>
 <!--/email_off-->
 
 <script type="text/javascript">
