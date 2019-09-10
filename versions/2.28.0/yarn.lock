@@ -5793,7 +5793,7 @@ npm-run-path@^2.0.0:
     gauge "~2.7.3"
     set-blocking "~2.0.0"
 
-nql-map-key-values@./versions/2.28.0/core/shared/nql-map-key-values:
+nql-map-key-values@./core/shared/nql-map-key-values:
   version "0.0.0"
   dependencies:
     "@nexes/nql" "0.3.0"
