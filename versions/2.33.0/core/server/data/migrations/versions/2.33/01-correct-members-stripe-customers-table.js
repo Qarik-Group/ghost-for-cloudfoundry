@@ -11,8 +11,10 @@ module.exports = {
         const hasTable = await conn.schema.hasTable('members_stripe_customers');
 
         if (hasTable) {
-            common.logging.warn('Adding table: members_stripe_customers');
-            return;
+            common.logging.info('Dropping table: members_stripe_customers');
+            await commands.deleteTable('members_stripe_customers', conn);
+        } else {
+            common.logging.warn('Dropping table: members_stripe_customers');
         }
 
         common.logging.info('Adding table: members_stripe_customers');
@@ -32,3 +34,4 @@ module.exports = {
         return commands.deleteTable('members_stripe_customers', conn);
     }
 };
+
