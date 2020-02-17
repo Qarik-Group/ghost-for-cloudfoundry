@@ -35,23 +35,23 @@
   </div>
   <div class="post-footer">
     <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author post-author-info">
-      <a href="{{author.website}}" class="post-author-avatar" target="_blank">
-        <img itemprop="image" src="{{#if author.profile_image}}{{author.profile_image}}{{else}}/images/default-avatar.jpg{{/if}}">
+      <a href="{{primary_author.website}}" class="post-author-avatar" target="_blank">
+        <img itemprop="image" src="{{#if primary_author.profile_image}}{{primary_author.profile_image}}{{else}}/images/default-avatar.jpg{{/if}}">
       </a>
       <div>
         <h4 class="post-footer-heading">Written By</h4>
-        <a href="{{author.website}}" itemprop="url" class="post-author-name" target="_blank">
-          <span itemprop="name">{{author.name}}</span>
+        <a href="{{primary_author.website}}" itemprop="url" class="post-author-name" target="_blank">
+          <span itemprop="name">{{primary_author.name}}</span>
         </a>
       </div>
       <div>
-        <p itemprop="description" class="post-author-bio">{{author.bio}}</p>
-        {{#if author.location}}
-          <p class="post-author-location">{{author.location}}</p>
+        <p itemprop="description" class="post-author-bio">{{primary_author.bio}}</p>
+        {{#if primary_author.location}}
+          <p class="post-author-location">{{primary_author.location}}</p>
         {{/if}}
-        {{#if author.website}}
+        {{#if primary_author.website}}
         <p class="post-author-website">
-          <a href="{{author.website}}" rel="nofollow">{{author.website}}</a>
+          <a href="{{primary_author.website}}" rel="nofollow">{{primary_author.website}}</a>
         </p>
         {{/if}}
       </div>
