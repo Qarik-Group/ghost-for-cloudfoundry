@@ -5,3 +5,4 @@ content/data/*.db
 credentials.yml
 tmp
 config.production.json
+versions/*/config.development.json

@@ -140,6 +140,7 @@ JSON
 export NODE_ENV=production
 
 echo "Setting up symlinks"
+rm -f current
 ln -s versions/* current
 cd content/themes/
 rm -rf casper

@@ -42,7 +42,18 @@ aws_region=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].credentials.re
 # www.starkandwyane.com/path. The shorter will be more flexible with cross-origin.
 # appurl=$(echo $VCAP_APPLICATION| jq -r ".uris[]" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | head -n1)
 
-cat > config.$NODE_ENV.json <<-JSON
+echo "Setting up symlinks"
+rm -f current
+ln -s versions/* current
+cd content/themes/
+rm -rf casper
+ln -s ../../current/content/themes/casper/
+cd -
+
+cp -r node_modules current/
+
+echo "Creating current/config.$NODE_ENV.json"
+cat > current/config.$NODE_ENV.json <<-JSON
 {
   "url": "http://localhost:${PORT:-8080}/",
   "server": {
@@ -141,15 +152,11 @@ cat > config.channels.json <<-JSON
 }
 JSON
 
-echo "Setting up symlinks"
-ln -s versions/* current
-cd content/themes/
-rm -rf casper
-ln -s ../../current/content/themes/casper/
-cd -
-
-cp -r node_modules current/
-cp config.$NODE_ENV.json current
+cp current/config.$NODE_ENV.json config.$NODE_ENV.json
+function cleanup() {
+  git checkout config.$NODE_ENV.json
+}
+trap cleanup EXIT SIGINT
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
 
