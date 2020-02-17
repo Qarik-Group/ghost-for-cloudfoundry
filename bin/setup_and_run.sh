@@ -10,6 +10,9 @@ if [[ "${CF_INSTANCE_INDEX:-0}" != "0" ]]; then
     exit 1
 fi
 
+export NODE_ENV=${NODE_ENV:-production}
+
+
 source bin/source_cf_env.sh
 mysqluri=$(echo "$VCAP_SERVICES" | jq -r ".cleardb[0].credentials.uri" | sed -e "s/\?.*//")
 # the 'sed' will strip ?reconnect from mysql://u:p@host:3306/dbname?reconnect=true
@@ -37,11 +40,11 @@ aws_region=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].credentials.re
 
 # Pick the shortest route, which will be the starkandwayne.com/path version, rather than
 # www.starkandwyane.com/path. The shorter will be more flexible with cross-origin.
-appurl=$(echo $VCAP_APPLICATION| jq -r ".uris[]" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | head -n1)
+# appurl=$(echo $VCAP_APPLICATION| jq -r ".uris[]" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | head -n1)
 
-cat > config.production.json <<-JSON
+cat > config.$NODE_ENV.json <<-JSON
 {
-  "url": "https://${appurl}/",
+  "url": "http://localhost:${PORT:-8080}/",
   "server": {
     "port": ${PORT:-8080},
     "host": "0.0.0.0"
@@ -138,8 +141,6 @@ cat > config.channels.json <<-JSON
 }
 JSON
 
-export NODE_ENV=production
-
 echo "Setting up symlinks"
 ln -s versions/* current
 cd content/themes/
@@ -148,31 +149,33 @@ ln -s ../../current/content/themes/casper/
 cd -
 
 cp -r node_modules current/
-cp config.production.json current
+cp config.$NODE_ENV.json current
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
 
-if [[ "$(which mysqlsh)X" == "X" ]]; then
-    >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
-else
-    set +e
-    echo "Displaying current migrations_lock status"
-    mysqlsh --uri $mysqluri --sql -e "select * from migrations_lock;"
+[[ -z ${SKIP_SETUP:-} ]] && {
+(
+  if [[ "$(which mysqlsh)X" == "X" ]]; then
+      >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
+  else
+      set +e
+      echo "Displaying current migrations_lock status"
+      mysqlsh --uri $mysqluri --sql -e "select * from migrations_lock;"
 
-    echo "Unlocking migrations_lock"
-    mysqlsh --uri $mysqluri --sql -e "UPDATE migrations_lock set locked=0 where lock_key='km01';"
-    set -e
-fi
+      echo "Unlocking migrations_lock"
+      mysqlsh --uri $mysqluri --sql -e "UPDATE migrations_lock set locked=0 where lock_key='km01';"
+      set -e
+  fi
 
-set -x
+  set -x
 
-cd current
-
-echo "Setup ghost"
-yarn install
-knex-migrator init
-knex-migrator migrate
-cd -
+  cd current
+  echo "Setup ghost"
+  yarn install
+  knex-migrator init
+  knex-migrator migrate
+)
+}
 
 echo "Starting ghost"
 node current/index.js
