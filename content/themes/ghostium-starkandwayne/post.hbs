@@ -20,18 +20,16 @@
       {{{title}}}</h1>
 
       {{{content}}}
-  </div>
 
-  <div>
-    {{#if tags}}
-      Find more great articles with similar tags
-      {{#foreach tags}}
-        <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}}</a>
-      {{/foreach}}
-      </ul>
-    {{else}}
-      <!-- No tags for this post. -->
-    {{/if}}
+      {{#if tags}}
+        Find more great articles with similar tags
+        {{#foreach tags}}
+          <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}}</a>
+        {{/foreach}}
+        </ul>
+      {{else}}
+        <!-- No tags for this post. -->
+      {{/if}}
   </div>
   <div class="post-footer">
     <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author post-author-info">
