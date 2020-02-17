@@ -2,7 +2,7 @@ applications:
 - name: ghost
   instances: 1
   memory: 384M
-  disk_quota: 2G
+  disk_quota: 1G
   buildpacks:
   - https://github.com/cloudfoundry/apt-buildpack/releases/download/v0.2.2/apt-buildpack-cflinuxfs3-v0.2.2.zip
   - nodejs_buildpack
