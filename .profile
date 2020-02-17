@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -eux
 
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$ROOT"
@@ -142,13 +142,15 @@ export NODE_ENV=production
 echo "Setting up symlinks"
 rm -f current
 ln -s versions/* current
-cd content/themes/
-rm -rf casper
-ln -s ../../current/content/themes/casper/
-cd -
+(
+  cd content/themes/
+  rm -rf casper
+  ln -s ../../current/content/themes/casper/
+)
 
+ls -al
 cp -r node_modules current/
-cp config.production.json current
+cp config.production.json current/
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
 
@@ -167,14 +169,15 @@ else
     fi
 fi
 
-set -x
+(
+  set -x
 
-cd current
+  cd current
 
-echo "Setup ghost"
-yarn install
-knex-migrator init
-knex-migrator migrate
+  echo "Setup ghost"
+  knex-migrator init
+  knex-migrator migrate
+)
 
-echo "Change to root folder"
+echo "Ensuring root folder before starting app.."
 cd "$ROOT"
