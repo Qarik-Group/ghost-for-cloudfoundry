@@ -51,6 +51,7 @@ ln -s ../../current/content/themes/casper/
 cd -
 
 cp -r node_modules current/
+cp -r content/data/redirects.json current/content/data/
 
 echo "Creating current/config.$NODE_ENV.json"
 cat > current/config.$NODE_ENV.json <<-JSON

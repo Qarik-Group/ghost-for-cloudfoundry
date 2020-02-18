@@ -150,6 +150,7 @@ ln -s versions/* current
 
 ls -al
 cp -r node_modules current/
+cp -r content/data/redirects.json current/content/data/
 cp config.production.json current/
 
 export PATH=$PATH:/home/vcap/deps/0/node/bin
