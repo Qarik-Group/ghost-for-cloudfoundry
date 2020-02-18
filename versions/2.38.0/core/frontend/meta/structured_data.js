@@ -9,6 +9,7 @@ function getStructuredData(metaData) {
     }
 
     structuredData = {
+        'description': metaData.metaDescription || metaData.ogDescription || metaData.excerpt,
         'og:site_name': metaData.blog.title,
         'og:type': metaData.ogType,
         'og:title': metaData.ogTitle || metaData.metaTitle,

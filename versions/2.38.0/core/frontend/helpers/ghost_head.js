@@ -17,7 +17,11 @@ var proxy = require('./proxy'),
     labs = proxy.labs;
 
 function writeMetaTag(property, content, type) {
-    type = type || property.substring(0, 7) === 'twitter' ? 'name' : 'property';
+    type = type ||
+        (
+            property.substring(0, 7) === 'twitter' ||
+            property                 === 'description'
+        ) ? 'name' : 'property';
     return '<meta ' + type + '="' + property + '" content="' + content + '" />';
 }
 
