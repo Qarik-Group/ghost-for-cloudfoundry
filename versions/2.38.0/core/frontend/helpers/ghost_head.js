@@ -137,11 +137,6 @@ module.exports = function ghost_head(options) { // eslint-disable-line camelcase
             debug('end fetch');
 
             if (context) {
-                // head is our main array that holds our meta data
-                if (metaData.metaDescription && metaData.metaDescription.length > 0) {
-                    head.push('<meta name="description" content="' + escapeExpression(metaData.metaDescription) + '" />');
-                }
-
                 head.push('<link rel="shortcut icon" href="' + favicon + '" type="image/' + iconType + '" />');
                 head.push('<link rel="canonical" href="' +
                     escapeExpression(metaData.canonicalUrl) + '" />');

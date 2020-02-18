@@ -8,8 +8,9 @@ function getStructuredData(metaData) {
         card = 'summary_large_image';
     }
 
+    console.log(metaData);
     structuredData = {
-        'description': metaData.metaDescription || metaData.ogDescription || metaData.excerpt,
+        'description': metaData.metaDescription || metaData.ogDescription || metaData.twitterDescription || metaData.excerpt,
         'og:site_name': metaData.blog.title,
         'og:type': metaData.ogType,
         'og:title': metaData.ogTitle || metaData.metaTitle,
