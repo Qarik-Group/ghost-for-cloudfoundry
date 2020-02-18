@@ -1,0 +1,22 @@
+{{!< default}}
+
+{{#author}}
+{{!-- Everything inside the #author tags pulls data from the author --}}
+
+{{#contentFor "header-meta"}}
+  <meta name="description" content="Articles by {{name}}">
+{{/contentFor}}
+
+{{/author}}
+
+<div id="blog">
+  {{#foreach posts}}
+    {{> post/list this}}
+  {{/foreach}}
+</div>
+
+{{#if pagination}}
+  <div class="page blog-pagination">
+    {{pagination}}
+  </div>
+{{/if}}
