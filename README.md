@@ -94,3 +94,36 @@ For future reference, I uploaded the .deb file using `deb-s3` CLI:
 ```plain
 deb-s3 upload ~/Downloads/mysql-shell_8.0.15-1ubuntu18.04_amd64.deb --bucket apt.starkandwayne.com --sign <id>
 ```
+
+## Local development
+
+Whilst the `.profile` is used during `cf push` to setup the local file system/symlinks/config files, and to migrate the database, when we test the application locally we can use `bin/setup_and_run.sh`:
+
+```plain
+PORT=8000 SKIP_SETUP=1 NODE_ENV=development ./bin/setup_and_run.sh
+```
+
+This will run Ghost locally, but configure it to interact with the MySQL database from your Cloud Foundry.
+
+* `PORT=8000` will set the local port
+* `SKIP_SETUP=1` stops the script from performing database migrations
+* `NODE_ENV=development` overrides this env var, and changes the `config.development.json` file name used.
+
+Once it is running, it will show the local URL http://localhost:8000/:
+
+```plain
+[2020-02-18 21:45:44] INFO Ghost is running in development...
+[2020-02-18 21:45:44] INFO Listening on: 0.0.0.0:8000
+[2020-02-18 21:45:44] INFO Url configured as: http://localhost:8000/
+[2020-02-18 21:45:44] INFO Ctrl+C to shut down
+[2020-02-18 21:45:44] INFO Ghost boot 13.683s
+```
+
+NOTE: at the time of writing, the `ghostium-starkandwayne` theme does not work locally as it is looking for asset files that come from https://starkandwayne.com.
+
+You can also use `grunt dev` to observe live changes in the templates:
+
+```bash
+cd current
+grunt dev
+```
