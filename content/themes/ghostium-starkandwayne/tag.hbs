@@ -1,0 +1,31 @@
+{{!< default}}
+
+{{#tag}}
+  {{#contentFor "header-meta"}}
+    {{#if description}}
+<meta name="description" content="{{description}} for {{meta_title}}">
+    {{else}}
+<meta name="description" content="{{name}} articles for {{meta_title}}">
+    {{/if}}
+  {{/contentFor}}
+
+<div class="hero interior" style="background-image: url(/images/banners/hero.jpg)">
+  <div class="container">
+      <div class="hero-content">
+        <h1 style="color: white;">Blog - {{name}} articles</h1>
+      </div>
+  </div>
+</div>
+{{/tag}}
+
+<div id="blog">
+  {{#foreach posts}}
+    {{> post/list this}}
+  {{/foreach}}
+</div>
+
+{{#if pagination}}
+  <div class="page blog-pagination">
+    {{pagination}}
+  </div>
+{{/if}}
