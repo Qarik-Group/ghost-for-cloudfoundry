@@ -119,8 +119,6 @@ Once it is running, it will show the local URL http://localhost:8000/:
 [2020-02-18 21:45:44] INFO Ghost boot 13.683s
 ```
 
-NOTE: at the time of writing, the `ghostium-starkandwayne` theme does not work locally as it is looking for asset files that come from https://starkandwayne.com.
-
 You can also use `grunt dev` to observe live changes in the templates:
 
 ```bash
