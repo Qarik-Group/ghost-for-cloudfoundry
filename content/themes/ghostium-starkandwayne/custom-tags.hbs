@@ -1,0 +1,24 @@
+{{!< default}}
+
+{{#contentFor "header-meta"}}
+  <meta name="description" content="Stark &amp; Wayne Blog Tags">
+{{/contentFor}}
+
+<div class="hero interior" style="background-image: url(https://starkandwayne.com/images/banners/hero.jpg)">
+  <div class="container">
+      <div class="hero-content">
+        <h1 style="color: white;">Tags</h1>
+      </div>
+  </div>
+</div>
+
+<article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
+  <div class="page">
+    <h2>All the tags</h2>
+    {{#get 'tags' limit='all' include='count.posts' order='count.posts desc'}}
+      {{#foreach tags}}
+        <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}} ({{count.posts}})</a>
+      {{/foreach}}
+    {{/get}}
+  </div>
+</article>
