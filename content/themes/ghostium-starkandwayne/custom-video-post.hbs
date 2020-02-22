@@ -1,0 +1,85 @@
+{{!< default}}
+
+<div class="hero interior" style="background-image: url(https://starkandwayne.com/images/banners/hero.jpg">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="post-title" itemprop="name headline"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
+    </div>
+  </div>
+</div>
+
+<!--email_off-->
+<article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
+  {{#post}}
+  <div class="page">
+    <!-- the feature_image is only for social media + list pages -->
+    <!-- no feature image since the post embeds a video -->
+
+    <h1 class="title"><span datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</span>
+      {{{title}}}</h1>
+
+      {{{content}}}
+
+      {{#if tags}}
+        Find more great articles with similar tags
+        {{#foreach tags}}
+          <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}}</a>
+        {{/foreach}}
+        </ul>
+      {{else}}
+        <!-- No tags for this post. -->
+      {{/if}}
+  </div>
+  <div class="post-footer">
+    <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author post-author-info">
+      <a href="{{primary_author.website}}" class="post-author-avatar" target="_blank">
+        <img itemprop="image" src="{{#if primary_author.profile_image}}{{primary_author.profile_image}}{{else}}https://starkandwayne.com/images/default-avatar.jpg{{/if}}">
+      </a>
+      <div>
+        <h4 class="post-footer-heading">Written By</h4>
+        <a href="{{primary_author.website}}" itemprop="url" class="post-author-name" target="_blank">
+          <span itemprop="name">{{primary_author.name}}</span>
+        </a>
+      </div>
+      <div>
+        <p itemprop="description" class="post-author-bio">{{primary_author.bio}}</p>
+        {{#if primary_author.location}}
+          <p class="post-author-location">{{primary_author.location}}</p>
+        {{/if}}
+        {{#if primary_author.website}}
+        <p class="post-author-website">
+          <a href="{{primary_author.website}}" rel="nofollow">{{primary_author.website}}</a>
+        </p>
+        {{/if}}
+      </div>
+    </div>
+    <div class="post-social">
+      <h4 class="post-footer-heading">Spread the word</h4>
+      <a href="#" data-action="share-twitter"><img src="https://starkandwayne.com/images/icons/twitter-b.svg"></a>
+      <a href="#" data-action="share-facebook"><img src="https://starkandwayne.com/images/icons/facebook-b.svg"></a>
+      <a href="#" data-action="share-linkedin"><img src="https://starkandwayne.com/images/icons/linkedin-b.svg"></a>
+    </div>
+  </div>
+  {{/post}}
+  <section itemprop="comment" class="post-comments page" style="margin-top: 4em">
+    <div id="disqus_thread"></div>
+  </section>
+</article>
+<!--/email_off-->
+
+<script type="text/javascript">
+  {{> custom/config}}
+
+  {{#post}}
+    var disqus_identifier = '{{comment_id}}';
+  {{/post}}
+
+  if(typeof DISQUS !== 'object') {
+    (function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+  }
+</script>
