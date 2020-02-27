@@ -368,6 +368,7 @@
 						resultsData.push(postData);
 					} else {
 						console.warn("ghostHunter: index/data mismatch. Ouch.");
+            window.GHOSTHUNTER_JRH = this;
 					}
 				}
 				// Get an array of IDs present in current results
