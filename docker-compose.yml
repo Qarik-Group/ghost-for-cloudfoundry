@@ -1,0 +1,29 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7.28
+    environment:
+      - MYSQL_ROOT_PASSWORD=foo
+      - MYSQL_PASSWORD=foo
+      - MYSQL_USER=ghost
+      - MYSQL_DATABASE=ghost
+    volumes:
+      - $PWD/data:/var/lib/mysql
+
+  ghost:
+    image: ghost:3.7.0
+    ports: ['9010:2368']
+    depends_on:
+      - db
+    environment:
+      - database__client=mysql
+      - database__connection__host=db
+      - database__connection__port=3306
+      - database__connection__user=ghost
+      - database__connection__password=foo
+      - database__connection__database=ghost
+      - url=http://127.0.0.1:9010
+      - server_host=0.0.0.0
+      - server_port=9010
+    volumes:
+      - $PWD/content:/var/lib/ghost/content
