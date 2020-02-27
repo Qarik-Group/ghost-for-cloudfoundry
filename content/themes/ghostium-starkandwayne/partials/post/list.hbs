@@ -2,7 +2,7 @@
   role="article" class="post-item {{post_class}}">
   <div class="img" style="background-image: url({{#if feature_image}}{{feature_image}}{{else}}https://starkandwayne.com/images/banners/hero.jpg{{/if}})"></div>
   <div class="head post-item-title" itemprop="name">
-    <div class="dated" datetime-"{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished"><span class="m">{{date published_at format="MMM"}}</span><span class="d">{{date published_at format="DD"}}<span></div>
+    <div class="dated" datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished"><span class="m">{{date published_at format="MMM"}}</span><span class="d">{{date published_at format="DD"}}</span></div>
     <h2><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h2>
   </div>
   <div class="intro post-item-excerpt" itemprop="description">{{excerpt words="35"}}&hellip;</div>
