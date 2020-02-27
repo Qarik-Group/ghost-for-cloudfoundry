@@ -3507,6 +3507,7 @@ lunr.QueryParser.parseBoost = function (parser) {
 					} else {
 						console.warn("ghostHunter: index/data mismatch. Ouch.");
             window.GHJRH = this;
+            window.RESULTS = searchResult;
 					}
 				}
 				// Get an array of IDs present in current results

@@ -29,6 +29,7 @@
 
 <style type="text/css">
 .backdrop {
+  display: none;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -170,6 +171,9 @@ United States</address></p>
       $("#search-field").ghostHunter({
         results: "#results",
         onKeyUp: true,
+        before: function () {
+          $('.backdrop').show();
+        },
         result_template: '<li>'+
 '        <section class="post-container">'+
 '          <header class="post-header">'+
