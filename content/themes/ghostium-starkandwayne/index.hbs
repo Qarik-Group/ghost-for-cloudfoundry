@@ -12,19 +12,12 @@
   </div>
 </div>
 
-<div class="row">
-    <div class="search-box col-xs-12 col-sm-12 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
-        <div class="input-group">
-            <input type="text" id="search-field" class="form-control input-lg" placeholder="Search for...">
-            <span class="input-group-btn">
-                <button class="btn btn-default search-button btn-lg" type="button">Search!</button>
-            </span>               
-        </div>
-    </div>
-</div>
-<section class="search-results col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" >    
-        <ul id="search-results" class="search-results col-md-12" class="list-group"></ul>
-</section>
+<form>
+    <input id="search-field" />
+    <input type="submit" value="search">
+</form>
+
+<section id="results"></section>
 
 <div class="page blog-intro">
   <p>You can become a superhero of automation and development by learning and practicing. This is our blog from our learnings and practice.</p>
