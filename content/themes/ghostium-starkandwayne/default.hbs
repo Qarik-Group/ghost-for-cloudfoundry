@@ -28,21 +28,12 @@
     <meta name="theme-color" content="#ffffff">
 
 <style type="text/css">
-.backdrop {
-  display: none;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	box-sizing: border-box;
-	background-color: #00000044;
-}
-#results {
-	width: 80vw;
-	height: 80vh;
-	margin: 10vh 10vw;
-	background-color: #fff;
+#search { display: none; }
+#search .q {
+  background: none;
+  border-bottom: 1px solid #0067ac44;
+  width: 90vw;
+  margin: 1rem auto;
 }
 </style>
 
@@ -167,55 +158,43 @@ United States</address></p>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script type="text/javascript" src="{{asset "ghostHunter/dist/jquery.ghosthunter.js"}}"></script>
     <script>
-/*
-      $("#search-field").ghostHunter({
-        results: "#results",
+      var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      $("#search input.q").ghostHunter({
+        results: "#blog",
+        onPageLoad: true,
         onKeyUp: true,
-        before: function () {
-          $('.backdrop').show();
+        includeBodySearch: true,
+
+        indexing_end: function() {
+          $('#search').fadeIn(1200);
         },
-        result_template: '<li>'+
-'        <section class="post-container">'+
-'          <header class="post-header">'+
-'            <h1 itemprop="name headline" class="post-title"><a href="{{url}}" itemprop="url" data-pjax title="{{title}}">{{title}}</a></h1>'+
-'          </header>'+
-'          <aside class="post-side">'+
-'            <div class="post-author">'+
-'              {{#if primary_author.profile_image}}'+
-'                <a href="{{primary_author.website}}" class="post-author-avatar">'+
-'                  <img src="{{primary_author.profile_image}}" alt="{{primary_author.name}}">'+
-'                </a>'+
-'              {{/if}}'+
-'              <div class="post-author-info">'+
-'                <a href="{{primary_author.website}}" class="post-author-name">'+ '                  {{primary_author.name}}'+ '                </a>'+
-'                <p class="post-author-bio">{{primary_author.bio}}</p>'+
-'              </div>'+
-'              <a href="https://www.starkandwayne.com" class="post-company-avatar">'+ '                <img src="{{asset "images/sw-logo-512px-tinypng.png"}}">'+ '              </a>'+
-'            </div>'+
-'          </aside>'+
-'          <div itemprop="articleBody" class="post-body">'+
-'            {{content}}'+
-'          </div>'+
-'          <footer class="post-footer">'+
-'            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">'+
-'              {{#if primary_author.profile_image}}'+
-'                <a href="{{primary_author.website}}" class="post-author-avatar">'+
-'                  <img itemprop="image" src="{{primary_author.profile_image}}" alt="{{primary_author.name}}">'+
-'                </a>'+
-'              {{/if}}'+
-'              <div class="post-author-info">'+
-'                <h4 class="post-footer-heading">Written By</h4>'+
-'                <a href="{{primary_author.website}}" itemprop="url" class="post-author-name">'+
-'                  <span itemprop="name">{{primary_author.name}}</span>'+
-'                </a>'+
-'                <p itemprop="description" class="post-author-bio">{{primary_author.bio}}</p>'+
-'              </div>'+
-'            </div>'+
-'          </footer>'+
-'        </section>'+
-'</li>'
-       }); // ghostHunter
-*/
+        before: function () {
+          $('#blog').empty()
+        },
+        result_template: (''+
+            '<article itemscope itemtype="http://schema.org/BlogPosting"'+
+            '  role="article" class="post-item">'+
+            '  <div class="img" style="background-image: url([[image]])"></div>'+
+            '  <div class="head post-item-title" itemprop="name">'+
+            '  <div class="dated"><span class="m">[[pubMonth]]</span><span class="d">[[pubDay]]</span><span class="Y">[[pubYear]]</span></div>'+
+            '    <h2><a href="[[link]]">[[title]]</a></h2>'+
+            '  </div>'+
+            '  <div class="intro post-item-excerpt">[[description]]</div>'+
+            '</article>'+
+            '').replace(/\[/g, '{').replace(/]/g, '}'),
+        item_preprocessor: function (thing) {
+          var pub = new Date(thing.published_at);
+          mon = MONTHS[pub.getMonth()];
+          return {
+            description : thing.custom_excerpt || thing.excerpt || '',
+            image       : thing.feature_image  || "https://starkandwayne.com/images/banners/hero.jpg",
+            pubMonth    : mon,
+            pubDay      : pub.getDate(),
+            pubYear     : pub.getYear() + 1900
+          };
+        }
+       });
     </script>
 
     <div id="lb"><div>
