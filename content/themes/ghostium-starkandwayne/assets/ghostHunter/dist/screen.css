@@ -1,0 +1,17 @@
+.search-box{
+    margin-bottom: 10px;
+}
+
+.search-results {
+    position:absolute;
+    z-index: 1000;
+}
+
+.search-button{
+    background-color: #1B95E0;
+    color: white;
+}
+
+.results-hide{
+    display: none;
+}
