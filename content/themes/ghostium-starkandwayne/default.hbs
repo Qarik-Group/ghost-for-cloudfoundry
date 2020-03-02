@@ -27,6 +27,16 @@
     <meta name="msapplication-TileImage" content="/fav/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+<style type="text/css">
+#search { display: none; }
+#search .q {
+  background: none;
+  border-bottom: 1px solid #0067ac44;
+  width: 90vw;
+  margin: 1rem auto;
+}
+</style>
+
     {{{block "header-meta"}}}
     {{ghost_head}}
   </head>
@@ -148,9 +158,42 @@ United States</address></p>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script type="text/javascript" src="{{asset "ghostHunter/dist/jquery.ghosthunter.js"}}"></script>
     <script>
-      $("#search-field").ghostHunter({
-        results: "#results",
-        onKeyUp: true
+      var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      $("#search input.q").ghostHunter({
+        results: "#blog",
+        onPageLoad: true,
+        onKeyUp: true,
+        includeBodySearch: true,
+
+        indexing_end: function() {
+          $('#search').fadeIn(1200);
+        },
+        before: function () {
+          $('#blog').empty()
+        },
+        result_template: (''+
+            '<article itemscope itemtype="http://schema.org/BlogPosting"'+
+            '  role="article" class="post-item">'+
+            '  <div class="img" style="background-image: url([[image]])"></div>'+
+            '  <div class="head post-item-title" itemprop="name">'+
+            '  <div class="dated"><span class="m">[[pubMonth]]</span><span class="d">[[pubDay]]</span><span class="Y">[[pubYear]]</span></div>'+
+            '    <h2><a href="[[link]]">[[title]]</a></h2>'+
+            '  </div>'+
+            '  <div class="intro post-item-excerpt">[[description]]</div>'+
+            '</article>'+
+            '').replace(/\[/g, '{').replace(/]/g, '}'),
+        item_preprocessor: function (thing) {
+          var pub = new Date(thing.published_at);
+          mon = MONTHS[pub.getMonth()];
+          return {
+            description : thing.custom_excerpt || thing.excerpt || '',
+            image       : thing.feature_image  || "https://starkandwayne.com/images/banners/hero.jpg",
+            pubMonth    : mon,
+            pubDay      : pub.getDate(),
+            pubYear     : pub.getYear() + 1900
+          };
+        }
        });
     </script>
 

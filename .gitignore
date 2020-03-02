@@ -6,3 +6,6 @@ credentials.yml
 tmp
 config.production.json
 versions/*/config.development.json
+
+/data
+/content/logs
