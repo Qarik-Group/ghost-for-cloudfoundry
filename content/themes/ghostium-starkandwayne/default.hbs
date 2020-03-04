@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://starkandwayne.com/styles/main.css">
     <link rel="stylesheet" href="https://starkandwayne.com/styles/extra.css">
 
+    <!-- https://ghost.org/tutorials/adding-a-table-of-contents/ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.10.0/tocbot.css" />
+
     <link rel="apple-touch-icon" sizes="57x57" href="/fav/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/fav/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/fav/apple-icon-72x72.png">
@@ -197,6 +200,16 @@ United States</address></p>
        });
     </script>
 
+    <!-- https://ghost.org/tutorials/adding-a-table-of-contents/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.10.0/tocbot.min.js"></script>
+    <script>
+    tocbot.init({
+        tocSelector: '.toc',
+        contentSelector: '.page-content',
+        hasInnerContainers: true
+    });
+    </script>
+
     <div id="lb"><div>
       <a href="#" rel="close">✕</a>
       <div class="lb-inner"></div>
@@ -222,7 +235,5 @@ United States</address></p>
 
     <!-- prompt reader to get emailed new blog posts -->
     <script src="https://starkandwayne.activehosted.com/f/embed.php?id=1" type="text/javascript" charset="utf-8"></script>
-  </body>
-</html>
   </body>
 </html>
