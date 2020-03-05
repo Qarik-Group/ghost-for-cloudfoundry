@@ -153,8 +153,6 @@ cp -r node_modules current/
 cp -r content/data/redirects.json current/content/data/
 cp config.production.json current/
 
-export PATH=$PATH:/home/vcap/deps/0/node/bin
-
 if [[ "$(which mysqlsh)X" == "X" ]]; then
     >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
 else
@@ -175,9 +173,14 @@ fi
 
   cd current
 
-  echo "Setup ghost"
-  knex-migrator init
-  knex-migrator migrate
+  echo "PATH:\n$PATH"
+  echo "/home/vcap/deps:"
+  tree /home/vcap/deps/**/bin
+
+  # TODO: DO NOT UPGRADE GHOST UNTIL `knex-migrator` is BACK IN $PATH
+  # echo "Setup ghost"
+  # knex-migrator init
+  # knex-migrator migrate
 )
 
 echo "Ensuring root folder before starting app.."

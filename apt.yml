@@ -5,3 +5,4 @@ repos:
 - deb http://apt.starkandwayne.com stable main
 packages:
 - mysql-shell
+- tree
