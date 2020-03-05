@@ -153,6 +153,8 @@ cp -r node_modules current/
 cp -r content/data/redirects.json current/content/data/
 cp config.production.json current/
 
+export PATH=$PATH:/home/vcap/deps/org.cloudfoundry.yarn/modules/node_modules/knex-migrator/bin
+
 if [[ "$(which mysqlsh)X" == "X" ]]; then
     >&2 echo "Please install mysqlsh (aka mysql-shell) to allow clearing of locks"
 else
@@ -175,12 +177,15 @@ fi
 
   echo "PATH:\n$PATH"
   echo "/home/vcap/deps:"
-  tree /home/vcap/deps/**/bin
+  # tree /home/vcap/deps/**/bin
+
+  # TODO - why do I have to explicitly add this to PATH?
+  export PATH=$PATH:/home/vcap/deps/org.cloudfoundry.yarn/modules/node_modules/knex-migrator/bin
 
   # TODO: DO NOT UPGRADE GHOST UNTIL `knex-migrator` is BACK IN $PATH
-  # echo "Setup ghost"
-  # knex-migrator init
-  # knex-migrator migrate
+  echo "Setup ghost"
+  knex-migrator init
+  knex-migrator migrate
 )
 
 echo "Ensuring root folder before starting app.."
