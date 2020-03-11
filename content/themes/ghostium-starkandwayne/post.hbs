@@ -11,7 +11,9 @@
 <!--email_off-->
 <article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
   {{#post}}
-  <div class="page">
+  <div class="page"> {
+    display: inline;
+  }
     {{#if feature_image}}
     <img class="header" src="{{feature_image}}">
     {{/if}}
