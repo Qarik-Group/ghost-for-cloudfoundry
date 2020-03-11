@@ -11,15 +11,16 @@
 <!--email_off-->
 <article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
   {{#post}}
-  <div class="page"> {
-    display: inline;
-  }
+  <div class="page">
+
     {{#if feature_image}}
     <img class="header" src="{{feature_image}}">
     {{/if}}
 
     <h1 class="title"><span datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</span>
-                      <span>· {{reading_time}}</span>
+      {{#post}}
+          {{reading_time}}
+       {{/post}}
       {{{title}}}</h1>
 
       {{{content}}}
