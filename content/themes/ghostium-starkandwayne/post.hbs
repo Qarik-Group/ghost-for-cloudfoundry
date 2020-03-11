@@ -17,11 +17,8 @@
     <img class="header" src="{{feature_image}}">
     {{/if}}
 
-    <h1 class="title">
-      <p>
-    <span datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</span>·</p>
-    <p>
-      <span>{{reading_time}}</span>></p>              
+    <h1 class="title"><time datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</time>    
+                      · {{reading_time}}
       {{{title}}}</h1>
 
       {{{content}}}
