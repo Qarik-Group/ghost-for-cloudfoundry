@@ -1,5 +1,5 @@
 steps:
-  - label: ":cloudfoundry: deploy"
+  - label: ":cloudfoundry:"
     if: build.branch == '$PRODUCTION_BRANCH'
     agents:
       cf-cli: true
