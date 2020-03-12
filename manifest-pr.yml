@@ -1,5 +1,5 @@
 applications:
-- name: ghost
+- name: ((appname))
   instances: 1
   memory: 384M
   disk_quota: 1G

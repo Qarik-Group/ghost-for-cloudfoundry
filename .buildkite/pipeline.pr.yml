@@ -9,8 +9,9 @@ steps:
         api: https://api.run.pivotal.io
         username: drnic@starkandwayne.com
         organization: starkandwayne
-        appname: ghost
+        appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
         space: blog-staging
         manifest_path: manifest-pr.yml
-        vars:
+        vars: |
+          appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
           route-subdomain: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
