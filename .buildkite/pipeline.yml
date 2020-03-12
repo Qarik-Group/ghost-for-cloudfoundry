@@ -1,0 +1,15 @@
+steps:
+  - label: ":cloudfoundry: deploy"
+    if: build.branch == 'production'
+    agents:
+      cf-cli: true
+    concurrency: 1
+    concurrency_group: "cf-push"
+    plugins:
+      starkandwayne/cloudfoundry-deploy#v0.6.1:
+        api: https://api.run.pivotal.io
+        username: drnic@starkandwayne.com
+        organization: starkandwayne
+        appname: ghost
+        space: blog-staging
+        manifest_path: manifest.yml

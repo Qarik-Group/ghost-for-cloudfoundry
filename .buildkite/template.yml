@@ -1,0 +1,5 @@
+name: "Ghost"
+description: "Deploy Ghost blogging platform to Cloud Foundry"
+steps:
+  - command: "buildkite-agent pipeline upload"
+    label: ":pipeline:"
