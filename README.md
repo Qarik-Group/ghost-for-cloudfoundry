@@ -125,3 +125,11 @@ You can also use `grunt dev` to observe live changes in the templates:
 cd current
 grunt dev
 ```
+
+## Deploy using Buildkite Pipeline
+
+[![Add to Buildkite](https://buildkite.com/button.svg)](https://buildkite.com/new)
+
+Use Branch Filtering to restrict the Pipeline to only deploy commits to your primary branch (e.g. `production`).
+
+Add a webhook, and only trigger on Git commits.
