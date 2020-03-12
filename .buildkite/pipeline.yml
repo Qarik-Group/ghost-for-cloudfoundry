@@ -1,20 +1,13 @@
+# This file can be the pre-configured step https://buildkite.com/starkandwayne/starkandwayne-dot-com-blog/settings
 env:
-  DEPLOY_BRANCH: production
+  PRODUCTION_BRANCH: production
 steps:
-  - command: "echo --- ERROR please configure pipeline to only run on $DEPLOY_BRANCH branch; exit 1"
-    label: ":git:"
-    if: build.branch != '$DEPLOY_BRANCH'
-  - label: ":cloudfoundry: deploy"
-    if: build.branch == '$DEPLOY_BRANCH'
-    agents:
-      cf-cli: true
-    concurrency: 1
-    concurrency_group: "cf-push"
-    plugins:
-      starkandwayne/cloudfoundry-deploy#v0.6.1:
-        api: https://api.run.pivotal.io
-        username: drnic@starkandwayne.com
-        organization: starkandwayne
-        appname: ghost
-        space: blog-staging
-        manifest_path: manifest.yml
+  - command: buildkite-agent pipeline upload .buildkite/pipeline.pr.yml
+    label: ":pipeline: pr"
+    if: build.pull_request.repository != null
+  - command: buildkite-agent pipeline upload .buildkite/pipeline.master.yml
+    label: ":pipeline: $PRODUCTION_BRANCH"
+    if: build.branch == '$PRODUCTION_BRANCH' && build.pull_request.repository == null
+  - command: buildkite-agent pipeline upload .buildkite/pipeline.branch.yml
+    label: ":pipeline: branch"
+    if: build.branch != '$PRODUCTION_BRANCH' && build.pull_request.repository == null
