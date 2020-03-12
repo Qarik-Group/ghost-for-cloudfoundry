@@ -1,6 +1,11 @@
+env:
+  DEPLOY_BRANCH: production
 steps:
+  - command: "echo --- ERROR please configure pipeline to only run on $DEPLOY_BRANCH branch; exit 1"
+    label: ":git:"
+    if: build.branch != '$DEPLOY_BRANCH'
   - label: ":cloudfoundry: deploy"
-    if: build.branch == 'production'
+    if: build.branch == '$DEPLOY_BRANCH'
     agents:
       cf-cli: true
     concurrency: 1
