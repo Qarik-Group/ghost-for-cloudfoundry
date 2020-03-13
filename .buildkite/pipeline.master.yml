@@ -6,7 +6,7 @@ steps:
     concurrency: 1
     concurrency_group: "cf-push-master"
     plugins:
-      starkandwayne/cloudfoundry-deploy#v0.6.1:
+      starkandwayne/cloudfoundry-deploy#v0.7.0:
         api: https://api.run.pivotal.io
         username: drnic@starkandwayne.com
         organization: starkandwayne
