@@ -14,4 +14,4 @@ steps:
         manifest_path: manifest-pr.yml
         vars: |
           appname: "ghost-branch-${BUILDKITE_BRANCH}"
-          route-subdomain: "ghost-branch-${BUILDKITE_BRANCH}"
+          route-subdomain: "starkandwayne-blog-branch-${BUILDKITE_BRANCH}"

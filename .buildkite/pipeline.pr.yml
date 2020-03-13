@@ -14,4 +14,4 @@ steps:
         manifest_path: manifest-pr.yml
         vars: |
           appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
-          route-subdomain: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
+          route-subdomain: "starkandwayne-blog-pr-${BUILDKITE_PULL_REQUEST}"
