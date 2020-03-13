@@ -43,15 +43,19 @@ aws_region=$(echo "$VCAP_SERVICES" | jq -r ".[\"$awsservice\"][0].credentials.re
 # appurl=$(echo $VCAP_APPLICATION| jq -r ".uris[]" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | head -n1)
 
 echo "Setting up symlinks"
-rm -f current
-ln -s versions/* current
-cd content/themes/
-rm -rf casper
-ln -s ../../current/content/themes/casper/
-cd -
+(
+  set -x
+  rm -f current
+  ln -s versions/* current
+  cd content/themes/
+  rm -rf casper
+  ln -s ../../current/content/themes/casper/ .
+  cd -
 
-cp -r node_modules current/
-cp -r content/data/redirects.json current/content/data/
+  rm -rf current/node_modules
+  cp -R node_modules current/
+  cp -R content/data/redirects.json current/content/data/
+)
 
 echo "Creating current/config.$NODE_ENV.json"
 cat > current/config.$NODE_ENV.json <<-JSON
