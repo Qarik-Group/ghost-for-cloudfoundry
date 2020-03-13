@@ -1,13 +1,17 @@
 # This file can be the pre-configured step https://buildkite.com/starkandwayne/starkandwayne-dot-com-blog/settings
 env:
   PRODUCTION_BRANCH: production
+  PR_WHITELIST: |
+    github.com/starkandwayne/
+    github.com/drnic/
+    github.com/jhunt/
 steps:
-  - command: curl -sSL https://raw.githubusercontent.com/starkandwayne/ghost-for-cloudfoundry/production/.buildkite/pipeline.pr.yml | buildkite-agent pipeline upload
+  - command: .buildkite/scripts/choose-pr-pipeline.sh | buildkite-agent pipeline upload
     label: ":pipeline: pr"
     if: build.pull_request.repository != null
   - command: buildkite-agent pipeline upload .buildkite/pipeline.master.yml
-    label: ":pipeline: $PRODUCTION_BRANCH"
-    if: build.branch == '$PRODUCTION_BRANCH' && build.pull_request.repository == null
+    label: ":pipeline: master"
+    if: build.branch == 'master' && build.pull_request.repository == null
   - command: buildkite-agent pipeline upload .buildkite/pipeline.branch.yml
     label: ":pipeline: branch"
-    if: build.branch != '$PRODUCTION_BRANCH' && build.pull_request.repository == null
+    if: build.branch != 'master' && build.pull_request.repository == null

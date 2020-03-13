@@ -1,0 +1,19 @@
+steps:
+  - block: ":github: guest"
+    prompt: "Check the PR, and confirm ok to deploy?"
+  - label: ":cloudfoundry: deploy"
+    agents:
+      cf-cli: true
+    concurrency: 1
+    concurrency_group: "cf-push-pr-${BUILDKITE_PULL_REQUEST}"
+    plugins:
+      starkandwayne/cloudfoundry-deploy#v0.7.0:
+        api: https://api.run.pivotal.io
+        username: drnic@starkandwayne.com
+        organization: starkandwayne
+        appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
+        space: blog-staging
+        manifest_path: manifest-pr.yml
+        vars: |
+          appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
+          route-subdomain: "starkandwayne-blog-pr-${BUILDKITE_PULL_REQUEST}"
