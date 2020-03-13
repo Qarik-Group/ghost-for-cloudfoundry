@@ -11,5 +11,7 @@ steps:
         username: drnic@starkandwayne.com
         organization: starkandwayne
         appname: ghost
-        space: blog-staging
-        manifest_path: manifest.yml
+        # space: blog-staging
+        # manifest_path: manifest.yml
+        space: blog-production
+        manifest_path: manifest-production.yml
