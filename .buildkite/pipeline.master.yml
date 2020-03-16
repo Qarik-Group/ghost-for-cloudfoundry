@@ -1,12 +1,13 @@
 steps:
   - label: ":cloudfoundry:"
     if: build.branch == '$PRODUCTION_BRANCH'
-    agents:
-      cf-cli: true
     concurrency: 1
     concurrency_group: "cf-push-master"
     plugins:
-      starkandwayne/cloudfoundry-deploy#v0.8.1:
+      seek-oss/aws-sm#v2.0.0:
+        env:
+          CF_PASSWORD: arn:aws:secretsmanager:us-east-1:868593321044:secret:pipelines/pws/drnic/cf-password-dUL5fd
+      starkandwayne/cloudfoundry-deploy#v0.9.0:
         api: https://api.run.pivotal.io
         username: drnic@starkandwayne.com
         organization: starkandwayne
