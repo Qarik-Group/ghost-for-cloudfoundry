@@ -2,7 +2,7 @@ steps:
   - label: ":cloudfoundry:"
     if: build.branch == '$PRODUCTION_BRANCH'
     concurrency: 1
-    concurrency_group: "cf-push-master"
+    concurrency_group: "blog-cf-push-master"
     plugins:
       seek-oss/aws-sm#v2.0.0:
         env:

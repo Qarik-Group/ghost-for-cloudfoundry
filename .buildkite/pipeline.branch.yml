@@ -1,7 +1,7 @@
 steps:
   - label: ":cloudfoundry: $BUILDKITE_BRANCH"
     concurrency: 1
-    concurrency_group: "cf-push-branch-${BUILDKITE_BRANCH}"
+    concurrency_group: "blog-cf-push-branch-${BUILDKITE_BRANCH}"
     plugins:
       seek-oss/aws-sm#v2.0.0:
         env:
