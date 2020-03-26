@@ -2,20 +2,19 @@
 
 set -euo pipefail
 
-ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
-cd "$ROOT"
-
 : "${PR_WHITELIST:=}"
+: "${RAW_REPO:=https://raw.githubusercontent.com/starkandwayne/ghost-for-cloudfoundry/master}"
+
 found=no
 for whitelist_org in $PR_WHITELIST; do
   if [[ $BUILDKITE_PULL_REQUEST_REPO =~ $whitelist_org ]]; then
     echo "# friendly"
-    cat .buildkite/pipeline.pr-friendly.yml
+    curl -sSL "${RAW_REPO}/.buildkite/pipeline.pr-friendly.yml"
     found=yes
   fi
 done
 
 [[ "${found}" == "no" ]] && {
   echo "# guest"
-  cat .buildkite/pipeline.pr-guest.yml
+  curl -sSL "${RAW_REPO}/.buildkite/pipeline.pr-guest.yml"
 }
