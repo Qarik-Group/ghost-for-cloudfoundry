@@ -126,7 +126,13 @@ cd current
 grunt dev
 ```
 
-## Deploy using Buildkite Pipeline
+## Buildkite Pipeline
+
+We use Buildkite to deploy this Ghost/NodeJS application to Cloud Foundry, including separate deployments for our own branches, and your pull requests.
+
+Status of builds for your pull requests will be posted into the pull request, and can be found at https://buildkite.com/starkandwayne/starkandwayne-dot-com-blog/.
+
+### Deploy yourself using Buildkite Pipeline
 
 [![Add to Buildkite](https://buildkite.com/button.svg)](https://buildkite.com/new)
 

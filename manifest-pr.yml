@@ -1,0 +1,18 @@
+applications:
+- name: ((appname))
+  instances: 1
+  memory: 384M
+  disk_quota: 1G
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack/releases/download/v0.2.2/apt-buildpack-cflinuxfs3-v0.2.2.zip
+  - nodejs_buildpack
+  health-check-type: port
+  timeout: 180
+  services:
+    #  - ghost-email
+    - ghost-s3
+    - ghost-mysql
+  routes:
+    - route: ((route-subdomain)).cfapps.io/blog
+  stack: cflinuxfs3
+  command: ''

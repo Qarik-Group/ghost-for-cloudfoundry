@@ -1,0 +1,20 @@
+steps:
+  - block: ":github: guest"
+    prompt: "Check the PR, and confirm ok to deploy?"
+  - label: ":cloudfoundry: deploy"
+    concurrency: 1
+    concurrency_group: "blog-cf-push-pr-${BUILDKITE_PULL_REQUEST}"
+    plugins:
+      seek-oss/aws-sm#v2.0.0:
+        env:
+          CF_PASSWORD: arn:aws:secretsmanager:us-east-1:868593321044:secret:pipelines/pws/drnic/cf-password-dUL5fd
+      starkandwayne/cloudfoundry-deploy#v0.9.2:
+        api: https://api.run.pivotal.io
+        username: drnic@starkandwayne.com
+        organization: starkandwayne
+        appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
+        space: blog-staging
+        manifest_path: manifest-pr.yml
+        vars: |
+          appname: "ghost-pr-${BUILDKITE_PULL_REQUEST}"
+          route-subdomain: "starkandwayne-blog-pr-${BUILDKITE_PULL_REQUEST}"
