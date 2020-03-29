@@ -3,7 +3,7 @@
 set -euo pipefail
 
 : "${PR_WHITELIST:=}"
-: "${RAW_REPO:=https://raw.githubusercontent.com/starkandwayne/ghost-for-cloudfoundry/master}"
+: "${RAW_REPO:=https://raw.githubusercontent.com/starkandwayne/ghost-for-cloudfoundry/production}"
 
 found=no
 for whitelist_org in $PR_WHITELIST; do
