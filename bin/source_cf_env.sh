@@ -1,6 +1,6 @@
 #!/bin/bash
 
-appname=${appname:-ghost}
+appname=${APPNAME:-ghost}
 export DEBUG=${DEBUG:-}
 
 if [[ "${VCAP_SERVICES:-X}" == "X" ]]; then
