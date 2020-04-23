@@ -2,9 +2,10 @@
 
 {{#post}}
 <div class="hero interior" style="background-image: url({{#if feature_image}}{{feature_image}}{{else}}https://starkandwayne.com/images/banners/hero.jpg{{/if}});">
+  <div class="wash"></div>
   <div class="container">
-    <div class="hero-content">
-      <h1 class="post-title" itemprop="name headline"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
+    <div class="title">
+      <h1 itemprop="name headline"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
     </div>
   </div>
 </div>
