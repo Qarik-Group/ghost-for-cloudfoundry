@@ -1,6 +1,6 @@
 {{!< default}}
 
-<div class="hero interior" style="background-image: url(https://starkandwayne.com/images/banners/hero.jpg">
+<div class="hero interior" style="background-image: url({{#if feature_image}}{{feature_image}}{{else}}https://starkandwayne.com/images/banners/hero.jpg{{/if}});">
   <div class="container">
     <div class="hero-content">
       <h1 class="post-title" itemprop="name headline"><a href="{{url}}" itemprop="url" data-pjax title="{{{title}}}">{{{title}}}</a></h1>
@@ -12,26 +12,24 @@
 <article class="blog" itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post {{post_class}}">
   {{#post}}
   <div class="page">
-    {{#if feature_image}}
-    <img class="header" src="{{feature_image}}">
+    <header>
+      <h1>{{{title}}}</h1>
+      <ul>
+        <li datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</li>
+        <li>by <strong>{{primary_author.name}}</strong></li>
+      </ul>
+    </header>
+
+    {{{content}}}
+
+    {{#if tags}}
+    <div class="tagged">
+      Find more great articles with similar tags
+      {{#foreach tags}}
+        <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}}</a>
+      {{/foreach}}
+    </div>
     {{/if}}
-
-    <h1 class="title"><span datetime="{{date published_at format="YYYY-MM-DD"}}" itemprop="datePublished">{{date published_at form="MMM DD, YYYY"}}</span><span class="readingtime" style="padding-left: 3rem;">{{reading_time}}</span>>
-      {{{title}}}</h1>
-
-      <div class="page-content">
-      {{{content}}}
-      </div>
-
-      {{#if tags}}
-        Find more great articles with similar tags
-        {{#foreach tags}}
-          <a href="{{url}}" title="{{name}}" class="tag tag-{{id}} {{slug}}">{{name}}</a>
-        {{/foreach}}
-        </ul>
-      {{else}}
-        <!-- No tags for this post. -->
-      {{/if}}
   </div>
   <div class="post-footer">
     <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author post-author-info">
